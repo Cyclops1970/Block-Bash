@@ -1,0 +1,800 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57fc43023e25d5a4ab9ee8f821bbb7a6, type: 3}
+  m_Name: Levels
+  m_EditorClassIdentifier: 
+  ctp:
+  - colour: {r: 1, g: 1, b: 0, a: 0.2}
+    blockType: {fileID: 1680637077219368, guid: d45e99e92d9a11a4999777362d59b83a,
+      type: 2}
+    hitsToKill: 35
+  - colour: {r: 1, g: 1, b: 0, a: 0.4}
+    blockType: {fileID: 1680637077219368, guid: d45e99e92d9a11a4999777362d59b83a,
+      type: 2}
+    hitsToKill: 73
+  - colour: {r: 1, g: 1, b: 0, a: 0.6}
+    blockType: {fileID: 1680637077219368, guid: d45e99e92d9a11a4999777362d59b83a,
+      type: 2}
+    hitsToKill: 99
+  - colour: {r: 1, g: 1, b: 0, a: 0.8}
+    blockType: {fileID: 1680637077219368, guid: d45e99e92d9a11a4999777362d59b83a,
+      type: 2}
+    hitsToKill: 150
+  - colour: {r: 1, g: 1, b: 0, a: 1}
+    blockType: {fileID: 1680637077219368, guid: d45e99e92d9a11a4999777362d59b83a,
+      type: 2}
+    hitsToKill: 227
+  - colour: {r: 0, g: 0, b: 1, a: 0.2}
+    blockType: {fileID: 1680637077219368, guid: c37c4ec31e893a54aa0567fa53bef826,
+      type: 2}
+    hitsToKill: 44
+  - colour: {r: 0, g: 0, b: 1, a: 0.4}
+    blockType: {fileID: 1680637077219368, guid: c37c4ec31e893a54aa0567fa53bef826,
+      type: 2}
+    hitsToKill: 71
+  - colour: {r: 0, g: 0, b: 1, a: 0.6}
+    blockType: {fileID: 1680637077219368, guid: c37c4ec31e893a54aa0567fa53bef826,
+      type: 2}
+    hitsToKill: 100
+  - colour: {r: 0, g: 0, b: 1, a: 0.8}
+    blockType: {fileID: 1680637077219368, guid: c37c4ec31e893a54aa0567fa53bef826,
+      type: 2}
+    hitsToKill: 147
+  - colour: {r: 0, g: 0, b: 1, a: 1}
+    blockType: {fileID: 1680637077219368, guid: c37c4ec31e893a54aa0567fa53bef826,
+      type: 2}
+    hitsToKill: 199
+  - colour: {r: 0.2, g: 0.2, b: 1, a: 0.2}
+    blockType: {fileID: 1680637077219368, guid: b21999cd8a6bfde49910ffe5e853c9a1,
+      type: 2}
+    hitsToKill: 37
+  - colour: {r: 0.2, g: 0.2, b: 1, a: 0.4}
+    blockType: {fileID: 1680637077219368, guid: b21999cd8a6bfde49910ffe5e853c9a1,
+      type: 2}
+    hitsToKill: 50
+  - colour: {r: 0.2, g: 0.2, b: 1, a: 0.6}
+    blockType: {fileID: 1680637077219368, guid: b21999cd8a6bfde49910ffe5e853c9a1,
+      type: 2}
+    hitsToKill: 81
+  - colour: {r: 0.2, g: 0.2, b: 1, a: 0.8}
+    blockType: {fileID: 1680637077219368, guid: b21999cd8a6bfde49910ffe5e853c9a1,
+      type: 2}
+    hitsToKill: 120
+  - colour: {r: 0.2, g: 0.2, b: 1, a: 1}
+    blockType: {fileID: 1680637077219368, guid: b21999cd8a6bfde49910ffe5e853c9a1,
+      type: 2}
+    hitsToKill: 199
+  - colour: {r: 0.26666668, g: 0.26666668, b: 1, a: 0.2}
+    blockType: {fileID: 1680637077219368, guid: 8f20968648979f24cb7f08ef4a0da5f0,
+      type: 2}
+    hitsToKill: 28
+  - colour: {r: 0.26666668, g: 0.26666668, b: 1, a: 0.4}
+    blockType: {fileID: 1680637077219368, guid: 8f20968648979f24cb7f08ef4a0da5f0,
+      type: 2}
+    hitsToKill: 51
+  - colour: {r: 0.26666668, g: 0.26666668, b: 1, a: 0.6}
+    blockType: {fileID: 1680637077219368, guid: 8f20968648979f24cb7f08ef4a0da5f0,
+      type: 2}
+    hitsToKill: 75
+  - colour: {r: 0.26666668, g: 0.26666668, b: 1, a: 0.8}
+    blockType: {fileID: 1680637077219368, guid: 8f20968648979f24cb7f08ef4a0da5f0,
+      type: 2}
+    hitsToKill: 121
+  - colour: {r: 0.26666668, g: 0.26666668, b: 1, a: 1}
+    blockType: {fileID: 1680637077219368, guid: 8f20968648979f24cb7f08ef4a0da5f0,
+      type: 2}
+    hitsToKill: 200
+  - colour: {r: 0.4, g: 0.4, b: 1, a: 0.2}
+    blockType: {fileID: 1680637077219368, guid: 5f0e311f9f90538419e4e7823c907acb,
+      type: 2}
+    hitsToKill: 25
+  - colour: {r: 0.4, g: 0.4, b: 1, a: 0.4}
+    blockType: {fileID: 1680637077219368, guid: 5f0e311f9f90538419e4e7823c907acb,
+      type: 2}
+    hitsToKill: 60
+  - colour: {r: 0.4, g: 0.4, b: 1, a: 0.6}
+    blockType: {fileID: 1680637077219368, guid: 5f0e311f9f90538419e4e7823c907acb,
+      type: 2}
+    hitsToKill: 90
+  - colour: {r: 0.4, g: 0.4, b: 1, a: 0.8}
+    blockType: {fileID: 1680637077219368, guid: 5f0e311f9f90538419e4e7823c907acb,
+      type: 2}
+    hitsToKill: 132
+  - colour: {r: 0.4, g: 0.4, b: 1, a: 1}
+    blockType: {fileID: 1680637077219368, guid: 5f0e311f9f90538419e4e7823c907acb,
+      type: 2}
+    hitsToKill: 175
+  - colour: {r: 0, g: 1, b: 0, a: 0.2}
+    blockType: {fileID: 1680637077219368, guid: f47877b9de42412498fee2c5ee49eea2,
+      type: 2}
+    hitsToKill: 50
+  - colour: {r: 0, g: 1, b: 0, a: 0.4}
+    blockType: {fileID: 1680637077219368, guid: f47877b9de42412498fee2c5ee49eea2,
+      type: 2}
+    hitsToKill: 79
+  - colour: {r: 0, g: 1, b: 0, a: 0.6}
+    blockType: {fileID: 1680637077219368, guid: f47877b9de42412498fee2c5ee49eea2,
+      type: 2}
+    hitsToKill: 103
+  - colour: {r: 0, g: 1, b: 0, a: 0.8}
+    blockType: {fileID: 1680637077219368, guid: f47877b9de42412498fee2c5ee49eea2,
+      type: 2}
+    hitsToKill: 168
+  - colour: {r: 0, g: 1, b: 0, a: 1}
+    blockType: {fileID: 1680637077219368, guid: f47877b9de42412498fee2c5ee49eea2,
+      type: 2}
+    hitsToKill: 212
+  - colour: {r: 1, g: 1, b: 1, a: 1}
+    blockType: {fileID: 1845567505435536, guid: 7bffd7067772e9a4982453767163628f,
+      type: 2}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 1, g: 0, b: 1, a: 0.2}
+    blockType: {fileID: 1680637077219368, guid: bb51e207b591d50489e20f546f4330e7,
+      type: 2}
+    hitsToKill: 50
+  - colour: {r: 1, g: 0, b: 1, a: 0.4}
+    blockType: {fileID: 1680637077219368, guid: bb51e207b591d50489e20f546f4330e7,
+      type: 2}
+    hitsToKill: 100
+  - colour: {r: 1, g: 0, b: 1, a: 0.6}
+    blockType: {fileID: 1680637077219368, guid: bb51e207b591d50489e20f546f4330e7,
+      type: 2}
+    hitsToKill: 150
+  - colour: {r: 1, g: 0, b: 1, a: 0.8}
+    blockType: {fileID: 1680637077219368, guid: bb51e207b591d50489e20f546f4330e7,
+      type: 2}
+    hitsToKill: 200
+  - colour: {r: 1, g: 0, b: 1, a: 1}
+    blockType: {fileID: 1680637077219368, guid: bb51e207b591d50489e20f546f4330e7,
+      type: 2}
+    hitsToKill: 250
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0
+  - colour: {r: 0, g: 0, b: 0, a: 0}
+    blockType: {fileID: 0}
+    hitsToKill: 0

@@ -1,0 +1,18 @@
+GAME PLAY.
+
+Main Menu
+	
+
+
+
+/*****************************************************
+// blocks are being hit when there is no balls there!
+only seems to happen to the top two rows...wtf?
+
+
+
+
+
+
+* make a method to generate each level on the fly at higher levels maybe?
+
