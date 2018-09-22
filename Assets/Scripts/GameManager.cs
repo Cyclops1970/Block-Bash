@@ -6,7 +6,7 @@ using TMPro;
 
 public class GameManager : MonoBehaviour {
 
-    bool debug = false;
+    bool debug = true;
 
     public static GameManager manager;
 
@@ -92,7 +92,7 @@ public class GameManager : MonoBehaviour {
     public string floorBlock = "floorBlock";
     public string invincibleBalls = "invincibleBalls";
 
-    public int bonusLevel = 10;
+    public int bonusLevel = 10; // every 10 levels have bonus level
 
     void Awake()
     {
@@ -130,18 +130,18 @@ public class GameManager : MonoBehaviour {
         newHighScoreCoins = 10;
 
         //Powerups
+        continueCost = 100;
         balls2xCost = 200;
         floorBlockCost = 400;
         invincibleBallsCost = 500;
         blockReductionCost = 300;
-        continueCost = 100;
-
+       
         playerCoins = PlayerPrefs.GetInt("playerCoins");
 
         SetupLevels();
 
         //Just for development - remove later
-        ClearLevels();
+        //ClearLevels();
 
         InitializeLevels();
     }
@@ -279,10 +279,10 @@ public class GameManager : MonoBehaviour {
             }
         }
         PlayerPrefs.SetInt("playerCoins", playerCoins);
-
+        
         //Set the stars for completed level
-        //PlayerPrefs.SetInt("level" + currentLevel + stars, level[currentLevel].stars);
-
+        PlayerPrefs.SetInt("level" + currentLevel + stars, level[currentLevel].stars);
+        print("level[currentLevel].stars = " + level[currentLevel].stars);
         //Check if at highest level, if so Allow the next level to be played
         if((currentLevel==PlayerPrefs.GetInt(highestLevel)) && (highestLevelPlayed < levelCount+1))
         {

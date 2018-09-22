@@ -97,6 +97,8 @@ public class PlayLevel : MonoBehaviour
 
         //Generate the level to be played
         levelGenerator.GenerateLevel();
+
+        //play the level
         if (GameManager.manager.currentLevel % 10 == 0)
         {
             StartCoroutine(PlayBonusLevel());
@@ -241,7 +243,28 @@ public class PlayLevel : MonoBehaviour
             else if ((rewardLine.fillAmount < 0.75f) && (GameManager.manager.level[GameManager.manager.currentLevel].stars < 2))
                 GameManager.manager.level[GameManager.manager.currentLevel].stars = 1;
            */
+           /*
             if (rewardLine.fillAmount == 1)
+                GameManager.manager.currentLevelStars = 3;
+            else if (rewardLine.fillAmount >= 0.75f)
+                GameManager.manager.currentLevelStars = 2;
+            else
+                GameManager.manager.currentLevelStars = 1;
+            */
+            //set the stars for the level These are the stored stars!
+            if (rewardLine.fillAmount == 1)
+            {
+                GameManager.manager.level[GameManager.manager.currentLevel].stars = 3;
+            }
+            else if ((rewardLine.fillAmount >= 0.75f) && (GameManager.manager.level[GameManager.manager.currentLevel].stars < 3))
+            {
+                GameManager.manager.level[GameManager.manager.currentLevel].stars = 2;
+            }
+            else if ((rewardLine.fillAmount < 0.75f) && (GameManager.manager.level[GameManager.manager.currentLevel].stars < 2))
+            {
+                GameManager.manager.level[GameManager.manager.currentLevel].stars = 1;
+            }
+            if (rewardLine.fillAmount == 1) // These are used to calculate coins -- if already got 3 stars, but now got 2, pay 2.
                 GameManager.manager.currentLevelStars = 3;
             else if (rewardLine.fillAmount >= 0.75f)
                 GameManager.manager.currentLevelStars = 2;
@@ -591,7 +614,6 @@ public class PlayLevel : MonoBehaviour
 
     IEnumerator PlayBonusLevel()
     {
-
         GameManager.manager.ballsActive = false;
         ableToShoot = false;
         int currentPoints = 0;
@@ -615,7 +637,8 @@ public class PlayLevel : MonoBehaviour
         GameManager.manager.maxNumberOfBalls = GameManager.manager.baseNumberOfBalls + (int)(Mathf.Round((GameManager.manager.currentLevel / 5)));
 
         //BlockColour();
-        GameManager.manager.Message("Bonus Level" + "/r/n" + "Double Coins!");
+        StartCoroutine(GameManager.manager.Message("Bonus Level" + "\r\n" + "Double Coins!"));
+        
         //Play until level end
         while ((GameManager.manager.actualNumberOfBlocks > 0) && (!levelFailed))
         {
@@ -681,7 +704,7 @@ public class PlayLevel : MonoBehaviour
             {
                 GameManager.manager.level[GameManager.manager.currentLevel].stars = 1;
             }
-            if (rewardLine.fillAmount == 1)
+            if (rewardLine.fillAmount == 1) // These are used to calculate coins -- if already got 3 stars, but now got 2, pay 2.
                 GameManager.manager.currentLevelStars = 3;
             else if (rewardLine.fillAmount >= 0.75f)
                 GameManager.manager.currentLevelStars = 2;
