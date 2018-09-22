@@ -223,6 +223,12 @@ public class PlayLevel : MonoBehaviour
             // Remove any errant balls
             StartCoroutine(ForceBallsToFinish());
 
+            //slight delay
+            for (int wait = 0; wait < 150; wait++)
+            {
+                yield return null;
+            }
+
             //Setup shop button
             shopButton.shopButton.SetActive(true);
 
@@ -285,6 +291,12 @@ public class PlayLevel : MonoBehaviour
             // Remove any errant balls
             StartCoroutine(ForceBallsToFinish());
 
+            //slight delay
+            for (int wait = 0; wait < 150; wait++)
+            {
+                yield return null;
+            }
+
             failPanel.SetActive(true);
 
             shopButton.shopButton.SetActive(true);
@@ -324,8 +336,7 @@ public class PlayLevel : MonoBehaviour
     IEnumerator ForceBallsToFinish()
     {
         ableToShoot = false;
-        int counter = 0;
-
+        
         //stop balls moving.
         if (GameManager.manager.ballsActive == true)
         {
@@ -339,10 +350,8 @@ public class PlayLevel : MonoBehaviour
                     //rb.velocity = new Vector2(0, 0);
                     Instantiate(ballExplosion, b.ball.transform.localPosition, Quaternion.identity);
                     Destroy(b.ball);
-                    counter++;
                 }
-                if (counter % 1 == 0) //was 25.  just a slowing thing
-                    yield return null;
+                yield return new WaitForSeconds(0.01f);
             }
 
             if (GameManager.manager.actualNumberOfBlocks > 0)
@@ -713,6 +722,13 @@ public class PlayLevel : MonoBehaviour
 
             //update complete level details
             GameManager.manager.LevelComplete();
+
+            //slight delay
+            for (int wait = 0; wait < 150; wait++)
+            {
+                yield return null;
+            }
+
             //show the pass panel
             passPanel.SetActive(true);
         }
@@ -720,6 +736,12 @@ public class PlayLevel : MonoBehaviour
         {
             // Remove any errant balls
             StartCoroutine(ForceBallsToFinish());
+
+            //slight delay
+            for (int wait = 0; wait < 150; wait++)
+            {
+                yield return null;
+            }
 
             failPanel.SetActive(true);
 
