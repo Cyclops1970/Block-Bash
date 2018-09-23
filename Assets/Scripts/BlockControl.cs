@@ -37,10 +37,10 @@ public class BlockControl : MonoBehaviour
         {
             //turn off collider
             c = gameObject.GetComponentInChildren<Collider2D>();
-            c.enabled = !c.enabled;
+            c.enabled = false;// !c.enabled;
 
             hitsRemainingText = gameObject.GetComponentInChildren<Canvas>().GetComponentInChildren<TextMeshProUGUI>(); // get the textmeshpro element of the letterText
-            hitsRemainingText.text = gameObject.GetComponentInParent<Block>().hitsRemaining.ToString();
+            hitsRemainingText.text = "0";// gameObject.GetComponentInParent<Block>().hitsRemaining.ToString();
 
             StartCoroutine(BlockDeath());
         }

@@ -25,7 +25,7 @@ public class PopulateLevels : MonoBehaviour {
         {
             //get stars of level x
             stars = PlayerPrefs.GetInt("level" + x + "stars");
-            print("Stars in display leverls " + stars);
+            
             if (x<=PlayerPrefs.GetInt("highestLevel") || stars > 0)
             {
                 level = Instantiate(GameManager.manager.levelReady);
