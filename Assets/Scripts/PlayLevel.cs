@@ -24,6 +24,7 @@ public class PlayLevel : MonoBehaviour
     public Button invincibleBallsButtton;
     public ShopButton shopButton;
 
+
     [Header("Borders")]
     public GameObject top;
     public GameObject bottom;
@@ -346,10 +347,12 @@ public class PlayLevel : MonoBehaviour
             {
                 if (b.ball != null)
                 {
+                    AudioSource.PlayClipAtPoint(GameManager.manager.ballExplodeSound, b.ball.transform.localPosition);
                     //Rigidbody2D rb = b.ball.GetComponent<Rigidbody2D>();
                     //rb.velocity = new Vector2(0, 0);
                     Instantiate(ballExplosion, b.ball.transform.localPosition, Quaternion.identity);
                     Destroy(b.ball);
+
                 }
                 yield return new WaitForSeconds(0.01f);
             }

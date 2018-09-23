@@ -10,6 +10,23 @@ public class GameManager : MonoBehaviour {
 
     public static GameManager manager;
 
+    [Header("Sounds")]
+    public AudioSource blockHitAudioSource;
+    public AudioSource blockDeathAudioSource;
+    public AudioClip ballExplodeSound;
+    public AudioClip ball2xSound;
+    public AudioClip blockHitSound;
+    public AudioClip blockDieSound;
+    public AudioClip blockReductionSound;
+    public AudioClip floorBlockSound;
+    public AudioClip invincibleBallsSound;
+    public AudioClip purchaseSound;
+    public AudioClip solidHitSound;
+    public AudioClip wallHitSound;
+
+    [HideInInspector]
+    public float temp;
+
     [HideInInspector]
     public float camY, camX;
 
@@ -25,6 +42,7 @@ public class GameManager : MonoBehaviour {
 
     [HideInInspector]
     public int maxNumberOfBalls;
+    [HideInInspector]
     public int baseNumberOfBalls;
 
     [Header("Ball Details")]
@@ -61,20 +79,35 @@ public class GameManager : MonoBehaviour {
     public bool ballsActive;
     [HideInInspector]
     public int actualNumberOfBlocks;
+    [HideInInspector]
     public int totalLevelPoints;
+    [HideInInspector]
     public int playerCoins;
+    [HideInInspector]
     public int continueCost;
+    [HideInInspector]
     public double warningArea;
+    [HideInInspector]
     public int starCoins1, starCoins2, starCoins3;
+    [HideInInspector]
     public int newHighScoreCoins;
+    [HideInInspector]
     public int numberOfBalls2x;
+    [HideInInspector]
     public int numberOfBockReductions;
+    [HideInInspector]
     public int numberOfFloorBlocks;
+    [HideInInspector]
     public int numberOfInvincibleBalls;
+    [HideInInspector]
     public int balls2xCost;
+    [HideInInspector]
     public int floorBlockCost;
+    [HideInInspector]
     public int invincibleBallsCost;
+    [HideInInspector]
     public int blockReductionCost;
+    [HideInInspector]
     public int currentLevelStars;
     
     //[HideInInspector]
@@ -87,11 +120,15 @@ public class GameManager : MonoBehaviour {
     const string lowestShotsTaken = "lowestShotsTaken";
     const string highestLevel = "highestLevel";
     //powerup strings
+    [HideInInspector]
     public string balls2x = "balls2x";
+    [HideInInspector]
     public string blockReduction = "blockReduction";
+    [HideInInspector]
     public string floorBlock = "floorBlock";
+    [HideInInspector]
     public string invincibleBalls = "invincibleBalls";
-
+    [HideInInspector]
     public int bonusLevel = 10; // every 10 levels have bonus level
 
     void Awake()
@@ -121,7 +158,6 @@ public class GameManager : MonoBehaviour {
         baseNumberOfBalls = 50;
         maxNumberOfBalls = 50;
     
-
         //stars rewards
         starCoins1 = 15;
         starCoins2 = 25;
@@ -282,7 +318,7 @@ public class GameManager : MonoBehaviour {
         
         //Set the stars for completed level
         PlayerPrefs.SetInt("level" + currentLevel + stars, level[currentLevel].stars);
-        print("level[currentLevel].stars = " + level[currentLevel].stars);
+        
         //Check if at highest level, if so Allow the next level to be played
         if((currentLevel==PlayerPrefs.GetInt(highestLevel)) && (highestLevelPlayed < levelCount+1))
         {

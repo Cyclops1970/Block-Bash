@@ -57,6 +57,7 @@ GameObject:
   - component: {fileID: 212822873731000492}
   - component: {fileID: 114561650375608888}
   - component: {fileID: 61425943606942358}
+  - component: {fileID: 114802487698935708}
   m_Layer: 0
   m_Name: SolidBlock
   m_TagString: solidBlock
@@ -269,6 +270,17 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &114802487698935708
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1845567505435536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d80be2c80aaabb640b65bafa19266ea5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &212822873731000492
 SpriteRenderer:
   m_ObjectHideFlags: 1
