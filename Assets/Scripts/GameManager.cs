@@ -101,7 +101,7 @@ public class GameManager : MonoBehaviour {
     [HideInInspector]
     public int currentLevelStars;
     [HideInInspector]
-    public bool newHighScore, newLowestShots;
+    public bool newHighScore, newLowestShots, firstRun;
     
     //[HideInInspector]
     //public GameObject[] blocks;
@@ -293,7 +293,7 @@ public class GameManager : MonoBehaviour {
             }
 
             //update coins if new highscore or best shots
-            if (newHighScore == true)
+            if ((newHighScore == true)&&(firstRun==false))
             {
                 playerCoins += newHighScoreCoins * 2;
             }
@@ -319,7 +319,7 @@ public class GameManager : MonoBehaviour {
                     break;
             }
             //update coins if new highscore or best shots
-            if (newHighScore == true)
+            if ((newHighScore == true)&&(firstRun==false))
             {
                 playerCoins += newHighScoreCoins;
             }

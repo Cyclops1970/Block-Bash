@@ -73,9 +73,11 @@ public class PlayLevel : MonoBehaviour
     bool levelFailed;
     public bool bottomReached;
 
-    //used for reward line
+    //used for reward line  
     static float levelPercentage;
     static float oldFillAmount;
+
+    Color32 textGreen = new Color32(11, 196, 0, 255);
     
     // Use this for initialization
     void Start ()
@@ -98,15 +100,7 @@ public class PlayLevel : MonoBehaviour
         //Generate the level to be played
         levelGenerator.GenerateLevel();
 
-        //play the level
-        if (GameManager.manager.currentLevel % 10 == 0)
-        {
-            StartCoroutine(PlayBonusLevel());
-        }
-        else
-        {
-            StartCoroutine(Play());
-        }
+        StartCoroutine(Play());
     }
 
     void CopyStuff()
@@ -153,6 +147,9 @@ public class PlayLevel : MonoBehaviour
 	
     IEnumerator Play()
     {
+        //Get current highscore (done so it isn't stored on replays of same level)
+        GameManager.manager.level[GameManager.manager.currentLevel].highestPoints = PlayerPrefs.GetInt("level" + GameManager.manager.currentLevel + "highestPoints");
+
         GameManager.manager.newHighScore = false;
         GameManager.manager.newLowestShots = false;
 
@@ -175,11 +172,24 @@ public class PlayLevel : MonoBehaviour
         rewardLine.fillAmount = 0;
         oldFillAmount = 0;
 
+        //Check if firstRun to stop getting highscores when highest score == 0 (lowestshots checked at end of level)
+        if(GameManager.manager.level[GameManager.manager.currentLevel].highestPoints==0)
+        {
+            GameManager.manager.firstRun = true;
+        }
+        else
+        {
+            GameManager.manager.firstRun = false;
+        }
+
         //Set the number of balls according to current level;
         GameManager.manager.maxNumberOfBalls = GameManager.manager.baseNumberOfBalls + (int)(Mathf.Round((GameManager.manager.currentLevel / 5)));
 
-        //Initialise block colours
-        BlockColour();
+        //Initialise block colours (if not a bonus level) if bonus level, say so :)
+        if (GameManager.manager.currentLevel % 10 != 0)
+            BlockColour();
+        else
+            StartCoroutine(GameManager.manager.Message("Bonus Level" + "\r\n" + "Double Coins!"));
 
         //Play until level end
         while ((GameManager.manager.actualNumberOfBlocks > 0) && (!levelFailed))
@@ -238,9 +248,15 @@ public class PlayLevel : MonoBehaviour
             //update lowest shots taken
             if ((shotsTaken < GameManager.manager.level[GameManager.manager.currentLevel].lowestShotsTaken) || (GameManager.manager.level[GameManager.manager.currentLevel].lowestShotsTaken == 0))
             {
-                lowestShotsTakenText.text = ("Lowest: " + shotsTaken);
+                //Avoid giving new record on first run
+                if(GameManager.manager.level[GameManager.manager.currentLevel].lowestShotsTaken != 0)
+                {
+                    //GameManager.manager.level[GameManager.manager.currentLevel].lowestShotsTaken = shotsTaken;
+                    GameManager.manager.newLowestShots = true;
+                }
                 GameManager.manager.level[GameManager.manager.currentLevel].lowestShotsTaken = shotsTaken;
-                GameManager.manager.newLowestShots = true;
+                lowestShotsTakenText.text = ("Lowest: " + shotsTaken);
+                
             }
 
             //set the stars for the level These are the stored stars!
@@ -282,7 +298,7 @@ public class PlayLevel : MonoBehaviour
             {
                 yield return null;
             }
-
+        
             failPanel.SetActive(true);
         }
 
@@ -446,7 +462,10 @@ public class PlayLevel : MonoBehaviour
         if (GameManager.manager.level[GameManager.manager.currentLevel].shotPoints > GameManager.manager.level[GameManager.manager.currentLevel].highestPoints)
         {
             GameManager.manager.level[GameManager.manager.currentLevel].highestPoints = GameManager.manager.level[GameManager.manager.currentLevel].shotPoints;
-            GameManager.manager.newHighScore = true;
+            if (GameManager.manager.firstRun != true) //Avoid highscore on first run when highest score is 0
+            {
+                GameManager.manager.newHighScore = true;
+            }
         }
         highScoreText.text = ("High: " + GameManager.manager.level[GameManager.manager.currentLevel].highestPoints);
 
@@ -514,7 +533,7 @@ public class PlayLevel : MonoBehaviour
         GameObject[] block = GameObject.FindGameObjectsWithTag("block");
         GameObject[] solid = GameObject.FindGameObjectsWithTag("solidBlock");
         List<GameObject> items = new List<GameObject>(block);
-        items.AddRange(new List<GameObject>(solid));
+        items.AddRange(new List<GameObject>(solid)); // get all the blocks, normal and super
 
         //move the blocks down 
         foreach (GameObject b in items)
@@ -533,8 +552,6 @@ public class PlayLevel : MonoBehaviour
             //if blocks have reached the bottom of the screen, show fail screen
             if (b.transform.localPosition.y <= (-GameManager.manager.camY / 2) + (GameManager.manager.camY * GameManager.manager.freeBottomArea) + (levelGenerator.blockScaleAdjustedY / 2))
             {
-                //levelFailed = true;
-
                 //GameManager.manager.ballsActive = true; //used to prevent DRAGTOSHOOT allowing to play in background. Change it to false in CONTINUE method.
                 if (b.tag == "solidBlock")
                 {
@@ -543,11 +560,8 @@ public class PlayLevel : MonoBehaviour
                 }
                 else
                 {
-
+                    //levelFailed = true;
                     failPanel.SetActive(true);
-
-                    //Hide this text as it is distracting 
-                    //numberOfBallsText.text = "";
 
                     //used to prevent LAUNCHBALLS from working
                     bottomReached = true;
@@ -570,7 +584,7 @@ public class PlayLevel : MonoBehaviour
         GameObject[] block = GameObject.FindGameObjectsWithTag("block");
         GameObject[] solid = GameObject.FindGameObjectsWithTag("solidBlock");
         List<GameObject> items = new List<GameObject>(block);
-        items.AddRange(new List<GameObject>(solid));
+        items.AddRange(new List<GameObject>(solid)); // get all blocks, including super;
 
         foreach (GameObject b in items)
         {
@@ -608,132 +622,7 @@ public class PlayLevel : MonoBehaviour
         
 
     }
-    IEnumerator PlayBonusLevel()
-    {
-        GameManager.manager.ballsActive = false;
-        ableToShoot = false;
-        int currentPoints = 0;
-
-        //set current shot to 0
-        GameManager.manager.level[GameManager.manager.currentLevel].shotPoints = 0;
-        //show highest points
-        highScoreText.text = ("High: " + GameManager.manager.level[GameManager.manager.currentLevel].highestPoints);
-        //show lowest shots taken
-        lowestShotsTakenText.text = ("Lowest: " + PlayerPrefs.GetInt("level" + GameManager.manager.currentLevel + "lowestShotsTaken"));// GameManager.manager.level[GameManager.manager.currentLevel].lowestShotsTaken);
-                                                                                                                                             //show the level number
-        levelNumberText.text = "Level " + GameManager.manager.currentLevel.ToString();
-        //show player coins
-        playerCoinsText.text = GameManager.manager.playerCoins.ToString();
-
-        //used for the reward line
-        rewardLine.fillAmount = 0;
-        oldFillAmount = 0;
-
-        //Set the number of balls according to current level;
-        GameManager.manager.maxNumberOfBalls = GameManager.manager.baseNumberOfBalls + (int)(Mathf.Round((GameManager.manager.currentLevel / 5)));
-
-        //BlockColour();
-        StartCoroutine(GameManager.manager.Message("Bonus Level" + "\r\n" + "Double Coins!"));
-        
-        //Play until level end
-        while ((GameManager.manager.actualNumberOfBlocks > 0) && (!levelFailed))
-        {
-            //launch balls
-            LaunchBalls();
-
-            // Check if all balls have finished on screen and move blocks down
-            BallsFinished(); //move blocks down
-
-            //update the level text
-            UpdateLevelText();
-
-            //update the reward line
-            UpdateRewardLine();
-
-            //Check to see if balls are active, if so prevent shop buttons
-            if (GameManager.manager.ballsActive == true)
-            {
-                shopButton.interactable = false;
-                balls2xButton.interactable = false;
-                blockReductionButton.interactable = false;
-                invincibleBallsButtton.interactable = false;
-                FloorBlockButton.interactable = false;
-            }
-            else
-            {
-                shopButton.interactable = true;
-                balls2xButton.interactable = true;
-                blockReductionButton.interactable = true;
-                invincibleBallsButtton.interactable = true;
-                FloorBlockButton.interactable = true;
-            }
-
-            yield return null;
-
-        }
-
-        //Mark level as done and available in future
-        if (GameManager.manager.actualNumberOfBlocks <= 0)
-        {
-            // Remove any errant balls
-            StartCoroutine(ForceBallsToFinish());
-            
-            //if level completed check if lowestshotstaken needs to be updated
-            //update lowest shots taken
-            if ((shotsTaken < GameManager.manager.level[GameManager.manager.currentLevel].lowestShotsTaken) || (GameManager.manager.level[GameManager.manager.currentLevel].lowestShotsTaken == 0))
-            {
-                lowestShotsTakenText.text = ("Lowest: " + shotsTaken);
-                GameManager.manager.level[GameManager.manager.currentLevel].lowestShotsTaken = shotsTaken;
-            }
-
-            //set the stars for the level These are the stored stars!
-            if (rewardLine.fillAmount == 1)
-            {
-                GameManager.manager.level[GameManager.manager.currentLevel].stars = 3;
-            }
-            else if ((rewardLine.fillAmount >= 0.75f) && (GameManager.manager.level[GameManager.manager.currentLevel].stars < 3))
-            {
-                GameManager.manager.level[GameManager.manager.currentLevel].stars = 2;
-            }
-            else if ((rewardLine.fillAmount < 0.75f) && (GameManager.manager.level[GameManager.manager.currentLevel].stars < 2))
-            {
-                GameManager.manager.level[GameManager.manager.currentLevel].stars = 1;
-            }
-            if (rewardLine.fillAmount == 1) // These are used to calculate coins -- if already got 3 stars, but now got 2, pay 2.
-                GameManager.manager.currentLevelStars = 3;
-            else if (rewardLine.fillAmount >= 0.75f)
-                GameManager.manager.currentLevelStars = 2;
-            else
-                GameManager.manager.currentLevelStars = 1;
-
-            //update complete level details
-            GameManager.manager.LevelComplete();
-
-            //slight delay
-            for (int wait = 0; wait < 150; wait++)
-            {
-                yield return null;
-            }
-
-            //show the pass panel
-            passPanel.SetActive(true);
-        }
-        else
-        {
-            // Remove any errant balls
-            StartCoroutine(ForceBallsToFinish());
-
-            //slight delay
-            for (int wait = 0; wait < 150; wait++)
-            {
-                yield return null;
-            }
-
-            failPanel.SetActive(true);
-        }
-
-        GameManager.manager.ballsActive = false;
-    }
+ 
     void ResetPowerUps()
     {
         //reset double balls

@@ -337,7 +337,6 @@ MonoBehaviour:
   levelReady: {fileID: 1454248786341584, guid: f9349da0fe8b41343934521fb732b88a, type: 2}
   levelLocked: {fileID: 1454248786341584, guid: da47fab5856d64542902b8eec8d206ad,
     type: 2}
-  highestShotEver: 0
   levelCount: 0
   currentLevel: 0
   highestLevelPlayed: 0
@@ -351,6 +350,7 @@ MonoBehaviour:
   starCoins2: 0
   starCoins3: 0
   newHighScoreCoins: 0
+  newLowestShotsCoins: 0
   numberOfBalls2x: 0
   numberOfBockReductions: 0
   numberOfFloorBlocks: 0
@@ -360,6 +360,8 @@ MonoBehaviour:
   invincibleBallsCost: 0
   blockReductionCost: 0
   currentLevelStars: 0
+  newHighScore: 0
+  newLowestShots: 0
   playlevel: {fileID: 0}
   balls2x: balls2x
   blockReduction: blockReduction

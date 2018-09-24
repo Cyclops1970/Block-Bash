@@ -62,7 +62,7 @@ public class LevelGenerator : MonoBehaviour {
         {
             for(int x = 0; x < currentLevel.width; x++)
             {
-                if(GameManager.manager.currentLevel %10 != 0)
+                if(GameManager.manager.currentLevel % GameManager.manager.bonusLevel != 0)
                 {
                     GenerateBlock(x, y);
                 }
