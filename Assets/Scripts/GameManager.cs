@@ -6,7 +6,7 @@ using TMPro;
 
 public class GameManager : MonoBehaviour {
 
-    bool debug = true;
+    bool debug = false;
 
     public static GameManager manager;
 
@@ -35,11 +35,6 @@ public class GameManager : MonoBehaviour {
     [HideInInspector]
     public float freeBottomArea;// = 0.01f;
 
-    //[HideInInspector]
-    //public int highestNumberOfHits;
-    //[HideInInspector]
-    //public int lowestNumberOfHits;
-
     [HideInInspector]
     public int maxNumberOfBalls;
     [HideInInspector]
@@ -54,7 +49,6 @@ public class GameManager : MonoBehaviour {
     [Header("Level Prefabs")]
     public GameObject levelReady;
     public GameObject levelLocked;
-    
 
     [HideInInspector]
     public struct Level
@@ -66,9 +60,6 @@ public class GameManager : MonoBehaviour {
         public int lowestShotsTaken;
         public int shotsTaken;  
     }
-
-    [HideInInspector]
-    public int highestShotEver;
 
     [HideInInspector]
     public Level[] level;
@@ -90,7 +81,7 @@ public class GameManager : MonoBehaviour {
     [HideInInspector]
     public int starCoins1, starCoins2, starCoins3;
     [HideInInspector]
-    public int newHighScoreCoins;
+    public int newHighScoreCoins, newLowestShotsCoins;
     [HideInInspector]
     public int numberOfBalls2x;
     [HideInInspector]
@@ -109,6 +100,8 @@ public class GameManager : MonoBehaviour {
     public int blockReductionCost;
     [HideInInspector]
     public int currentLevelStars;
+    [HideInInspector]
+    public bool newHighScore, newLowestShots;
     
     //[HideInInspector]
     //public GameObject[] blocks;
@@ -163,8 +156,9 @@ public class GameManager : MonoBehaviour {
         starCoins2 = 25;
         starCoins3 = 35;
 
-        newHighScoreCoins = 10;
-
+        newHighScoreCoins = 40;
+        newLowestShotsCoins = 50;
+        
         //Powerups
         continueCost = 100;
         balls2xCost = 200;
@@ -274,6 +268,7 @@ public class GameManager : MonoBehaviour {
         {
             PlayerPrefs.SetInt(highestLevel, 1000);
             highestLevelPlayed = 1000;
+            playerCoins = 22000;
         }
     }
 
@@ -285,7 +280,7 @@ public class GameManager : MonoBehaviour {
             switch (currentLevelStars)//level[currentLevel].stars)
             {
                 case 1:
-                    playerCoins += starCoins1*2;
+                    playerCoins += starCoins1 * 2;
                     break;
                 case 2:
                     playerCoins += starCoins2*2;
@@ -295,6 +290,16 @@ public class GameManager : MonoBehaviour {
                     break;
                 default:
                     break;
+            }
+
+            //update coins if new highscore or best shots
+            if (newHighScore == true)
+            {
+                playerCoins += newHighScoreCoins * 2;
+            }
+            if (newLowestShots == true)
+            {
+                playerCoins += newLowestShotsCoins * 2;
             }
         }
         else
@@ -312,6 +317,15 @@ public class GameManager : MonoBehaviour {
                     break;
                 default:
                     break;
+            }
+            //update coins if new highscore or best shots
+            if (newHighScore == true)
+            {
+                playerCoins += newHighScoreCoins;
+            }
+            if (newLowestShots == true)
+            {
+                playerCoins += newLowestShotsCoins;
             }
         }
         PlayerPrefs.SetInt("playerCoins", playerCoins);

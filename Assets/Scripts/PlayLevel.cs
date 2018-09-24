@@ -22,8 +22,7 @@ public class PlayLevel : MonoBehaviour
     public Button FloorBlockButton;
     public InvincibleBalls invincibleBalls;
     public Button invincibleBallsButtton;
-    public ShopButton shopButton;
-
+    public Button shopButton;
 
     [Header("Borders")]
     public GameObject top;
@@ -58,7 +57,6 @@ public class PlayLevel : MonoBehaviour
     public TextMeshProUGUI invincibleBallsText;
     public GameObject invincibleBallsCoins;
 
-
     public GameObject passPanel, failPanel;
 
     [Header("Reward Line")]
@@ -67,8 +65,8 @@ public class PlayLevel : MonoBehaviour
     public Image happyFace;
     public Image laughingFace;
 
-
     int levelScore;
+
     [HideInInspector]
     public int shotsTaken;
 
@@ -84,7 +82,8 @@ public class PlayLevel : MonoBehaviour
     {
         levelFailed = false;
         bottomReached = false;
-
+        GameManager.manager.newHighScore = false;
+        GameManager.manager.newLowestShots = false;
         shotsTaken = 0;
 
         //Get the location of the warning area where blocks turn red
@@ -121,7 +120,7 @@ public class PlayLevel : MonoBehaviour
             levelGenerator.level.ctp[element].hitsToKill = c.hitsToKill;
             element++;
         }
-        //Scen
+        
     }
 
     void SetupBorders()
@@ -154,6 +153,9 @@ public class PlayLevel : MonoBehaviour
 	
     IEnumerator Play()
     {
+        GameManager.manager.newHighScore = false;
+        GameManager.manager.newLowestShots = false;
+
         GameManager.manager.ballsActive = false;
         ableToShoot = false;
         //int currentPoints = 0;
@@ -163,7 +165,7 @@ public class PlayLevel : MonoBehaviour
         //show highest points
         highScoreText.text = ("Highest: " + GameManager.manager.level[GameManager.manager.currentLevel].highestPoints);
         //show lowest shots taken
-        lowestShotsTakenText.text = ("Lowest Shots: " + PlayerPrefs.GetInt("level" + GameManager.manager.currentLevel + "lowestShotsTaken"));// GameManager.manager.level[GameManager.manager.currentLevel].lowestShotsTaken);
+        lowestShotsTakenText.text = ("Lowest: " + PlayerPrefs.GetInt("level" + GameManager.manager.currentLevel + "lowestShotsTaken"));// GameManager.manager.level[GameManager.manager.currentLevel].lowestShotsTaken);
         //show the level number
         levelNumberText.text = "Level " + GameManager.manager.currentLevel.ToString();
         //show player coins
@@ -176,12 +178,12 @@ public class PlayLevel : MonoBehaviour
         //Set the number of balls according to current level;
         GameManager.manager.maxNumberOfBalls = GameManager.manager.baseNumberOfBalls + (int)(Mathf.Round((GameManager.manager.currentLevel / 5)));
 
+        //Initialise block colours
         BlockColour();
 
         //Play until level end
         while ((GameManager.manager.actualNumberOfBlocks > 0) && (!levelFailed))
         {
-
             //launch balls
             LaunchBalls();
             
@@ -203,6 +205,7 @@ public class PlayLevel : MonoBehaviour
             //Check to see if balls are active, if so prevent shop buttons
             if(GameManager.manager.ballsActive==true)
             {
+                shopButton.interactable = false;
                 balls2xButton.interactable = false;
                 blockReductionButton.interactable = false;
                 invincibleBallsButtton.interactable = false;
@@ -210,6 +213,7 @@ public class PlayLevel : MonoBehaviour
             }
             else
             {
+                shopButton.interactable = true;
                 balls2xButton.interactable = true;
                 blockReductionButton.interactable = true;
                 invincibleBallsButtton.interactable = true;
@@ -230,34 +234,15 @@ public class PlayLevel : MonoBehaviour
                 yield return null;
             }
 
-            //Setup shop button
-            shopButton.shopButton.SetActive(true);
-
             //if level completed check if lowestshotstaken needs to be updated
             //update lowest shots taken
             if ((shotsTaken < GameManager.manager.level[GameManager.manager.currentLevel].lowestShotsTaken) || (GameManager.manager.level[GameManager.manager.currentLevel].lowestShotsTaken == 0))
             {
-                lowestShotsTakenText.text = ("Lowest Shots: " + shotsTaken);
+                lowestShotsTakenText.text = ("Lowest: " + shotsTaken);
                 GameManager.manager.level[GameManager.manager.currentLevel].lowestShotsTaken = shotsTaken;
+                GameManager.manager.newLowestShots = true;
             }
 
-            //set the stars for the level
-            /*
-            if (rewardLine.fillAmount == 1)
-                GameManager.manager.level[GameManager.manager.currentLevel].stars = 3;
-            else if ((rewardLine.fillAmount >= 0.75f) && (GameManager.manager.level[GameManager.manager.currentLevel].stars < 3))
-                GameManager.manager.level[GameManager.manager.currentLevel].stars = 2;
-            else if ((rewardLine.fillAmount < 0.75f) && (GameManager.manager.level[GameManager.manager.currentLevel].stars < 2))
-                GameManager.manager.level[GameManager.manager.currentLevel].stars = 1;
-           */
-           /*
-            if (rewardLine.fillAmount == 1)
-                GameManager.manager.currentLevelStars = 3;
-            else if (rewardLine.fillAmount >= 0.75f)
-                GameManager.manager.currentLevelStars = 2;
-            else
-                GameManager.manager.currentLevelStars = 1;
-            */
             //set the stars for the level These are the stored stars!
             if (rewardLine.fillAmount == 1)
             {
@@ -287,7 +272,7 @@ public class PlayLevel : MonoBehaviour
             //USE TO prevent shooting
             bottomReached = true;
         }
-        else
+        else // level failed
         {
             // Remove any errant balls
             StartCoroutine(ForceBallsToFinish());
@@ -299,10 +284,6 @@ public class PlayLevel : MonoBehaviour
             }
 
             failPanel.SetActive(true);
-
-            shopButton.shopButton.SetActive(true);
-            //Hide this text as it is distracting 
-            //numberOfBallsText.text = "";
         }
 
         GameManager.manager.ballsActive = false;
@@ -317,8 +298,14 @@ public class PlayLevel : MonoBehaviour
             {
                 b.GetComponent<Block>().colour = new Color32(0, (byte)(150 - b.GetComponent<Block>().hitsRemaining / 2), 255, 255);
                 b.gameObject.GetComponent<SpriteRenderer>().color = b.GetComponent<Block>().colour;
-
-                //Warning when blocks are 1 level from the end
+                
+                //ORANGE Warning when blocks are 1 level from the end
+                if (b.transform.localPosition.y <= (-GameManager.manager.camY / 2) + (GameManager.manager.camY * GameManager.manager.freeBottomArea) + (levelGenerator.blockScaleAdjustedY * 3))
+                {
+                    b.gameObject.GetComponent<SpriteRenderer>().color = new Color32(255,150,0,255);
+                    b.gameObject.GetComponentInParent<Block>().colour = new Color32(255, 150, 0, 255);
+                }
+                //RED Warning when blocks are 1 level from the end
                 if (b.transform.localPosition.y <= (-GameManager.manager.camY / 2) + (GameManager.manager.camY * GameManager.manager.freeBottomArea) + (levelGenerator.blockScaleAdjustedY * 1.5))
                 {
                     b.gameObject.GetComponent<SpriteRenderer>().color = Color.red;
@@ -343,6 +330,11 @@ public class PlayLevel : MonoBehaviour
         {
             GameManager.manager.ballsActive = false;
 
+            if (GameManager.manager.actualNumberOfBlocks > 0)
+            {
+                StartCoroutine(GameManager.manager.Message("Shot Ended!"));
+            }
+
             foreach (Ball b in ballControl.balls)
             {
                 if (b.ball != null)
@@ -352,28 +344,18 @@ public class PlayLevel : MonoBehaviour
                     //rb.velocity = new Vector2(0, 0);
                     Instantiate(ballExplosion, b.ball.transform.localPosition, Quaternion.identity);
                     Destroy(b.ball);
-
                 }
                 yield return new WaitForSeconds(0.01f);
             }
 
-            if (GameManager.manager.actualNumberOfBlocks > 0)
-            {
-                StartCoroutine(GameManager.manager.Message("Shot Ended!"));
-            }
-                
             MoveBlocksDown();
 
-            //GameManager.manager.Message("End Shot!");
-            
             //Adjust colour for non 'bonus' levels
             if (GameManager.manager.currentLevel %10 !=0)
             {
                 BlockColour();
             }
-
             ResetPowerUps();
-
         }
     }
 
@@ -464,11 +446,12 @@ public class PlayLevel : MonoBehaviour
         if (GameManager.manager.level[GameManager.manager.currentLevel].shotPoints > GameManager.manager.level[GameManager.manager.currentLevel].highestPoints)
         {
             GameManager.manager.level[GameManager.manager.currentLevel].highestPoints = GameManager.manager.level[GameManager.manager.currentLevel].shotPoints;
+            GameManager.manager.newHighScore = true;
         }
-        highScoreText.text = ("Highest: " + GameManager.manager.level[GameManager.manager.currentLevel].highestPoints);
+        highScoreText.text = ("High: " + GameManager.manager.level[GameManager.manager.currentLevel].highestPoints);
 
         //update shots taken
-        shotsTakenText.text = ("Shot #: " + shotsTaken);
+        shotsTakenText.text = ("Number: " + shotsTaken);
         //Show the number of balls in play
         numberOfBallsText.text = GameManager.manager.maxNumberOfBalls + " Balls";
         //Show playerCoins
@@ -526,7 +509,6 @@ public class PlayLevel : MonoBehaviour
         
     
     }
-
     void MoveBlocksDown() // called from BALLS FINSISHED and check for end of level due to blocks hitting bottom and forced balls finished
     {
         GameObject[] block = GameObject.FindGameObjectsWithTag("block");
@@ -576,7 +558,6 @@ public class PlayLevel : MonoBehaviour
         }
 
     }
-
     public void Continue() // called from the continue button on a failed level
     { 
         int upAmount = 1;
@@ -614,6 +595,10 @@ public class PlayLevel : MonoBehaviour
                 }
             }
         }
+
+        //Re-adjust block colours
+        BlockColour();
+
         //Remove payment from player coins
         GameManager.manager.playerCoins -= GameManager.manager.continueCost;
         PlayerPrefs.SetInt("playerCoins", GameManager.manager.playerCoins);
@@ -623,7 +608,6 @@ public class PlayLevel : MonoBehaviour
         
 
     }
-
     IEnumerator PlayBonusLevel()
     {
         GameManager.manager.ballsActive = false;
@@ -633,9 +617,9 @@ public class PlayLevel : MonoBehaviour
         //set current shot to 0
         GameManager.manager.level[GameManager.manager.currentLevel].shotPoints = 0;
         //show highest points
-        highScoreText.text = ("Highest: " + GameManager.manager.level[GameManager.manager.currentLevel].highestPoints);
+        highScoreText.text = ("High: " + GameManager.manager.level[GameManager.manager.currentLevel].highestPoints);
         //show lowest shots taken
-        lowestShotsTakenText.text = ("Lowest Shots: " + PlayerPrefs.GetInt("level" + GameManager.manager.currentLevel + "lowestShotsTaken"));// GameManager.manager.level[GameManager.manager.currentLevel].lowestShotsTaken);
+        lowestShotsTakenText.text = ("Lowest: " + PlayerPrefs.GetInt("level" + GameManager.manager.currentLevel + "lowestShotsTaken"));// GameManager.manager.level[GameManager.manager.currentLevel].lowestShotsTaken);
                                                                                                                                              //show the level number
         levelNumberText.text = "Level " + GameManager.manager.currentLevel.ToString();
         //show player coins
@@ -669,6 +653,7 @@ public class PlayLevel : MonoBehaviour
             //Check to see if balls are active, if so prevent shop buttons
             if (GameManager.manager.ballsActive == true)
             {
+                shopButton.interactable = false;
                 balls2xButton.interactable = false;
                 blockReductionButton.interactable = false;
                 invincibleBallsButtton.interactable = false;
@@ -676,6 +661,7 @@ public class PlayLevel : MonoBehaviour
             }
             else
             {
+                shopButton.interactable = true;
                 balls2xButton.interactable = true;
                 blockReductionButton.interactable = true;
                 invincibleBallsButtton.interactable = true;
@@ -691,15 +677,12 @@ public class PlayLevel : MonoBehaviour
         {
             // Remove any errant balls
             StartCoroutine(ForceBallsToFinish());
-
-            //Setup shop button
-            shopButton.shopButton.SetActive(true);
-
+            
             //if level completed check if lowestshotstaken needs to be updated
             //update lowest shots taken
             if ((shotsTaken < GameManager.manager.level[GameManager.manager.currentLevel].lowestShotsTaken) || (GameManager.manager.level[GameManager.manager.currentLevel].lowestShotsTaken == 0))
             {
-                lowestShotsTakenText.text = ("Lowest Shots: " + shotsTaken);
+                lowestShotsTakenText.text = ("Lowest: " + shotsTaken);
                 GameManager.manager.level[GameManager.manager.currentLevel].lowestShotsTaken = shotsTaken;
             }
 
@@ -747,15 +730,10 @@ public class PlayLevel : MonoBehaviour
             }
 
             failPanel.SetActive(true);
-
-            shopButton.shopButton.SetActive(true);
-            //Hide this text as it is distracting 
-            //numberOfBallsText.text = "";
         }
 
         GameManager.manager.ballsActive = false;
     }
-
     void ResetPowerUps()
     {
         //reset double balls
