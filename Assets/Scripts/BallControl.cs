@@ -43,8 +43,8 @@ public class BallControl : MonoBehaviour
         timeBetweenBalls = 0.040f;
         //setup time for speed update
         nextSpeedUpdate = Time.time + speedUpdateTime;
-        speedUpdateTime = 0.75f;
-        speedIncrease = .5f;
+        speedUpdateTime = 0.5f;
+        speedIncrease = 1f;
 
         GameManager.manager.currentNumberOfBalls = GameManager.manager.maxNumberOfBalls;
 
