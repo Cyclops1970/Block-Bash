@@ -43,6 +43,7 @@ public class FloorBlock : MonoBehaviour {
                     b.GetComponentInChildren<Block>().transform.localScale = new Vector2(levelGenerator.blockScaleAdjustedX, levelGenerator.blockScaleAdjustedY);
                     b.GetComponentInChildren<Block>().transform.localPosition = new Vector3(xStart + ((x * 2) * levelGenerator.blockScaleAdjustedX), yPos, 10);
                 }
+                StartCoroutine(GameManager.manager.Message("Floor Blocks!", new Vector2(0, 0), 8, 1.5f, Color.white));
             }
         }
         else
@@ -52,12 +53,12 @@ public class FloorBlock : MonoBehaviour {
                 //take the cost of the powerup from player coins and update number of powerups available
                 GameManager.manager.playerCoins -= GameManager.manager.floorBlockCost;
                 GameManager.manager.numberOfFloorBlocks++;
-                StartCoroutine(GameManager.manager.Message("Purchased" + "\r\n" + "Floor Blocks"));
+                StartCoroutine(GameManager.manager.Message("Purchased" + "\r\n" + "Floor Blocks", new Vector2(0, 0), 8, 1.5f, Color.white));
             }
             else
             {
                 //Open the shop so they can buy stuff
-                shopPanel.active = true;
+                shopPanel.SetActive(true);
             }
         }
     }

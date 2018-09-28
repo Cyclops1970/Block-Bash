@@ -15,10 +15,10 @@ public class ShopButton : MonoBehaviour
         //Make the shop panel active 
         if(!GameManager.manager.ballsActive)
         {
-            shopPanel.active = true;
+            shopPanel.SetActive(true);
 
             //prevent balls from starting
-            dragCollider.active = false;
+            dragCollider.SetActive(false);
 
         }
 
@@ -26,10 +26,8 @@ public class ShopButton : MonoBehaviour
 
     public void CloseShop()
     {
-        shopPanel.active = false;
-
-        dragCollider.active = true;
-
+        shopPanel.SetActive(false);
+        dragCollider.SetActive(true);
     }
 
     public void shopButtonInactive()

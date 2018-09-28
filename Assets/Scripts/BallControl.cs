@@ -31,6 +31,7 @@ public class BallControl : MonoBehaviour
     float nextSpeedUpdate, speedUpdateTime, speedIncrease, maxSpeed;
 
     float xPos, yPos;
+    GameObject ballContainer;
 
     public void InitializeBalls(Vector3 start)
     {
@@ -46,7 +47,12 @@ public class BallControl : MonoBehaviour
         speedUpdateTime = 0.5f;
         speedIncrease = 1f;
 
+        //set the number of balls
         GameManager.manager.currentNumberOfBalls = GameManager.manager.maxNumberOfBalls;
+
+        //used to put balls into, so easier viewing in the heirarchy
+        ballContainer = new GameObject();
+        ballContainer.name = "ballContainer";
 
         //Setup start pos at bottom of play area and the x pos based on where the drag started
         pos = camera.ScreenToWorldPoint(start);
@@ -71,6 +77,9 @@ public class BallControl : MonoBehaviour
                 ballType = Ball.TypeOfBall.normal,
                 ball = Instantiate(ballSprite)
             };
+            //put into ball conatiner for neatness
+            balls[n].ball.transform.SetParent(ballContainer.transform);
+
             //change ball size for bonus level
             if (GameManager.manager.currentLevel % 10 == 0)
             {

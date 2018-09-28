@@ -23,7 +23,8 @@ public class BlockControl : MonoBehaviour
 
     //reduce hits remaining and if needed, reduce number of blocks and delete object
     private void OnCollisionEnter2D(Collision2D collision)
-    {/*
+    {
+        /*
         if (Time.time - lastHitTime < 0.35)
         {
             if (!GameManager.manager.audioSource.isPlaying)
@@ -124,6 +125,8 @@ public class BlockControl : MonoBehaviour
         //reduce number of blocks
         GameManager.manager.actualNumberOfBlocks--;
 
+        //block.enabled = false;
+        //Destroy(gameObject, 5);
         Destroy(gameObject);
     }
 }

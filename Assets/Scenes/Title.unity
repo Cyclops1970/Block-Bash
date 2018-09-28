@@ -325,6 +325,7 @@ MonoBehaviour:
   purchaseSound: {fileID: 8300000, guid: 7954708bf77e3274ea1eaaddc0cb7686, type: 3}
   solidHitSound: {fileID: 8300000, guid: 3a6ca18ad8445a04784a8d6ff13e34b4, type: 3}
   wallHitSound: {fileID: 8300000, guid: ba858c7a6cb60004ea398b31a974249a, type: 3}
+  bombSound: {fileID: 8300000, guid: e05551ed9de6dae42a34a17fa645b69d, type: 3}
   temp: 0
   camY: 0
   camX: 0
@@ -362,7 +363,8 @@ MonoBehaviour:
   currentLevelStars: 0
   newHighScore: 0
   newLowestShots: 0
-  playlevel: {fileID: 0}
+  firstRun: 0
+  keepWaiting: 0
   balls2x: balls2x
   blockReduction: blockReduction
   floorBlock: floorBlock

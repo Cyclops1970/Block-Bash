@@ -43,7 +43,7 @@ public class BlockReduction : MonoBehaviour
                     }
                 }
 
-                StartCoroutine(GameManager.manager.Message("Hits Needed Reduced!"));
+                StartCoroutine(GameManager.manager.Message("Hits Needed Reduced!", new Vector2(0, 0), 8, 1.5f, Color.white));
             }
         }
         else
@@ -53,7 +53,7 @@ public class BlockReduction : MonoBehaviour
                 //take the cost of the powerup from player coins and update number of powerups available
                 GameManager.manager.playerCoins -= GameManager.manager.blockReductionCost;
                 GameManager.manager.numberOfBockReductions++;
-                StartCoroutine(GameManager.manager.Message("Purchased" + "\r\n" + "Block Reduction"));
+                StartCoroutine(GameManager.manager.Message("Purchased" + "\r\n" + "Block Reduction", new Vector2(0, 0), 8, 1.5f, Color.white));
             }
             else
             {

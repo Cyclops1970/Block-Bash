@@ -33,6 +33,8 @@ public class LevelGenerator : MonoBehaviour {
     [HideInInspector]
     public float blockScaleAdjustedY;
 
+    GameObject blockContainer;
+
     public void GenerateLevel()
     {
         //load the current level map for the png file
@@ -48,6 +50,9 @@ public class LevelGenerator : MonoBehaviour {
 
     void InitializeLevel()
     {
+        blockContainer = new GameObject();
+        blockContainer.name = "blockContainer";
+
         //reset actual number of blocks in play;
         GameManager.manager.actualNumberOfBlocks = 0;
         //reset total level points
@@ -97,13 +102,14 @@ public class LevelGenerator : MonoBehaviour {
             if (currentBlock.colour.Equals(pixelColour))
             {
                 blocks[y * x] = Instantiate(currentBlock.blockType);
+                blocks[y * x].transform.SetParent(blockContainer.transform); // make it neater in the heirarchy
 
                 //Scale block correctly
                 blocks[y * x].GetComponent<Block>().transform.localScale = new Vector2(blockScaleAdjustedX, blockScaleAdjustedY);
                 //Place block
                 blocks[y * x].gameObject.transform.localPosition = new Vector2(xStart + (blockScaleAdjustedX * x), yStart - (blockScaleAdjustedY * y));
 
-                if (pixelColour != Color.white) // white is solid block
+                if ((pixelColour != Color.white) && (pixelColour != Color.red))// white is solid block
                 {
                     //Initial Colour
                     if (y == currentLevel.height - 1)
@@ -161,7 +167,7 @@ public class LevelGenerator : MonoBehaviour {
             //Place block
             blocks[y * x].gameObject.transform.localPosition = new Vector2(xStart + (blockScaleAdjustedX * x), yStart - (blockScaleAdjustedY * y));
             //use with solid blocks?
-            blocks[y * x].GetComponent<Block>().active = true;
+            //ocks[y * x].GetComponent<Block>().active = true;
             //Initial Colour
             if (y == currentLevel.height - 1)
             {

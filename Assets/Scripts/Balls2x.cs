@@ -24,7 +24,7 @@ public class Balls2x : MonoBehaviour
 
                 GameManager.manager.maxNumberOfBalls *= 2;
 
-                StartCoroutine(GameManager.manager.Message("Double Balls!" + "\r\n" + "(" + GameManager.manager.maxNumberOfBalls + ")"));
+                StartCoroutine(GameManager.manager.Message("Double Balls!" + "\r\n" + "(" + GameManager.manager.maxNumberOfBalls + ")", new Vector3(0,0,0), 8, 1.5f, Color.white));
 
                 //reduce number of powerups left
                 GameManager.manager.numberOfBalls2x--;
@@ -40,7 +40,7 @@ public class Balls2x : MonoBehaviour
                 //take the cost of the powerup from player coins and update number of powerups available
                 GameManager.manager.playerCoins -= GameManager.manager.balls2xCost;
                 GameManager.manager.numberOfBalls2x++;
-                StartCoroutine(GameManager.manager.Message("Purchased"+"\r\n"+"Double Balls"));
+                StartCoroutine(GameManager.manager.Message("Purchased"+"\r\n"+"Double Balls", new Vector2(0, 0), 8, 1.5f, Color.white));
             }
             else
             {

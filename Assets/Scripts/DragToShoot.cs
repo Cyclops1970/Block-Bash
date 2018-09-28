@@ -23,7 +23,7 @@ public class DragToShoot : MonoBehaviour
     //[Header("Sprite for the ball")]
     public GameObject ballSprite;
 
-    float zPos = 0f;
+    float zPos = -1f;
 
     private void Start()
     {
@@ -36,7 +36,7 @@ public class DragToShoot : MonoBehaviour
         lineRenderer.endWidth = 0.02f;
 
         lineRenderer.material = lineMaterial;
-        lineRenderer.material = new Material(Shader.Find("Unlit/Texture"));
+        //lineRenderer.material = new Material(Shader.Find("Unlit/Texture"));
     }
     private void OnMouseDown()
     {

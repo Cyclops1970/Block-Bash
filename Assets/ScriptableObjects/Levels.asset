@@ -136,8 +136,9 @@ MonoBehaviour:
     blockType: {fileID: 1845567505435536, guid: 7bffd7067772e9a4982453767163628f,
       type: 2}
     hitsToKill: 0
-  - colour: {r: 0, g: 0, b: 0, a: 0}
-    blockType: {fileID: 0}
+  - colour: {r: 1, g: 0, b: 0, a: 1}
+    blockType: {fileID: 1393419197104262, guid: aa5f772d16e26d94b819200fa712930c,
+      type: 2}
     hitsToKill: 0
   - colour: {r: 0, g: 0, b: 0, a: 0}
     blockType: {fileID: 0}

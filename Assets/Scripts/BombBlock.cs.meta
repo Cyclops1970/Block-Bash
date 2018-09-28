@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: eb313062ce37a2748b813c1d138efca5
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - playLevel: {instanceID: 0}
+  - electricity: {instanceID: 0}
+  - bombBlank: {fileID: 1735898004186944, guid: 0fbc7eb7e5726674dad13d74599874a7,
+      type: 2}
+  - hitsRemainingText: {instanceID: 0}
+  - explode: {instanceID: 0}
+  executionOrder: 800
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

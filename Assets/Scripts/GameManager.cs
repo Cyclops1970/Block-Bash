@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour {
     public AudioClip purchaseSound;
     public AudioClip solidHitSound;
     public AudioClip wallHitSound;
+    public AudioClip bombSound;
 
     [HideInInspector]
     public float temp;
@@ -101,12 +102,12 @@ public class GameManager : MonoBehaviour {
     [HideInInspector]
     public int currentLevelStars;
     [HideInInspector]
-    public bool newHighScore, newLowestShots, firstRun;
+    public bool newHighScore, newLowestShots, firstRun, keepWaiting;
     
     //[HideInInspector]
     //public GameObject[] blocks;
-    [HideInInspector]
-    public PlayLevel playlevel;
+    //[HideInInspector]
+    //public PlayLevel playlevel;
 
     const string stars = "stars";
     const string highestPoints = "highestPoints";
@@ -141,6 +142,9 @@ public class GameManager : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
+        //stop screen from timing out
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
+
         //Screen units
         camY = Camera.main.orthographicSize * 2; //Full sprHeight
         camX = (camY * Screen.width / Screen.height); // covers different aspect ratios
@@ -349,13 +353,12 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    public IEnumerator Message(string txt)
+    public IEnumerator Message(string txt, Vector3 location, float size, float displayTime, Color color)
     {
         GameObject dbiTextObject = new GameObject();
         TextMeshProUGUI dbiText;
-        float deathTime = 1.5f;
         float elapsedTime = 0;
-        Vector2 startingScale = new Vector2(8, 8);
+        Vector2 startingScale = new Vector2(size, size);
         Vector2 endingScale = new Vector2(0, 0);
 
         dbiTextObject.transform.parent = GameObject.Find("Canvas").transform;
@@ -363,12 +366,12 @@ public class GameManager : MonoBehaviour {
         dbiText.alignment = TextAlignmentOptions.Center;
         dbiText.autoSizeTextContainer = true;
         dbiText.text = txt;
+        dbiText.color = color;
+        dbiText.transform.position = location;
 
-        dbiText.transform.localPosition = new Vector2(0, 0);
-
-        while (elapsedTime < deathTime)
+        while (elapsedTime < displayTime)
         {
-            dbiText.transform.localScale = Vector2.Lerp(startingScale, endingScale, (elapsedTime / deathTime));
+            dbiText.transform.localScale = Vector2.Lerp(startingScale, endingScale, (elapsedTime / displayTime));
             elapsedTime += Time.deltaTime;
 
             yield return null;

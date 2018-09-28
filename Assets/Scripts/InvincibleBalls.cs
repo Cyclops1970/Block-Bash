@@ -19,7 +19,7 @@ public class InvincibleBalls : MonoBehaviour
             {
                 invincibleBallsActive = true;
 
-                StartCoroutine(GameManager.manager.Message("Power Balls!"));
+                StartCoroutine(GameManager.manager.Message("Power Balls!", new Vector2(0, 0), 8, 1.5f, Color.white));
 
                 //reduce number of powerups left
                 GameManager.manager.numberOfInvincibleBalls--;
@@ -42,12 +42,12 @@ public class InvincibleBalls : MonoBehaviour
                 //take the cost of the powerup from player coins and update number of powerups available
                 GameManager.manager.playerCoins -= GameManager.manager.invincibleBallsCost;
                 GameManager.manager.numberOfInvincibleBalls++;
-                StartCoroutine(GameManager.manager.Message("Purchased" + "\r\n" + "Power Balls!"));
+                StartCoroutine(GameManager.manager.Message("Purchased" + "\r\n" + "Power Balls!", new Vector2(0, 0), 8, 1.5f, Color.white));
             }
             else
             {
                 //Open the shop so they can buy stuff
-                shopPanel.active = true;
+                shopPanel.SetActive(true);
             }
         }
     }

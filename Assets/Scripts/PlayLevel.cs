@@ -8,12 +8,12 @@ using UnityEditor;
 
 public class PlayLevel : MonoBehaviour
 {
-    static public PlayLevel playLevel;
+    public PlayLevel playLevel;
 
     //[Header("Game Manager")]
     //public GameManager m;
     public LevelGenerator levelGenerator; //use this type if levelGenerator won't be active when needed it here..nullref fix!!
-
+    
     public Balls2x balls2x;
     public Button balls2xButton;
     public BlockReduction blockReduction;
@@ -65,7 +65,8 @@ public class PlayLevel : MonoBehaviour
     public Image happyFace;
     public Image laughingFace;
 
-    int levelScore;
+    //[HideInInspector]
+    //public int levelScore;
 
     [HideInInspector]
     public int shotsTaken;
@@ -189,7 +190,7 @@ public class PlayLevel : MonoBehaviour
         if (GameManager.manager.currentLevel % 10 != 0)
             BlockColour();
         else
-            StartCoroutine(GameManager.manager.Message("Bonus Level" + "\r\n" + "Double Coins!"));
+            StartCoroutine(GameManager.manager.Message("Bonus Level" + "\r\n" + "Double Coins!", new Vector2(0, 0), 8, 1.5f, Color.white)); 
 
         //Play until level end
         while ((GameManager.manager.actualNumberOfBlocks > 0) && (!levelFailed))
@@ -205,6 +206,9 @@ public class PlayLevel : MonoBehaviour
             
             //update the reward line
             UpdateRewardLine();
+
+            //Update block colour
+            BlockColour();
 
             if(Input.GetKeyDown(KeyCode.T))
             {
@@ -348,7 +352,7 @@ public class PlayLevel : MonoBehaviour
 
             if (GameManager.manager.actualNumberOfBlocks > 0)
             {
-                StartCoroutine(GameManager.manager.Message("Shot Ended!"));
+                StartCoroutine(GameManager.manager.Message("Shot Ended!", new Vector2(0, 0), 8, 1.5f, Color.white));
             }
 
             foreach (Ball b in ballControl.balls)
@@ -367,10 +371,11 @@ public class PlayLevel : MonoBehaviour
             MoveBlocksDown();
 
             //Adjust colour for non 'bonus' levels
-            if (GameManager.manager.currentLevel %10 !=0)
+            if (GameManager.manager.currentLevel % GameManager.manager.bonusLevel !=0)
             {
                 BlockColour();
             }
+
             ResetPowerUps();
         }
     }
@@ -530,47 +535,50 @@ public class PlayLevel : MonoBehaviour
     }
     void MoveBlocksDown() // called from BALLS FINSISHED and check for end of level due to blocks hitting bottom and forced balls finished
     {
-        GameObject[] block = GameObject.FindGameObjectsWithTag("block");
-        GameObject[] solid = GameObject.FindGameObjectsWithTag("solidBlock");
-        List<GameObject> items = new List<GameObject>(block);
-        items.AddRange(new List<GameObject>(solid)); // get all the blocks, normal and super
-
-        //move the blocks down 
-        foreach (GameObject b in items)
+        if (GameManager.manager.keepWaiting == false)
         {
-            //Move blocks down
-            b.transform.localPosition = new Vector2(b.transform.localPosition.x, b.transform.localPosition.y - levelGenerator.blockScaleAdjustedY);
-
-            //Warning when blocks are 1 level from the end
-            if (b.transform.localPosition.y <= (-GameManager.manager.camY / 2) + (GameManager.manager.camY * GameManager.manager.freeBottomArea) + (levelGenerator.blockScaleAdjustedY * 1.5))
+            GameObject[] block = GameObject.FindGameObjectsWithTag("block");
+            GameObject[] solid = GameObject.FindGameObjectsWithTag("solidBlock");
+            GameObject[] bombs = GameObject.FindGameObjectsWithTag("bomb");
+            List<GameObject> items = new List<GameObject>(block);
+            items.AddRange(new List<GameObject>(solid)); // get all the blocks, normal and super
+            items.AddRange(new List<GameObject>(bombs)); // and bombs
+                                                         //move the blocks down 
+            foreach (GameObject b in items)
             {
-                //b.gameObject.GetComponent<SpriteRenderer>().color = Color.red;
-                b.gameObject.GetComponentInParent<Block>().colour = Color.red;
+                //Move blocks down
+                b.transform.localPosition = new Vector2(b.transform.localPosition.x, b.transform.localPosition.y - levelGenerator.blockScaleAdjustedY);
+
+                //Warning when blocks are 1 level from the end
+                if (b.transform.localPosition.y <= (-GameManager.manager.camY / 2) + (GameManager.manager.camY * GameManager.manager.freeBottomArea) + (levelGenerator.blockScaleAdjustedY * 1.5))
+                {
+                    //b.gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+                    b.gameObject.GetComponentInParent<Block>().colour = Color.red;
+
+                }
+
+                //if blocks have reached the bottom of the screen, show fail screen
+                if (b.transform.localPosition.y <= (-GameManager.manager.camY / 2) + (GameManager.manager.camY * GameManager.manager.freeBottomArea) + (levelGenerator.blockScaleAdjustedY / 2))
+                {
+                    //GameManager.manager.ballsActive = true; //used to prevent DRAGTOSHOOT allowing to play in background. Change it to false in CONTINUE method.
+                    if (b.tag == "solidBlock")
+                    {
+                        Instantiate(ballExplosion, b.transform.localPosition, Quaternion.identity);
+                        Destroy(b);
+                    }
+                    else
+                    {
+                        //levelFailed = true;
+                        failPanel.SetActive(true);
+
+                        //used to prevent LAUNCHBALLS from working
+                        bottomReached = true;
+                    }
+                }
+
 
             }
-
-            //if blocks have reached the bottom of the screen, show fail screen
-            if (b.transform.localPosition.y <= (-GameManager.manager.camY / 2) + (GameManager.manager.camY * GameManager.manager.freeBottomArea) + (levelGenerator.blockScaleAdjustedY / 2))
-            {
-                //GameManager.manager.ballsActive = true; //used to prevent DRAGTOSHOOT allowing to play in background. Change it to false in CONTINUE method.
-                if (b.tag == "solidBlock")
-                {
-                    Instantiate(ballExplosion, b.transform.localPosition, Quaternion.identity);
-                    Destroy(b);
-                }
-                else
-                {
-                    //levelFailed = true;
-                    failPanel.SetActive(true);
-
-                    //used to prevent LAUNCHBALLS from working
-                    bottomReached = true;
-                }
-            }
-
-
         }
-
     }
     public void Continue() // called from the continue button on a failed level
     { 
@@ -583,8 +591,10 @@ public class PlayLevel : MonoBehaviour
         //Move the blocks back up
         GameObject[] block = GameObject.FindGameObjectsWithTag("block");
         GameObject[] solid = GameObject.FindGameObjectsWithTag("solidBlock");
+        GameObject[] bomb = GameObject.FindGameObjectsWithTag("bomb");
         List<GameObject> items = new List<GameObject>(block);
         items.AddRange(new List<GameObject>(solid)); // get all blocks, including super;
+        items.AddRange(new List<GameObject>(bomb));
 
         foreach (GameObject b in items)
         {
