@@ -18,6 +18,9 @@ public class BlockReduction : MonoBehaviour
         {
             if (blockReductionActive == false)
             {
+                //sound
+                AudioSource.PlayClipAtPoint(GameManager.manager.purchaseSound, Camera.main.transform.position);
+
                 blockReductionActive = true;
 
                 //reduce number of powerups left
@@ -50,6 +53,9 @@ public class BlockReduction : MonoBehaviour
         {
             if (GameManager.manager.playerCoins >= GameManager.manager.blockReductionCost)
             {
+                //sound
+                AudioSource.PlayClipAtPoint(GameManager.manager.purchaseSound, Camera.main.transform.position);
+
                 //take the cost of the powerup from player coins and update number of powerups available
                 GameManager.manager.playerCoins -= GameManager.manager.blockReductionCost;
                 GameManager.manager.numberOfBockReductions++;

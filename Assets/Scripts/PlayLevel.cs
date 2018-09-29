@@ -13,7 +13,8 @@ public class PlayLevel : MonoBehaviour
     //[Header("Game Manager")]
     //public GameManager m;
     public LevelGenerator levelGenerator; //use this type if levelGenerator won't be active when needed it here..nullref fix!!
-    
+    public HorizontalBlock horizontalBlock;
+
     public Balls2x balls2x;
     public Button balls2xButton;
     public BlockReduction blockReduction;
@@ -207,9 +208,6 @@ public class PlayLevel : MonoBehaviour
             //update the reward line
             UpdateRewardLine();
 
-            //Update block colour
-            BlockColour();
-
             if(Input.GetKeyDown(KeyCode.T))
             {
                 print("Copying to scriptable object.");
@@ -298,7 +296,7 @@ public class PlayLevel : MonoBehaviour
             StartCoroutine(ForceBallsToFinish());
 
             //slight delay
-            for (int wait = 0; wait < 150; wait++)
+            for (int wait = 0; wait < 130; wait++)
             {
                 yield return null;
             }
@@ -311,15 +309,21 @@ public class PlayLevel : MonoBehaviour
 
     public void BlockColour()
     {
+        byte colour;
+
         GameObject[] block = GameObject.FindGameObjectsWithTag("block");
         foreach (GameObject b in block)
         {
             if (b != null) 
             {
-                b.GetComponent<Block>().colour = new Color32(0, (byte)(150 - b.GetComponent<Block>().hitsRemaining / 2), 255, 255);
-                b.gameObject.GetComponent<SpriteRenderer>().color = b.GetComponent<Block>().colour;
+                colour = (byte)(150 - (Mathf.RoundToInt(b.GetComponent<Block>().hitsRemaining / 50) * 20)); //50 points, 20 colour change
+
+                b.GetComponent<Block>().colour = new Color32(0, (byte)(150 - b.GetComponent<Block>().hitsRemaining ), 255, 255);
+                //b.GetComponent<Block>().colour = new Color32(colour, colour, 255, 255);
                 
-                //ORANGE Warning when blocks are 1 level from the end
+                b.gameObject.GetComponent<SpriteRenderer>().color = b.GetComponent<Block>().colour;
+
+                //ORANGE Warning when blocks are 2 level from the end
                 if (b.transform.localPosition.y <= (-GameManager.manager.camY / 2) + (GameManager.manager.camY * GameManager.manager.freeBottomArea) + (levelGenerator.blockScaleAdjustedY * 3))
                 {
                     b.gameObject.GetComponent<SpriteRenderer>().color = new Color32(255,150,0,255);
@@ -367,7 +371,7 @@ public class PlayLevel : MonoBehaviour
                 }
                 yield return new WaitForSeconds(0.01f);
             }
-
+            DestroySpecials();
             MoveBlocksDown();
 
             //Adjust colour for non 'bonus' levels
@@ -380,6 +384,26 @@ public class PlayLevel : MonoBehaviour
         }
     }
 
+    void DestroySpecials()
+    {
+        //Check that horizontal or vertical blocks been used, and destroy them if so.
+        GameObject[] block = GameObject.FindGameObjectsWithTag("special"); // Not including super blocks...should I?
+        foreach (GameObject b in block)
+        {
+            if ((b.GetComponent<HorizontalBlock>() != null) && (b.GetComponent<HorizontalBlock>().used == true))
+            {
+                Instantiate(ballExplosion, b.transform.localPosition, Quaternion.identity);
+                Destroy(b);
+            }
+
+            if ((b.GetComponent<VerticalBlock>() != null) && (b.GetComponent<VerticalBlock>().used == true))
+            {
+                Instantiate(ballExplosion, b.transform.localPosition, Quaternion.identity);
+                Destroy(b);
+            }
+
+        }
+    }
     void BallsFinished()
     {
         if ((GameManager.manager.currentNumberOfBalls <= 0) && (GameManager.manager.ballsActive == true))
@@ -390,16 +414,18 @@ public class PlayLevel : MonoBehaviour
             MoveBlocksDown();
 
             //COLOUR FOR SPECIAL LEVELS TO NOT BE DONE
-            if (GameManager.manager.currentLevel %10 != 0)
+            if (GameManager.manager.currentLevel % 10 != 0)
             {
                 BlockColour();
             }
 
             ResetPowerUps();
 
-        }   
+            DestroySpecials();
 
+        }
     }
+
     void LaunchBalls()
     {
         if ((ableToShoot == true) && (GameManager.manager.ballsActive == false) && (bottomReached==false))
@@ -540,10 +566,11 @@ public class PlayLevel : MonoBehaviour
             GameObject[] block = GameObject.FindGameObjectsWithTag("block");
             GameObject[] solid = GameObject.FindGameObjectsWithTag("solidBlock");
             GameObject[] bombs = GameObject.FindGameObjectsWithTag("bomb");
+            GameObject[] special = GameObject.FindGameObjectsWithTag("special");
             List<GameObject> items = new List<GameObject>(block);
             items.AddRange(new List<GameObject>(solid)); // get all the blocks, normal and super
             items.AddRange(new List<GameObject>(bombs)); // and bombs
-                                                         //move the blocks down 
+            items.AddRange(new List<GameObject>(special));// and specials move the blocks down 
             foreach (GameObject b in items)
             {
                 //Move blocks down
@@ -561,7 +588,7 @@ public class PlayLevel : MonoBehaviour
                 if (b.transform.localPosition.y <= (-GameManager.manager.camY / 2) + (GameManager.manager.camY * GameManager.manager.freeBottomArea) + (levelGenerator.blockScaleAdjustedY / 2))
                 {
                     //GameManager.manager.ballsActive = true; //used to prevent DRAGTOSHOOT allowing to play in background. Change it to false in CONTINUE method.
-                    if (b.tag == "solidBlock")
+                    if ((b.tag == "solidBlock")||(b.tag=="special")||(b.tag=="bomb"))
                     {
                         Instantiate(ballExplosion, b.transform.localPosition, Quaternion.identity);
                         Destroy(b);
@@ -592,9 +619,11 @@ public class PlayLevel : MonoBehaviour
         GameObject[] block = GameObject.FindGameObjectsWithTag("block");
         GameObject[] solid = GameObject.FindGameObjectsWithTag("solidBlock");
         GameObject[] bomb = GameObject.FindGameObjectsWithTag("bomb");
+        GameObject[] special = GameObject.FindGameObjectsWithTag("special");
         List<GameObject> items = new List<GameObject>(block);
         items.AddRange(new List<GameObject>(solid)); // get all blocks, including super;
         items.AddRange(new List<GameObject>(bomb));
+        items.AddRange(new List<GameObject>(special));
 
         foreach (GameObject b in items)
         {

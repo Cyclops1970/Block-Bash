@@ -17,6 +17,8 @@ public class InvincibleBalls : MonoBehaviour
         {
             if (invincibleBallsActive == false)
             {
+                //sound
+                AudioSource.PlayClipAtPoint(GameManager.manager.purchaseSound, Camera.main.transform.position);
                 invincibleBallsActive = true;
 
                 StartCoroutine(GameManager.manager.Message("Power Balls!", new Vector2(0, 0), 8, 1.5f, Color.white));
@@ -39,6 +41,11 @@ public class InvincibleBalls : MonoBehaviour
         {
             if (GameManager.manager.playerCoins >= GameManager.manager.invincibleBallsCost)
             {
+                //sound
+                AudioSource.PlayClipAtPoint(GameManager.manager.purchaseSound, Camera.main.transform.position);
+
+                invincibleBallsActive = true;
+
                 //take the cost of the powerup from player coins and update number of powerups available
                 GameManager.manager.playerCoins -= GameManager.manager.invincibleBallsCost;
                 GameManager.manager.numberOfInvincibleBalls++;

@@ -18,6 +18,9 @@ public class FloorBlock : MonoBehaviour {
         {
             if (floorBlocksActive == false)
             {
+                //sound
+                AudioSource.PlayClipAtPoint(GameManager.manager.purchaseSound, Camera.main.transform.position);
+
                 floorBlocksActive = true;
                 GameManager.manager.numberOfFloorBlocks--;
                 PlayerPrefs.SetInt(GameManager.manager.floorBlock, GameManager.manager.numberOfFloorBlocks);
@@ -50,6 +53,9 @@ public class FloorBlock : MonoBehaviour {
         {
             if (GameManager.manager.playerCoins >= GameManager.manager.floorBlockCost)
             {
+                //sound
+                AudioSource.PlayClipAtPoint(GameManager.manager.purchaseSound, Camera.main.transform.position);
+
                 //take the cost of the powerup from player coins and update number of powerups available
                 GameManager.manager.playerCoins -= GameManager.manager.floorBlockCost;
                 GameManager.manager.numberOfFloorBlocks++;

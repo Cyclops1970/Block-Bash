@@ -140,11 +140,13 @@ MonoBehaviour:
     blockType: {fileID: 1393419197104262, guid: aa5f772d16e26d94b819200fa712930c,
       type: 2}
     hitsToKill: 0
-  - colour: {r: 0, g: 0, b: 0, a: 0}
-    blockType: {fileID: 0}
+  - colour: {r: 1, g: 0, b: 0, a: 0.2}
+    blockType: {fileID: 1723677115663580, guid: d8b020abd828ae7459041f195600d7b1,
+      type: 2}
     hitsToKill: 0
-  - colour: {r: 0, g: 0, b: 0, a: 0}
-    blockType: {fileID: 0}
+  - colour: {r: 1, g: 0, b: 0, a: 0.4}
+    blockType: {fileID: 1958719932964138, guid: cc28b572893fbbf4aa1c8b83bfe7a887,
+      type: 2}
     hitsToKill: 0
   - colour: {r: 0, g: 0, b: 0, a: 0}
     blockType: {fileID: 0}

@@ -12,6 +12,7 @@ TagManager:
   - floorBlock
   - solidBlock
   - bomb
+  - special
   layers:
   - Default
   - TransparentFX

@@ -250,8 +250,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 549.1, y: -872.13}
-  m_SizeDelta: {x: 132.7, y: 620}
+  m_AnchoredPosition: {x: -468, y: -826}
+  m_SizeDelta: {x: 147.7, y: 786.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &33808805
 MonoBehaviour:
@@ -441,8 +441,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 550.6, y: 801}
-  m_SizeDelta: {x: 132.7, y: 620}
+  m_AnchoredPosition: {x: 461, y: -818}
+  m_SizeDelta: {x: 142.8, y: 613.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &44321385
 MonoBehaviour:
@@ -1959,8 +1959,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 548.7, y: -91}
-  m_SizeDelta: {x: 132.7, y: 620}
+  m_AnchoredPosition: {x: -13, y: -847}
+  m_SizeDelta: {x: 132.7, y: 841.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &411768733
 MonoBehaviour:
@@ -2699,7 +2699,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -101.7, y: 11.000366}
+  m_AnchoredPosition: {x: 5, y: 304}
   m_SizeDelta: {x: 141.5, y: 26}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &547987745
@@ -4355,7 +4355,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -333, y: 11.000366}
+  m_AnchoredPosition: {x: -226.3, y: 303.99988}
   m_SizeDelta: {x: 141.5, y: 26}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &711547163
@@ -5487,7 +5487,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 353.8, y: 11.000366}
+  m_AnchoredPosition: {x: 460.5, y: 303.99988}
   m_SizeDelta: {x: 141.5, y: 26}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &876206708
@@ -5756,7 +5756,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: 'Shot: 5268'
+  m_text: 'Score: 5268'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
   m_sharedMaterial: {fileID: 2164040, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
@@ -5824,7 +5824,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 3.6371918, w: 0}
   m_textInfo:
     textComponent: {fileID: 927108176}
-    characterCount: 10
+    characterCount: 11
     spriteCount: 0
     spaceCount: 1
     wordCount: 2
@@ -5892,7 +5892,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 160, y: 10.829956}
+  m_AnchoredPosition: {x: 266.7, y: 303.82947}
   m_SizeDelta: {x: 141.5, y: 163}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &942665580
@@ -9403,6 +9403,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playLevel: {fileID: 0}
   levelGenerator: {fileID: 1585434330}
+  horizontalBlock: {fileID: 0}
   balls2x: {fileID: 876206711}
   balls2xButton: {fileID: 876206708}
   blockReduction: {fileID: 2042382897}
@@ -11530,7 +11531,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 126.5, y: 11}
+  m_AnchoredPosition: {x: 233.2, y: 303.9995}
   m_SizeDelta: {x: 141.5, y: 26}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2042382897

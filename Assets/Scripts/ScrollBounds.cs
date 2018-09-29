@@ -10,7 +10,10 @@ public class ScrollBounds : MonoBehaviour
 
     float buttonSize;
     int numberOfButtons;
-    
+
+    float xPos, yPos;
+    Vector2 scrollPosition;
+
     /* needs to be updated to be exact, it gets out of sync with larger number of levels*/
 
     private void Start()
@@ -18,9 +21,14 @@ public class ScrollBounds : MonoBehaviour
         buttonSize = 132;
         //buttonSize = 125f;
         //
-
         numberOfButtons = GameManager.manager.levelCount;
-       
+
+        //Set scroll back to where you left it.
+        xPos = PlayerPrefs.GetFloat("scrollPosition.x");
+        yPos = PlayerPrefs.GetFloat("scrollPosition.y");
+        scrollPosition = new Vector2(xPos, yPos);
+        cont.offsetMax = scrollPosition;
+
     }
 
     void Update()
@@ -29,6 +37,7 @@ public class ScrollBounds : MonoBehaviour
         { 
             cont.offsetMax = new Vector2(); //Sets its value back.
             cont.offsetMin = new Vector2(); //Sets its value back.
+
         }
 
         if (cont.offsetMax.y > (numberOfButtons * buttonSize) - buttonSize*10)
@@ -36,6 +45,11 @@ public class ScrollBounds : MonoBehaviour
             cont.offsetMax = new Vector2(0, (numberOfButtons * buttonSize) - buttonSize*10); // Set its value back
             cont.offsetMin = new Vector2(); //Depending on what values you set on your scrollview, you might want to change this, but my one didn't need it.
         }
+
+        //Store the cont.offset so that when you go back to the home screen you are at the same spot.
+        GameManager.manager.scrollPosition = cont.offsetMax;
+        PlayerPrefs.SetFloat("scrollPosition.x", cont.offsetMax.x);
+        PlayerPrefs.SetFloat("scrollPosition.y", cont.offsetMax.y);
     }
     /*
      * When dynamically adding UI elements to a scrollable content Panel, a ContentSizeFitter component is of great help. 

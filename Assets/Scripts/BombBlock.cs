@@ -17,11 +17,6 @@ public class BombBlock : MonoBehaviour {
     float deathDelay = 1.5f;
     int blocksToHitModulus = 3;
 
-    private void Start()
-    {
-
-    }
-
     private void OnDestroy()
     {
         GameManager.manager.keepWaiting = false;    
@@ -99,7 +94,7 @@ public class BombBlock : MonoBehaviour {
                 {
                     hitsRemainingText = b.GetComponentInChildren<TextMeshProUGUI>();
                     hitsRemainingText.text = "0";
-                    StartCoroutine(GameManager.manager.Message("Destroyed!", b.transform.position, 3, deathDelay, Color.red));
+                    StartCoroutine(GameManager.manager.Message("X", b.transform.position, 3, deathDelay, Color.red));
                     StartCoroutine(BlockDeath(b));
                 }
 

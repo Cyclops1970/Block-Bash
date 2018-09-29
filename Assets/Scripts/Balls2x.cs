@@ -20,6 +20,9 @@ public class Balls2x : MonoBehaviour
         {
             if (doubleBalls == false)
             {
+                //sound
+                AudioSource.PlayClipAtPoint(GameManager.manager.purchaseSound, Camera.main.transform.position);
+
                 doubleBalls = true;
 
                 GameManager.manager.maxNumberOfBalls *= 2;
@@ -37,6 +40,9 @@ public class Balls2x : MonoBehaviour
         {
             if(GameManager.manager.playerCoins >= GameManager.manager.balls2xCost)
             {
+                //sound
+                AudioSource.PlayClipAtPoint(GameManager.manager.purchaseSound, Camera.main.transform.position);
+
                 //take the cost of the powerup from player coins and update number of powerups available
                 GameManager.manager.playerCoins -= GameManager.manager.balls2xCost;
                 GameManager.manager.numberOfBalls2x++;

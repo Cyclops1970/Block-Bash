@@ -10,6 +10,9 @@ public class GameManager : MonoBehaviour {
 
     public static GameManager manager;
 
+    [HideInInspector]
+    public Vector2 scrollPosition;
+
     [Header("Sounds")]
     public AudioSource blockHitAudioSource;
     public AudioSource blockDeathAudioSource;
@@ -24,6 +27,7 @@ public class GameManager : MonoBehaviour {
     public AudioClip solidHitSound;
     public AudioClip wallHitSound;
     public AudioClip bombSound;
+    public AudioClip electrocutionSound;
 
     [HideInInspector]
     public float temp;

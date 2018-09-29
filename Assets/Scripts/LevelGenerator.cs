@@ -108,8 +108,9 @@ public class LevelGenerator : MonoBehaviour {
                 blocks[y * x].GetComponent<Block>().transform.localScale = new Vector2(blockScaleAdjustedX, blockScaleAdjustedY);
                 //Place block
                 blocks[y * x].gameObject.transform.localPosition = new Vector2(xStart + (blockScaleAdjustedX * x), yStart - (blockScaleAdjustedY * y));
-
-                if ((pixelColour != Color.white) && (pixelColour != Color.red))// white is solid block
+                
+                //white is solid, red is bomb, light red is vertical, medium red is horizontal
+                if ((pixelColour != Color.white) && (pixelColour != Color.red)&&(pixelColour != new Color(1,0,0,0.2f))&&(pixelColour != new Color(1,0,0,0.4f)))
                 {
                     //Initial Colour
                     if (y == currentLevel.height - 1)

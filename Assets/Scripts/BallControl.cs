@@ -72,7 +72,7 @@ public class BallControl : MonoBehaviour
         {
             balls[n] = new Ball
             {
-                active = false,
+                //active = false,
                 position = new Vector2(xPos, yPos),
                 ballType = Ball.TypeOfBall.normal,
                 ball = Instantiate(ballSprite)
@@ -81,7 +81,7 @@ public class BallControl : MonoBehaviour
             balls[n].ball.transform.SetParent(ballContainer.transform);
 
             //change ball size for bonus level
-            if (GameManager.manager.currentLevel % 10 == 0)
+            if (GameManager.manager.currentLevel % GameManager.manager.bonusLevel == 0)
             {
                 balls[n].ball.transform.localScale *= 2;
             }
@@ -180,21 +180,6 @@ public class BallControl : MonoBehaviour
         }
         
     }
-
-    /*
-     * void BallBounce()
-     * {
-     *     void OnCollisionEnter( Collision col ) {
-        Vector3 temp = Vector3.Cross( col.contacts[0].normal, rb.velocity );
-        Vector3 tangent  = Vector3.Cross( col.contacts[0].normal, temp );
- 
-        Vector3 tangent_component = Vector3.Project( rb.velocity, tangent );
-        Vector3 normal_component = Vector3.Project( rb.velocity, col.contacts[0].normal );
- 
-        rb.velocity = tangent_component + normal_component;
-    }
-    */
-
 
     public IEnumerator DestroyBalls()
     {
