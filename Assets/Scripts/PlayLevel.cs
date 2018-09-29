@@ -84,6 +84,8 @@ public class PlayLevel : MonoBehaviour
     static float levelPercentage;
     static float oldFillAmount;
 
+    bool hs = false; // used to determine if new HS message should be played
+
     Color32 textGreen = new Color32(11, 196, 0, 255);
     
     // Use this for initialization
@@ -179,6 +181,7 @@ public class PlayLevel : MonoBehaviour
 	
     public IEnumerator Play()
     {
+
         //Get current highscore (done so it isn't stored on replays of same level)
         GameManager.manager.level[GameManager.manager.currentLevel].highestPoints = PlayerPrefs.GetInt("level" + GameManager.manager.currentLevel + "highestPoints");
 
@@ -218,7 +221,7 @@ public class PlayLevel : MonoBehaviour
         GameManager.manager.maxNumberOfBalls = GameManager.manager.baseNumberOfBalls + (int)(Mathf.Round((GameManager.manager.currentLevel / 5)));
 
         //Initialise block colours (if not a bonus level) if bonus level, say so :)
-        if (GameManager.manager.currentLevel % 10 != 0)
+        if (GameManager.manager.currentLevel % GameManager.manager.bonusLevel != 0)
             BlockColour();
         else
             StartCoroutine(GameManager.manager.Message("Bonus Level" + "\r\n" + "Double Coins!", new Vector2(0, 0), 8, 1.5f, Color.white)); 
@@ -262,6 +265,10 @@ public class PlayLevel : MonoBehaviour
                 FloorBlockButton.interactable = true;
             }
             yield return null;
+
+            //Double check all blocks are gone (sometimes there are blocks left in frantic levels)
+            GameObject[] block = GameObject.FindGameObjectsWithTag("block");
+            GameManager.manager.actualNumberOfBlocks = block.Length;
         }
         
         //Mark level as done and available in future
@@ -460,6 +467,9 @@ public class PlayLevel : MonoBehaviour
     {
         if ((ableToShoot == true) && (GameManager.manager.ballsActive == false) && (bottomReached==false))
         {
+            //used to show HS is new HS 
+            hs = false;
+
             GameManager.manager.ballsActive = true;
             ableToShoot = false;
 
@@ -522,6 +532,13 @@ public class PlayLevel : MonoBehaviour
         //update highest score if necessary
         if (GameManager.manager.level[GameManager.manager.currentLevel].shotPoints > GameManager.manager.level[GameManager.manager.currentLevel].highestPoints)
         {
+            if(hs==false)
+            {
+                StartCoroutine(GameManager.manager.Message("New High Score!", new Vector3(0, 0, 0), 8, 1.5f, Color.white));
+                hs = true;
+            }
+            
+
             GameManager.manager.level[GameManager.manager.currentLevel].highestPoints = GameManager.manager.level[GameManager.manager.currentLevel].shotPoints;
             if (GameManager.manager.firstRun != true) //Avoid highscore on first run when highest score is 0
             {

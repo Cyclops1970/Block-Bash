@@ -80,9 +80,10 @@ public class HorizontalBlock : MonoBehaviour
     
     public IEnumerator BlockDeath(GameObject blockHit)
     {
-        GameManager.manager.actualNumberOfBlocks--;
+        //GameManager.manager.actualNumberOfBlocks--;
         if (blockHit != null)
         {
+            GameManager.manager.actualNumberOfBlocks--;
             Instantiate(explode, blockHit.transform.localPosition, Quaternion.identity);
             Destroy(blockHit);
         }

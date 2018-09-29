@@ -15,7 +15,7 @@ public class BombBlock : MonoBehaviour {
     public GameObject explode;
 
     float deathDelay = 1.5f;
-    int blocksToHitModulus = 3;
+    int blocksToHitModulus = 2;
 
     private void OnDestroy()
     {
