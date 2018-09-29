@@ -8,8 +8,13 @@ using UnityEditor;
 
 public class PlayLevel : MonoBehaviour
 {
+    [HideInInspector]
     public PlayLevel playLevel;
 
+    [Header("Tutorial Levels")]
+    public GameObject tutorials;
+
+    [Header("")]
     //[Header("Game Manager")]
     //public GameManager m;
     public LevelGenerator levelGenerator; //use this type if levelGenerator won't be active when needed it here..nullref fix!!
@@ -102,7 +107,32 @@ public class PlayLevel : MonoBehaviour
         //Generate the level to be played
         levelGenerator.GenerateLevel();
 
-        StartCoroutine(Play());
+        //Check for levels with tutorials on them
+        if(PlayerPrefs.GetInt("level"+GameManager.manager.currentLevel+"Tutorial")==0)
+        {   
+            switch(GameManager.manager.currentLevel)
+            {
+                case 1:
+                    {
+                        tutorials.GetComponent<TutorialLevel1>().Tutorial();
+                        break;
+                    }
+             default:
+                    {
+                        StartCoroutine(Play());
+                        break;
+                    }
+
+            }
+            
+        }
+        else
+        {
+            StartCoroutine(Play());
+        }
+
+        //the if/switch above wasn't there before the tutorial stuff...remove if dodgy
+        //StartCoroutine(Play());
     }
 
     void CopyStuff()
@@ -147,7 +177,7 @@ public class PlayLevel : MonoBehaviour
         */
     }
 	
-    IEnumerator Play()
+    public IEnumerator Play()
     {
         //Get current highscore (done so it isn't stored on replays of same level)
         GameManager.manager.level[GameManager.manager.currentLevel].highestPoints = PlayerPrefs.GetInt("level" + GameManager.manager.currentLevel + "highestPoints");
@@ -318,7 +348,7 @@ public class PlayLevel : MonoBehaviour
             {
                 colour = (byte)(150 - (Mathf.RoundToInt(b.GetComponent<Block>().hitsRemaining / 50) * 20)); //50 points, 20 colour change
 
-                b.GetComponent<Block>().colour = new Color32(0, (byte)(150 - b.GetComponent<Block>().hitsRemaining ), 255, 255);
+                b.GetComponent<Block>().colour = new Color32(0, (byte)(150 - b.GetComponent<Block>().hitsRemaining), 255, 255);
                 //b.GetComponent<Block>().colour = new Color32(colour, colour, 255, 255);
                 
                 b.gameObject.GetComponent<SpriteRenderer>().color = b.GetComponent<Block>().colour;
@@ -488,7 +518,7 @@ public class PlayLevel : MonoBehaviour
     void UpdateLevelText()
     {
         //update points shown
-        shotScoreText.text = ("Shot: " + GameManager.manager.level[GameManager.manager.currentLevel].shotPoints);
+        shotScoreText.text = ("Score: " + GameManager.manager.level[GameManager.manager.currentLevel].shotPoints);
         //update highest score if necessary
         if (GameManager.manager.level[GameManager.manager.currentLevel].shotPoints > GameManager.manager.level[GameManager.manager.currentLevel].highestPoints)
         {
@@ -501,7 +531,7 @@ public class PlayLevel : MonoBehaviour
         highScoreText.text = ("High: " + GameManager.manager.level[GameManager.manager.currentLevel].highestPoints);
 
         //update shots taken
-        shotsTakenText.text = ("Number: " + shotsTaken);
+        shotsTakenText.text = ("Shots: " + shotsTaken);
         //Show the number of balls in play
         numberOfBallsText.text = GameManager.manager.maxNumberOfBalls + " Balls";
         //Show playerCoins
