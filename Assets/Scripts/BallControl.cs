@@ -48,6 +48,10 @@ public class BallControl : MonoBehaviour
         speedIncrease = 1f;
 
         //set the number of balls
+        //Double balls for bonus level
+        if (GameManager.manager.currentLevel % GameManager.manager.bonusLevel == 0)
+            GameManager.manager.maxNumberOfBalls = 150;
+
         GameManager.manager.currentNumberOfBalls = GameManager.manager.maxNumberOfBalls;
 
         //used to put balls into, so easier viewing in the heirarchy
@@ -66,6 +70,7 @@ public class BallControl : MonoBehaviour
         {
             yPos = (-GameManager.manager.camY / 2) + (GameManager.manager.camY * GameManager.manager.freeBottomArea) + (ballSprite.transform.localScale.y / 5.5f);
         }
+
         //initialise balls
         balls = new Ball[GameManager.manager.maxNumberOfBalls];
         for (int n = 0; n < GameManager.manager.maxNumberOfBalls; n++)
@@ -104,9 +109,9 @@ public class BallControl : MonoBehaviour
     public IEnumerator MoveBalls(Vector3 start, Vector3 end)
     {
         Vector3 startPos, endPos;
-        float minXVel = 0.5f;
-        float minYVel = 0.5f;
-        float velOffset = 1;
+        float minXVel = .5f;
+        float minYVel = .5f;
+        float velOffset = .6f;
 
         camera = FindObjectOfType<Camera>();
 
@@ -156,27 +161,41 @@ public class BallControl : MonoBehaviour
                             Vector3 vel = rb.velocity.normalized * speed;
 
                             rb.velocity = vel;
-                            /*   
-                            //attempt to stop vertical or hoizontal movement
-                            if((rb.velocity.y < minYVel) && (rb.velocity.y > -minYVel))
-                            {
-                                vel = new Vector2(rb.velocity.x, velOffset).normalized;
-
-                                rb.velocity = vel;
-                            }
-                            if ((rb.velocity.x < minXVel) && (rb.velocity.x > -minXVel))
-                            {
-                                vel = new Vector2(velOffset, rb.velocity.y).normalized;
-                                rb.velocity = vel;
-                            }
-                            //yield return null;
-                            */
+                        
                         }
                     }
                 }
             }
-            
+
             yield return null;
+
+            /*
+            //attempt to stop vertical or hoizontal movement
+            for (int n = 0; n < GameManager.manager.maxNumberOfBalls; n++)
+            {
+                if (balls[n].ball != null)
+                {
+                    Rigidbody2D rb = balls[n].ball.GetComponent<Rigidbody2D>();
+                    Vector3 vel = rb.velocity;//.normalized * speed;
+                    float speed = vel.magnitude;
+                    //vel.Normalize();
+
+                    if ((vel.y < minYVel) && (vel.y > -minYVel))
+                    {
+                        //vel = new Vector2(rb.velocity.x, rb.velocity.y+velOffset).normalized;
+                        vel.y = vel.y < minYVel ? velOffset : -velOffset;
+                        
+                        //vel = new Vector2(rb.velocity.x+velOffset, rb.velocity.y).normalized;
+                        vel.x = vel.x < minXVel ? -1 + minYVel : 1 - minYVel;
+
+                        rb.velocity = vel.normalized * speed;
+                        //rb.velocity = vel;
+                    }
+                }
+                
+            }
+            */
+                yield return null;
         }
         
     }

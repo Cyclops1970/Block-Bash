@@ -181,7 +181,6 @@ public class PlayLevel : MonoBehaviour
 	
     public IEnumerator Play()
     {
-
         //Get current highscore (done so it isn't stored on replays of same level)
         GameManager.manager.level[GameManager.manager.currentLevel].highestPoints = PlayerPrefs.GetInt("level" + GameManager.manager.currentLevel + "highestPoints");
 
@@ -474,7 +473,7 @@ public class PlayLevel : MonoBehaviour
             ableToShoot = false;
 
             ballControl.InitializeBalls(startPos);
-            StartCoroutine(ballControl.MoveBalls(startPos, endPos)); // Starts the balls moving, then the BallControl.fixedupdate keeps them moving
+            StartCoroutine(ballControl.MoveBalls(startPos, endPos)); // Starts the balls moving, 
 
             //set current shot to 0
             GameManager.manager.level[GameManager.manager.currentLevel].shotPoints = 0;
@@ -532,7 +531,7 @@ public class PlayLevel : MonoBehaviour
         //update highest score if necessary
         if (GameManager.manager.level[GameManager.manager.currentLevel].shotPoints > GameManager.manager.level[GameManager.manager.currentLevel].highestPoints)
         {
-            if(hs==false)
+            if((hs==false) && (GameManager.manager.firstRun == false))
             {
                 StartCoroutine(GameManager.manager.Message("New High Score!", new Vector3(0, 0, 0), 8, 1.5f, Color.white));
                 hs = true;

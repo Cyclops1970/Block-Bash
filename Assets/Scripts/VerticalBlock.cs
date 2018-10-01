@@ -96,8 +96,8 @@ public class VerticalBlock : MonoBehaviour {
         //float randomness = 0.20f;
 
         lRend.positionCount = pointsCount;
-        lRend.startWidth = 1f;
-        lRend.endWidth = 1f;
+        lRend.startWidth = 2f;
+        lRend.endWidth = 2f;
         lRend.material = lightningMaterial;
 
         points[0] = new Vector3(transform.localPosition.x, -(GameManager.manager.camY / 2)+(GameManager.manager.freeTopArea), transform.localPosition.z - 1);

@@ -92,11 +92,9 @@ public class HorizontalBlock : MonoBehaviour
     
     public void Line()
     {
-        //float randomness = 0.20f;
-
         lRend.positionCount = pointsCount;
-        lRend.startWidth = 1.2f;
-        lRend.endWidth = 1.2f;
+        lRend.startWidth = 2f;
+        lRend.endWidth = 2f;
         lRend.material = lightningMaterial;
     
         points[0] = new Vector3(-(GameManager.manager.camX / 2), transform.localPosition.y, transform.localPosition.z - 1);

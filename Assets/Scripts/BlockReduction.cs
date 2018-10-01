@@ -36,10 +36,16 @@ public class BlockReduction : MonoBehaviour
                 {
                     if ((b != null) && (b.gameObject.GetComponentInParent<Block>().hitsRemaining != 1))
                     {
-                        b.gameObject.GetComponentInParent<Block>().hitsRemaining = (int)(b.gameObject.GetComponentInParent<Block>().hitsRemaining * 0.75f); // * 75% to remove 25%
+                        int newHitsRemaining = (int)(b.gameObject.GetComponentInParent<Block>().hitsRemaining * 0.75f);
+                        int reduction = b.gameObject.GetComponentInParent<Block>().hitsRemaining - newHitsRemaining;
+
+                        b.gameObject.GetComponentInParent<Block>().hitsRemaining = newHitsRemaining; // * 75% to remove 25%
 
                         hitsRemainingText = b.gameObject.GetComponentInChildren<Canvas>().GetComponentInChildren<TextMeshProUGUI>(); // get the textmeshpro element of the letterText
                         hitsRemainingText.text = b.gameObject.GetComponentInParent<Block>().hitsRemaining.ToString();
+
+                        //message showing number of hits needed reduced
+                        StartCoroutine(GameManager.manager.Message("-" + reduction, b.transform.position, 3, 1.5f, Color.red));
 
                         //update total level points 
                         GameManager.manager.totalLevelPoints += b.GetComponentInParent<Block>().hitsRemaining;
