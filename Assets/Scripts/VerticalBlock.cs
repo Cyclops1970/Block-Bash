@@ -142,16 +142,18 @@ public class VerticalBlock : MonoBehaviour {
             SpriteRenderer block = blockHit.GetComponent<SpriteRenderer>();
             while (elapsedTime < flashTime)
             {
-                if (blockHit.GetComponent<SpriteRenderer>() != null)
+                if (blockHit != null)
                 {
                     block.color = Color.red;
                     yield return new WaitForSeconds(0.05f);
-                    if (blockHit.GetComponent<SpriteRenderer>() != null)
+
+                    if (blockHit != null)
                     {
                         //block.color = Color.white;
                     }
                     yield return new WaitForSeconds(0.05f);
-                    if (blockHit.GetComponent<SpriteRenderer>() != null)
+
+                    if (blockHit != null)
                     {
                         elapsedTime = Time.time - startTime;
                     }
@@ -163,7 +165,8 @@ public class VerticalBlock : MonoBehaviour {
             }
 
             // Have to use this as if you store the colour of the block, if might already be white from being hit previously
-            block.color = blockHit.GetComponentInParent<Block>().colour;
+            if(blockHit!=null)
+                block.color = blockHit.GetComponentInParent<Block>().colour;
         }
     }
 
