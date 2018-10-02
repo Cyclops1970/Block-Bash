@@ -237,6 +237,8 @@ public class GameManager : MonoBehaviour {
 
     public void InitializeLevels()
     {
+        //PlayerPrefs.DeleteAll();
+
         //Get the all level stars and high score
         for(int x = 1; x <= levelCount; x++)
         {

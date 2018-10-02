@@ -91,6 +91,7 @@ public class BallControl : MonoBehaviour
                 balls[n].ball.transform.localScale *= 2;
             }
 
+            //set ball position
             balls[n].ball.transform.localPosition = balls[n].position;
 
             //Set colour for invincible balls
@@ -109,9 +110,9 @@ public class BallControl : MonoBehaviour
     public IEnumerator MoveBalls(Vector3 start, Vector3 end)
     {
         Vector3 startPos, endPos;
-        float minXVel = .5f;
-        float minYVel = .5f;
-        float velOffset = .6f;
+        float minXVel = 45.75f;
+        float minYVel = 45.75f;
+        float velOffset = .26f;
 
         camera = FindObjectOfType<Camera>();
 
@@ -138,7 +139,7 @@ public class BallControl : MonoBehaviour
         }
         
         
-        //Speed and angular checks
+        //Speed checks
         while(GameManager.manager.ballsActive)
         {
             //Speed up balls over time
@@ -170,27 +171,13 @@ public class BallControl : MonoBehaviour
             yield return null;
 
             /*
-            //attempt to stop vertical or hoizontal movement
+            //attempt to stop hoizontal movement
             for (int n = 0; n < GameManager.manager.maxNumberOfBalls; n++)
             {
                 if (balls[n].ball != null)
                 {
                     Rigidbody2D rb = balls[n].ball.GetComponent<Rigidbody2D>();
-                    Vector3 vel = rb.velocity;//.normalized * speed;
-                    float speed = vel.magnitude;
-                    //vel.Normalize();
 
-                    if ((vel.y < minYVel) && (vel.y > -minYVel))
-                    {
-                        //vel = new Vector2(rb.velocity.x, rb.velocity.y+velOffset).normalized;
-                        vel.y = vel.y < minYVel ? velOffset : -velOffset;
-                        
-                        //vel = new Vector2(rb.velocity.x+velOffset, rb.velocity.y).normalized;
-                        vel.x = vel.x < minXVel ? -1 + minYVel : 1 - minYVel;
-
-                        rb.velocity = vel.normalized * speed;
-                        //rb.velocity = vel;
-                    }
                 }
                 
             }
