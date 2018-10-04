@@ -44,8 +44,6 @@ public class InvincibleBalls : MonoBehaviour
                 //sound
                 AudioSource.PlayClipAtPoint(GameManager.manager.purchaseSound, Camera.main.transform.position);
 
-                invincibleBallsActive = true;
-
                 //take the cost of the powerup from player coins and update number of powerups available
                 GameManager.manager.playerCoins -= GameManager.manager.invincibleBallsCost;
                 GameManager.manager.numberOfInvincibleBalls++;

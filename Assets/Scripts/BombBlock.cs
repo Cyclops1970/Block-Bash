@@ -5,26 +5,31 @@ using TMPro;
 
 public class BombBlock : MonoBehaviour {
 
-    //public PlayLevel playLevel;
-    //public Electricity electricity;
+    //public Electricity electricity
     public GameObject bombEmpty;
+
+    public PlayLevel pl;
 
     [HideInInspector]
     public TextMeshProUGUI hitsRemainingText;
 
     public GameObject explode;
 
-    float deathDelay = 1.5f;
-    int blocksToHitModulus = 2;
+    float deathDelay = 2.5f;
+
 
     private void OnDestroy()
     {
-        GameManager.manager.keepWaiting = false;    
+        //stop waiting for bomb activity
+        GameManager.manager.keepWaiting = false;
+
+        //move the blocks down after the explosion, provided all balls have finished
+ 
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
 	{
-        GameManager.manager.keepWaiting = true;
+        //GameManager.manager.keepWaiting = true;
 
         Collider2D col = gameObject.GetComponent<Collider2D>();
         
@@ -57,8 +62,8 @@ public class BombBlock : MonoBehaviour {
     IEnumerator Bomb()
     {
         int counter = 1;
-        int currentHitBlock = 0;
         int reduction;
+        int blocksToHitModulus = 2; // half the blocks
 
         GameObject[] block = GameObject.FindGameObjectsWithTag("block"); // Not including super blocks...should I?
         foreach (GameObject b in block)
@@ -66,7 +71,8 @@ public class BombBlock : MonoBehaviour {
             //should I do this block?
             if ((b != null) && (counter % blocksToHitModulus == 0))
             {
-                reduction = (int)Mathf.Round(Random.Range(b.GetComponentInParent<Block>().hitsRemaining / 3, b.GetComponentInParent<Block>().hitsRemaining * 1.1f));
+                //remove 1/3 to full hits remaining
+                reduction = (int)Mathf.Round(Random.Range(b.GetComponentInParent<Block>().hitsRemaining / 3, b.GetComponentInParent<Block>().hitsRemaining * 1.25f));
                 //update score
                 if (reduction > b.GetComponentInParent<Block>().hitsRemaining)
                 {
@@ -98,18 +104,16 @@ public class BombBlock : MonoBehaviour {
                     StartCoroutine(BlockDeath(b));
                 }
 
-                //Create new bomb
+                //Create new electricity line
                 GameObject currentBomb = Instantiate(bombEmpty, transform.localPosition, Quaternion.identity);
                 Electricity electricity = currentBomb.GetComponentInChildren<Electricity>();
                 electricity.lines(b.transform.localPosition);
                 Destroy(currentBomb, deathDelay);
 
-                currentHitBlock++;
             }
             counter++;
 		}
         yield return null;
-
 	}
 
 	//flash colour on hit
@@ -179,9 +183,10 @@ public class BombBlock : MonoBehaviour {
         }
         //Destroy(blockHit, deathDelay);
         */
-        GameManager.manager.actualNumberOfBlocks--;
+        //GameManager.manager.actualNumberOfBlocks--;
         if (blockHit != null)
         {
+            GameManager.manager.actualNumberOfBlocks--;
             Instantiate(explode, blockHit.transform.localPosition, Quaternion.identity);
             Destroy(blockHit);
         }

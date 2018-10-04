@@ -18,7 +18,7 @@ public class DragToShoot : MonoBehaviour
     public Material lineMaterial;
 
     // prevent angle allowing a whole row to be knocked out
-    float minAngle = 0.5f;
+    float minAngle = 0.5f; //0.5
     
     //[Header("Sprite for the ball")]
     public GameObject ballSprite;

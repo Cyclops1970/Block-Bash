@@ -8,8 +8,8 @@ using UnityEditor;
 
 public class PlayLevel : MonoBehaviour
 {
-    [HideInInspector]
-    public PlayLevel playLevel;
+    //[HideInInspector]
+    static public PlayLevel playLevel;
 
     [Header("Tutorial Levels")]
     public GameObject tutorials;
@@ -109,32 +109,7 @@ public class PlayLevel : MonoBehaviour
         //Generate the level to be played
         levelGenerator.GenerateLevel();
 
-        //Check for levels with tutorials on them
-        if(PlayerPrefs.GetInt("level"+GameManager.manager.currentLevel+"Tutorial")==0)
-        {   
-            switch(GameManager.manager.currentLevel)
-            {
-                case 1:
-                    {
-                        tutorials.GetComponent<TutorialLevel1>().Tutorial();
-                        break;
-                    }
-             default:
-                    {
-                        StartCoroutine(Play());
-                        break;
-                    }
-
-            }
-            
-        }
-        else
-        {
-            StartCoroutine(Play());
-        }
-
-        //the if/switch above wasn't there before the tutorial stuff...remove if dodgy
-        //StartCoroutine(Play());
+        StartCoroutine(Play());
     }
 
     void CopyStuff()
@@ -605,7 +580,7 @@ public class PlayLevel : MonoBehaviour
         
     
     }
-    void MoveBlocksDown() // called from BALLS FINSISHED and check for end of level due to blocks hitting bottom and forced balls finished
+    public void MoveBlocksDown() // called from BALLS FINSISHED and check for end of level due to blocks hitting bottom and forced balls finished
     {
         if (GameManager.manager.keepWaiting == false)
         {
@@ -648,11 +623,10 @@ public class PlayLevel : MonoBehaviour
                         bottomReached = true;
                     }
                 }
-
-
             }
         }
     }
+
     public void Continue() // called from the continue button on a failed level
     { 
         int upAmount = 1;

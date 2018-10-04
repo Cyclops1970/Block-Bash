@@ -110,9 +110,7 @@ public class BallControl : MonoBehaviour
     public IEnumerator MoveBalls(Vector3 start, Vector3 end)
     {
         Vector3 startPos, endPos;
-        float minXVel = 45.75f;
-        float minYVel = 45.75f;
-        float velOffset = .26f;
+        float minYVel = 0.038f;
 
         camera = FindObjectOfType<Camera>();
 
@@ -162,7 +160,6 @@ public class BallControl : MonoBehaviour
                             Vector3 vel = rb.velocity.normalized * speed;
 
                             rb.velocity = vel;
-                        
                         }
                     }
                 }
@@ -177,8 +174,29 @@ public class BallControl : MonoBehaviour
                 if (balls[n].ball != null)
                 {
                     Rigidbody2D rb = balls[n].ball.GetComponent<Rigidbody2D>();
+                    Vector2 vel = rb.velocity / speed;
+
+                    if ((vel.y < minYVel) && (vel.y > -minYVel))
+                    {
+                        print("YPos!!");
+
+                        if (vel.y > 0)
+                        {
+                            rb.AddForce(new Vector2(-1, vel.y+1)*1);
+
+                            //vel.y += minYVel;
+                        }
+                        else
+                        {
+                            //vel.y -= minYVel;
+                            rb.AddForce(new Vector2(1, vel.y-1) * 1);
+                        }
+
+                        //rb.velocity = vel;
+                    }
 
                 }
+                
                 
             }
             */
