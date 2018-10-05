@@ -459,7 +459,7 @@ public class PlayLevel : MonoBehaviour
     }
     void UpdateRewardLine()
     {
-        float currentShotPercentage = 0;
+        float currentShotPercentage = 0, breakEven = 37.5f; //55 maybe scale it 55 at beginning, then 37 or or so for harder levels, maybe even less
         levelPercentage = 0;
 
         if (GameManager.manager.ballsActive == true)
@@ -472,7 +472,7 @@ public class PlayLevel : MonoBehaviour
                 currentShotPercentage = ((float)(GameManager.manager.level[GameManager.manager.currentLevel].shotPoints + 1) / (float)GameManager.manager.totalLevelPoints) * 100;
            
                 if (currentShotPercentage > 0)
-                    levelPercentage = ((currentShotPercentage/100)*(currentShotPercentage / 55));
+                    levelPercentage = ((currentShotPercentage/100)*(currentShotPercentage / breakEven));
                         
                 //update reward line
                 rewardLine.fillAmount = oldFillAmount + levelPercentage;

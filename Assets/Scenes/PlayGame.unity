@@ -9938,7 +9938,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1122300626}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 2}
   m_LocalScale: {x: 4.99968, y: 7.998657, z: 1.00096}
   m_Children:
   - {fileID: 571587785}
@@ -11960,7 +11960,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1408152846}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 2}
   m_LocalScale: {x: 5.0047994, y: 7.9914956, z: 1.00096}
   m_Children: []
   m_Father: {fileID: 1927340294}
@@ -15827,6 +15827,7 @@ GameObject:
   - component: {fileID: 1927340294}
   - component: {fileID: 1927340296}
   - component: {fileID: 1927340295}
+  - component: {fileID: 1927340297}
   m_Layer: 5
   m_Name: ShopPanel
   m_TagString: passPanel
@@ -15890,6 +15891,16 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1927340293}
   m_CullTransparentMesh: 0
+--- !u!210 &1927340297
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1927340293}
+  m_Enabled: 1
+  m_SortingLayerID: -1804647923
+  m_SortingLayer: 1
+  m_SortingOrder: 0
 --- !u!1 &1962811312
 GameObject:
   m_ObjectHideFlags: 0
@@ -17096,7 +17107,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2075613396}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 2}
   m_LocalScale: {x: 1, y: 0.21146955, z: 1}
   m_Children:
   - {fileID: 1002027654}
@@ -17205,7 +17216,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2131339108}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 2}
   m_LocalScale: {x: 1, y: 0.18996415, z: 1}
   m_Children: []
   m_Father: {fileID: 1927340294}
