@@ -214,13 +214,13 @@ public class PlayLevel : MonoBehaviour
             
             //update the reward line
             UpdateRewardLine();
-
+            /*
             if(Input.GetKeyDown(KeyCode.T))
             {
                 print("Copying to scriptable object.");
                 CopyStuff();
             }
-
+            */
             //Check to see if balls are active, if so prevent shop buttons
             if(GameManager.manager.ballsActive==true)
             {
@@ -380,7 +380,7 @@ public class PlayLevel : MonoBehaviour
                     Instantiate(ballExplosion, b.ball.transform.localPosition, Quaternion.identity);
                     Destroy(b.ball);
                 }
-                yield return new WaitForSeconds(0.01f);
+                yield return null;// new WaitForSeconds(0.001f);
             }
             DestroySpecials();
             MoveBlocksDown();

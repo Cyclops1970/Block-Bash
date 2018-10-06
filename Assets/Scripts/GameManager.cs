@@ -128,6 +128,9 @@ public class GameManager : MonoBehaviour {
     public string invincibleBalls = "invincibleBalls";
     [HideInInspector]
     public int bonusLevel = 10; // every 10 levels have bonus level
+    [HideInInspector]
+    public TextMeshPro textmeshPro;
+    public Material blockBashFont;
 
     void Awake()
     {
@@ -146,6 +149,8 @@ public class GameManager : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
+
+
         //stop screen from timing out
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
 
@@ -363,6 +368,7 @@ public class GameManager : MonoBehaviour {
     {
         GameObject dbiTextObject = new GameObject();
         TextMeshProUGUI dbiText;
+
         float elapsedTime = 0;
         Vector2 startingScale = new Vector2(size, size);
         Vector2 endingScale = new Vector2(0, 0);
@@ -374,6 +380,8 @@ public class GameManager : MonoBehaviour {
         dbiText.text = txt;
         dbiText.color = color;
         dbiText.transform.position = location;
+        dbiText.font = Resources.Load("BANGERS SDF", typeof(TMP_FontAsset)) as TMP_FontAsset;
+        dbiText.fontMaterial = Resources.Load("BlockBash Font", typeof(Material)) as Material;
 
         while (elapsedTime < displayTime)
         {
