@@ -1123,15 +1123,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 30
+    m_Left: 0
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 380, y: 380}
-  m_Spacing: {x: 20, y: 20}
+  m_CellSize: {x: 400, y: 400}
+  m_Spacing: {x: 15, y: 15}
   m_Constraint: 1
   m_ConstraintCount: 3
 --- !u!114 &1349849274
@@ -1377,8 +1377,8 @@ MonoBehaviour:
   m_MovementType: 0
   m_Elasticity: 5
   m_Inertia: 1
-  m_DecelerationRate: 0.02
-  m_ScrollSensitivity: 1
+  m_DecelerationRate: 0.2
+  m_ScrollSensitivity: 35
   m_Viewport: {fileID: 1956866229}
   m_HorizontalScrollbar: {fileID: 260451175}
   m_VerticalScrollbar: {fileID: 849196598}

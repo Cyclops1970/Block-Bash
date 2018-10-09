@@ -18,7 +18,8 @@ public class ScrollBounds : MonoBehaviour
 
     private void Start()
     {
-        buttonSize = 132;
+        buttonSize = 150;
+        //132
         //buttonSize = 125f;
         //
         numberOfButtons = GameManager.manager.levelCount;

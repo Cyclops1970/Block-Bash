@@ -197,7 +197,7 @@ public class GameManager : MonoBehaviour {
         //levelCount = 12;
 
         Object[] maps = Resources.LoadAll("Levels", typeof(Texture2D));
-        levelCount = maps.Length; 
+        levelCount = maps.Length;
         Resources.UnloadUnusedAssets();
 
         //Set up the level array to the size of the levels created

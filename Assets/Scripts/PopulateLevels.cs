@@ -7,7 +7,7 @@ public class PopulateLevels : MonoBehaviour {
 
     public GameObject content; // This will be the parent for all the level buttons
     public Sprite zeroStar, oneStar, twoStar, threeStar;
-
+    
 	// Use this for initialization
 	void Start ()
     {
@@ -18,7 +18,7 @@ public class PopulateLevels : MonoBehaviour {
     void DisplayLevels()
     {
         GameObject level;
-        Image starSprite;
+        Image starSprite, levelPreview;
         int stars;
 
         for(int x = 1; x <= GameManager.manager.levelCount; x++)
@@ -29,8 +29,8 @@ public class PopulateLevels : MonoBehaviour {
             if (x<=PlayerPrefs.GetInt("highestLevel") || stars > 0)
             {
                 level = Instantiate(GameManager.manager.levelReady);
-        
-                starSprite = level.gameObject.GetComponentsInChildren<Image>()[1]; //[1] to avoid the image in the parent
+                
+                starSprite = level.gameObject.GetComponentsInChildren<Image>()[2]; //[1] to avoid the image in the parent
 
                 //Show the correct level of stars for this level
                 if (stars == 1)
@@ -42,6 +42,9 @@ public class PopulateLevels : MonoBehaviour {
                 else
                     starSprite.sprite = zeroStar;
                     
+                //Show the level preview
+                levelPreview = level.gameObject.GetComponentsInChildren<Image>()[1];
+                levelPreview.sprite = Resources.Load<Sprite>("Levels/" + x.ToString());
             }
             else
             {
