@@ -24,25 +24,8 @@ public class BlockControl : MonoBehaviour
     //reduce hits remaining and if needed, reduce number of blocks and delete object
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        /*
-        if (Time.time - lastHitTime < 0.35)
-        {
-            if (!GameManager.manager.audioSource.isPlaying)
-            {
-                GameManager.manager.audioSource.clip = GameManager.manager.blockHitSound;
-                GameManager.manager.audioSource.Play();
-                //GameManager.manager.audioSource.PlayOneShot(GameManager.manager.blockHitSound);
-            }
-        }
-        else
-        {
-            GameManager.manager.audioSource.clip = GameManager.manager.blockHitSound;
-            GameManager.manager.audioSource.Play();
-            //GameManager.manager.audioSource.PlayOneShot(GameManager.manager.blockHitSound);
-        }
-        */
-        //if not a bonusLevel play block hit sound
-        if(GameManager.manager.currentLevel % GameManager.manager.bonusLevel != 0)
+         //if not a bonusLevel play block hit sound
+        //if(GameManager.manager.currentLevel % GameManager.manager.bonusLevel != 0)
             AudioSource.PlayClipAtPoint(GameManager.manager.blockHitSound, gameObject.transform.localPosition);
 
         //update current shot score (should be set to zero on ball launch in play level)
@@ -66,7 +49,7 @@ public class BlockControl : MonoBehaviour
 
             StartCoroutine(BlockDeath());
         }
-        else if (GameManager.manager.currentLevel % 10 != 0)    //show hits remaining on all levels except the 'bonus' levels --- every 10th level.
+        else //if (GameManager.manager.currentLevel % 10 != 0)    //show hits remaining on all levels except the 'bonus' levels --- every 10th level.
         {
             hitsRemainingText = gameObject.GetComponentInChildren<Canvas>().GetComponentInChildren<TextMeshProUGUI>(); // get the textmeshpro element of the letterText
             if(gameObject.GetComponentInParent<Block>().hitsRemaining >=0)
@@ -75,7 +58,7 @@ public class BlockControl : MonoBehaviour
                 hitsRemainingText.text = "0";
         }
 
-        lastHitTime = Time.time;
+        //lastHitTime = Time.time;
     }
 
     // This is used when invincible balls is active

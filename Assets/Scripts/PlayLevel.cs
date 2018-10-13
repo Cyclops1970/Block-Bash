@@ -11,9 +11,6 @@ public class PlayLevel : MonoBehaviour
     //[HideInInspector]
     static public PlayLevel playLevel;
 
-    [Header("Tutorial Levels")]
-    public GameObject tutorials;
-
     [Header("")]
     //[Header("Game Manager")]
     //public GameManager m;
@@ -51,6 +48,7 @@ public class PlayLevel : MonoBehaviour
     public TextMeshProUGUI highScoreText;
     public TextMeshProUGUI levelNumberText;
     public TextMeshProUGUI numberOfBallsText;
+    public TextMeshProUGUI numberOfBallsInPlayText;
     public TextMeshProUGUI shotsTakenText;
     public TextMeshProUGUI lowestShotsTakenText;
     public TextMeshProUGUI playerCoinsText;
@@ -63,7 +61,7 @@ public class PlayLevel : MonoBehaviour
     public TextMeshProUGUI invincibleBallsText;
     public GameObject invincibleBallsCoins;
 
-    public GameObject passPanel, failPanel;
+    public GameObject passPanel, failPanel, shotPanel, bottomPanel;
 
     [Header("Reward Line")]
     public Image rewardLine;
@@ -124,6 +122,46 @@ public class PlayLevel : MonoBehaviour
             element++;
         }
         
+    }
+    IEnumerator SwapPanels()
+    {
+        float deathTime = 0.25f;
+        float elapsedTime = 0;
+        Vector2 startingScale = bottomPanel.transform.localScale;
+        Vector2 endingScale = new Vector2(0.001f, 0.001f);
+
+        //if shotpanel already fullsize
+        if ((Vector2)shotPanel.transform.localScale == startingScale)
+        {
+            yield return new WaitForSeconds(0.25f);
+
+            while (elapsedTime < deathTime)
+            {
+                shotPanel.transform.localScale = Vector2.Lerp(startingScale, endingScale, (elapsedTime / deathTime));
+                elapsedTime += Time.deltaTime;
+
+                yield return null;
+            }
+            //shotPanel.SetActive(!shotPanel.activeInHierarchy);
+        }
+        else // is minimised and needs to be expanded
+        {
+            while (elapsedTime < deathTime)
+            {
+                shotPanel.transform.localScale = Vector2.Lerp(endingScale, startingScale, (elapsedTime / deathTime));
+                elapsedTime += Time.deltaTime;
+
+                yield return null;
+            }
+
+            //do this cause it doesn't actually get to the proper size 
+            shotPanel.transform.localScale = startingScale;
+            //shotPanel.SetActive(!shotPanel.activeInHierarchy);
+        }
+    
+        //shotPanel.SetActive(!shotPanel.activeInHierarchy);
+        //bottomPanel.SetActive(!bottomPanel.activeInHierarchy);
+
     }
 
     void SetupBorders()
@@ -198,7 +236,11 @@ public class PlayLevel : MonoBehaviour
         if (GameManager.manager.currentLevel % GameManager.manager.bonusLevel != 0)
             BlockColour();
         else
-            StartCoroutine(GameManager.manager.Message("Bonus Level" + "\r\n" + "Double Coins!", new Vector2(0, 0), 8, 1.5f, Color.white)); 
+        {
+            StartCoroutine(GameManager.manager.Message("Bonus Level" + "\r\n" + "Double Coins!", new Vector2(0, 0), 8, 1.5f, Color.white));
+            BlockColour(); // remove if doing the bonus levels with their own colour
+        }
+            
 
         //Play until level end
         while ((GameManager.manager.actualNumberOfBlocks > 0) && (!levelFailed))
@@ -222,6 +264,7 @@ public class PlayLevel : MonoBehaviour
             }
             */
             //Check to see if balls are active, if so prevent shop buttons
+            /*
             if(GameManager.manager.ballsActive==true)
             {
                 shopButton.interactable = false;
@@ -238,6 +281,7 @@ public class PlayLevel : MonoBehaviour
                 invincibleBallsButtton.interactable = true;
                 FloorBlockButton.interactable = true;
             }
+            */
             yield return null;
 
             //Double check all blocks are gone (sometimes there are blocks left in frantic levels)
@@ -379,9 +423,13 @@ public class PlayLevel : MonoBehaviour
                     //rb.velocity = new Vector2(0, 0);
                     Instantiate(ballExplosion, b.ball.transform.localPosition, Quaternion.identity);
                     Destroy(b.ball);
+
                 }
-                yield return null;// new WaitForSeconds(0.001f);
+
+                if (Random.Range(0, 2) == 1)
+                    yield return null;// new WaitForSeconds(0.001f);
             }
+
             DestroySpecials();
             MoveBlocksDown();
 
@@ -390,8 +438,15 @@ public class PlayLevel : MonoBehaviour
             {
                 BlockColour();
             }
+            else // this is only put in if bonus levels aren't using colour
+            {
+                BlockColour();
+            }
 
             ResetPowerUps();
+
+            //switch the bottompanel and shotpanel back
+            StartCoroutine(SwapPanels());
         }
     }
 
@@ -425,15 +480,20 @@ public class PlayLevel : MonoBehaviour
             MoveBlocksDown();
 
             //COLOUR FOR SPECIAL LEVELS TO NOT BE DONE
-            if (GameManager.manager.currentLevel % 10 != 0)
+            if (GameManager.manager.currentLevel % GameManager.manager.bonusLevel != 0)
             {
                 BlockColour();
+            }
+            else
+            {
+                BlockColour(); //this wasn't here before when doing the colours icon type levels.
             }
 
             ResetPowerUps();
 
             DestroySpecials();
-
+            //switch the bottompanel and shotpanel back
+            StartCoroutine(SwapPanels());
         }
     }
 
@@ -450,11 +510,12 @@ public class PlayLevel : MonoBehaviour
             ballControl.InitializeBalls(startPos);
             StartCoroutine(ballControl.MoveBalls(startPos, endPos)); // Starts the balls moving, 
 
-            //set current shot to 0
+            //set current shot score to 0
             GameManager.manager.level[GameManager.manager.currentLevel].shotPoints = 0;
             //increase shot count
             shotsTaken++;
 
+            StartCoroutine(SwapPanels());
         }
     }
     void UpdateRewardLine()
@@ -540,11 +601,16 @@ public class PlayLevel : MonoBehaviour
 
         //update shots taken
         shotsTakenText.text = ("Shots: " + shotsTaken);
-        //Show the number of balls in play
-        numberOfBallsText.text = GameManager.manager.maxNumberOfBalls + " Balls";
+        //Show the number of balls to play this shot
+        numberOfBallsText.text = GameManager.manager.maxNumberOfBalls + " Balls This Shot";
+        //Show the number of balls left in play
+        if(GameManager.manager.currentNumberOfBalls > 1)
+            numberOfBallsInPlayText.text = GameManager.manager.currentNumberOfBalls + " Balls In Play...";
+        else
+            numberOfBallsInPlayText.text = GameManager.manager.currentNumberOfBalls + " Ball In Play...";
         //Show playerCoins
         playerCoinsText.text = GameManager.manager.playerCoins.ToString();
-
+        
         //Show current number of powerups
         //Double Balls
         if (GameManager.manager.numberOfBalls2x > 0)
@@ -613,7 +679,7 @@ public class PlayLevel : MonoBehaviour
             {
                 //Move blocks down
                 b.transform.localPosition = new Vector2(b.transform.localPosition.x, b.transform.localPosition.y - levelGenerator.blockScaleAdjustedY);
-
+                /*
                 //Warning when blocks are 1 level from the end
                 if (b.transform.localPosition.y <= (-GameManager.manager.camY / 2) + (GameManager.manager.camY * GameManager.manager.freeBottomArea) + (levelGenerator.blockScaleAdjustedY * 1.5))
                 {
@@ -621,7 +687,7 @@ public class PlayLevel : MonoBehaviour
                     b.gameObject.GetComponentInParent<Block>().colour = Color.red;
 
                 }
-
+                */
                 //if blocks have reached the bottom of the screen, show fail screen
                 if (b.transform.localPosition.y <= (-GameManager.manager.camY / 2) + (GameManager.manager.camY * GameManager.manager.freeBottomArea) + (levelGenerator.blockScaleAdjustedY / 2))
                 {
@@ -633,8 +699,10 @@ public class PlayLevel : MonoBehaviour
                     }
                     else
                     {
+
                         //levelFailed = true;
-                        failPanel.SetActive(true);
+                        //failPanel.SetActive(true);
+                        StartCoroutine(ShowFailPanelWithDelay(0.5f));
 
                         //used to prevent LAUNCHBALLS from working
                         bottomReached = true;
@@ -642,6 +710,14 @@ public class PlayLevel : MonoBehaviour
                 }
             }
         }
+    }
+
+    IEnumerator ShowFailPanelWithDelay(float d)
+    {
+        //play fail sound
+        AudioSource.PlayClipAtPoint(GameManager.manager.levelFailSound, gameObject.transform.localPosition);
+        yield return new WaitForSeconds(d);
+        failPanel.SetActive(true);
     }
 
     public void Continue() // called from the continue button on a failed level

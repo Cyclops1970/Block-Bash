@@ -361,6 +361,7 @@ MonoBehaviour:
   wallHitSound: {fileID: 8300000, guid: ba858c7a6cb60004ea398b31a974249a, type: 3}
   bombSound: {fileID: 8300000, guid: e05551ed9de6dae42a34a17fa645b69d, type: 3}
   electrocutionSound: {fileID: 8300000, guid: 8a4f8102e760d864ba4d19d8386270dc, type: 3}
+  levelFailSound: {fileID: 8300000, guid: d688835572419b34e8d5181484b650c6, type: 3}
   temp: 0
   camY: 0
   camX: 0

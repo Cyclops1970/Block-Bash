@@ -15,6 +15,7 @@ public class PassPanel : MonoBehaviour
     public TextMeshProUGUI newHighScoreCoinText;
     public TextMeshProUGUI newLowestShotsCoinText;
     public GameObject noNewHighScore, noNewLowestShots;
+    public GameObject bottomPanel;
 
     Color32 grey = new Color32(90, 90, 90, 255);
     Color32 green = new Color32(0, 255, 0, 255);

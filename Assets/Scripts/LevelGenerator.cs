@@ -73,7 +73,8 @@ public class LevelGenerator : MonoBehaviour {
                 }
                 else
                 {
-                    GenerateBonusBlock(x, y);
+                    //GenerateBonusBlock(x, y);
+                    GenerateBlock(x, y);
                 }
                 
             }

@@ -106,7 +106,6 @@ public class BallControl : MonoBehaviour
     }
 
 
-
     public IEnumerator MoveBalls(Vector3 start, Vector3 end)
     {
         Vector3 startPos, endPos;
@@ -167,7 +166,7 @@ public class BallControl : MonoBehaviour
 
             yield return null;
 
-            /*
+             /*
             //attempt to stop hoizontal movement
             for (int n = 0; n < GameManager.manager.maxNumberOfBalls; n++)
             {
@@ -200,7 +199,7 @@ public class BallControl : MonoBehaviour
                 
             }
             */
-                yield return null;
+            yield return null;
         }
         
     }

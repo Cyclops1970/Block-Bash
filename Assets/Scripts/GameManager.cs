@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour {
     public AudioClip wallHitSound;
     public AudioClip bombSound;
     public AudioClip electrocutionSound;
+    public AudioClip levelFailSound;
 
     [HideInInspector]
     public float temp;

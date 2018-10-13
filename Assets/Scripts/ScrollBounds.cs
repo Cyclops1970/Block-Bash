@@ -18,7 +18,7 @@ public class ScrollBounds : MonoBehaviour
 
     private void Start()
     {
-        buttonSize = 150;
+        buttonSize = 350; //150
         //132
         //buttonSize = 125f;
         //
@@ -41,9 +41,9 @@ public class ScrollBounds : MonoBehaviour
 
         }
 
-        if (cont.offsetMax.y > (numberOfButtons * buttonSize) - buttonSize*10)
-        { 
-            cont.offsetMax = new Vector2(0, (numberOfButtons * buttonSize) - buttonSize*10); // Set its value back
+        if (cont.offsetMax.y > ((numberOfButtons /3) * buttonSize))// - buttonSize) // 3 columns,     -buttonsize*10
+        {
+            cont.offsetMax = new Vector2(0, ((numberOfButtons / 3) * buttonSize));// - buttonSize); // Set its value back     -buttonsize*10
             cont.offsetMin = new Vector2(); //Depending on what values you set on your scrollview, you might want to change this, but my one didn't need it.
         }
 
