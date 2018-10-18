@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using TMPro;
 using UnityEngine.UI;
 using UnityEditor;
+using System.Linq;
 
 public class PlayLevel : MonoBehaviour
 {
@@ -125,7 +126,7 @@ public class PlayLevel : MonoBehaviour
     }
     IEnumerator SwapPanels()
     {
-        float deathTime = 0.25f;
+        float deathTime = 0.15f;
         float elapsedTime = 0;
         Vector2 startingScale = bottomPanel.transform.localScale;
         Vector2 endingScale = new Vector2(0.001f, 0.001f);
@@ -237,7 +238,7 @@ public class PlayLevel : MonoBehaviour
             BlockColour();
         else
         {
-            StartCoroutine(GameManager.manager.Message("Bonus Level" + "\r\n" + "Double Coins!", new Vector2(0, 0), 8, 1.5f, Color.white));
+            StartCoroutine(GameManager.manager.Message("Bonus Level" + "\r\n" + "Double Balls!"+"\r\n"+"Double Coins!", new Vector2(0, 0), 8, 2.5f, Color.white));
             BlockColour(); // remove if doing the bonus levels with their own colour
         }
             
@@ -675,19 +676,21 @@ public class PlayLevel : MonoBehaviour
             items.AddRange(new List<GameObject>(solid)); // get all the blocks, normal and super
             items.AddRange(new List<GameObject>(bombs)); // and bombs
             items.AddRange(new List<GameObject>(special));// and specials move the blocks down 
+
             foreach (GameObject b in items)
             {
                 //Move blocks down
-                b.transform.localPosition = new Vector2(b.transform.localPosition.x, b.transform.localPosition.y - levelGenerator.blockScaleAdjustedY);
-                /*
-                //Warning when blocks are 1 level from the end
-                if (b.transform.localPosition.y <= (-GameManager.manager.camY / 2) + (GameManager.manager.camY * GameManager.manager.freeBottomArea) + (levelGenerator.blockScaleAdjustedY * 1.5))
+                if (b.tag != "solidBlock")
                 {
-                    //b.gameObject.GetComponent<SpriteRenderer>().color = Color.red;
-                    b.gameObject.GetComponentInParent<Block>().colour = Color.red;
+                    //prevent blocks from moving down if against solid blocks
+                    for (int y = 1; y <= levelGenerator.currentLevel.height; y++)
+                    {
 
+                    }
+
+                    b.transform.localPosition = new Vector2(b.transform.localPosition.x, b.transform.localPosition.y - levelGenerator.blockScaleAdjustedY);
                 }
-                */
+
                 //if blocks have reached the bottom of the screen, show fail screen
                 if (b.transform.localPosition.y <= (-GameManager.manager.camY / 2) + (GameManager.manager.camY * GameManager.manager.freeBottomArea) + (levelGenerator.blockScaleAdjustedY / 2))
                 {
@@ -699,7 +702,6 @@ public class PlayLevel : MonoBehaviour
                     }
                     else
                     {
-
                         //levelFailed = true;
                         //failPanel.SetActive(true);
                         StartCoroutine(ShowFailPanelWithDelay(0.5f));

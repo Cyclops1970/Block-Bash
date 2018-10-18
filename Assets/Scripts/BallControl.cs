@@ -90,6 +90,10 @@ public class BallControl : MonoBehaviour
             {
                 balls[n].ball.transform.localScale *= 2;
             }
+            else
+            {
+                balls[n].ball.transform.localScale *= 1.5f;
+            }
 
             //set ball position
             balls[n].ball.transform.localPosition = balls[n].position;

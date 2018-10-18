@@ -18,7 +18,7 @@ public class ScrollBounds : MonoBehaviour
 
     private void Start()
     {
-        buttonSize = 350; //150
+        buttonSize = 360; //150
         //132
         //buttonSize = 125f;
         //

@@ -30,6 +30,8 @@ public class SoundOnOff : MonoBehaviour {
 
     public void SoundToggle()
     {
+        print("Sound Toggle");
+
         //turn sounds off
         if (PlayerPrefs.GetInt("sounds")==0)
         {

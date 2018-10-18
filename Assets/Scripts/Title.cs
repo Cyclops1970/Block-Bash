@@ -19,7 +19,7 @@ public class Title : MonoBehaviour
 
     IEnumerator TitleToHome()
     {
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(4);
         SceneManager.LoadScene("Home");
 
     }
