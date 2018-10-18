@@ -15,6 +15,8 @@ public class LevelGenerator : MonoBehaviour {
     public Texture2D currentLevel;
 
     GameObject[] blocks;
+    public GameObject[,] block;
+
     public GameObject plainBlock;
 
     [HideInInspector]
@@ -61,7 +63,8 @@ public class LevelGenerator : MonoBehaviour {
         blockPercentageSizeX = (1.0f / (float)currentLevel.width); // % of screenwidth taken by 1 block 
         blockPercentageSizeY = (1.0f / ((float)currentLevel.height + 1));//Add 1 to ensure there is alway a gap to start with
         
-        blocks = new GameObject[currentLevel.height * currentLevel.width];
+        //blocks = new GameObject[currentLevel.height * currentLevel.width];
+        block = new GameObject[currentLevel.width, currentLevel.height+1];
 
         for (int y = 0; y < currentLevel.height; y++) 
         {
@@ -69,17 +72,76 @@ public class LevelGenerator : MonoBehaviour {
             {
                 if(GameManager.manager.currentLevel % GameManager.manager.bonusLevel != 0)
                 {
-                    GenerateBlock(x, y);
+                    //GenerateBlock(x, y);
+                    GenerateNewBlock(x, y);
                 }
                 else
                 {
                     //GenerateBonusBlock(x, y);
-                    GenerateBlock(x, y);
+                    //GenerateBlock(x, y);
+                    GenerateNewBlock(x, y);
                 }
                 
             }
         }
     }
+
+    void GenerateNewBlock(int x, int y)
+    {
+        Color pixelColour = currentLevel.GetPixel(x, currentLevel.height - 1 - y);
+
+        // get the correct scale to fit the number of blocks across and down the play area
+        blockScaleAdjustedX = ScaleGameObjectToScreenPercentageX(level.ctp[0].blockType, blockPercentageSizeX);
+        blockScaleAdjustedY = ScaleGameObjectToScreenPercentageY(level.ctp[0].blockType, blockPercentageSizeY); //blocknormal
+
+        // Get starting pos X (left hand side of screen), y (top of screen)
+        xStart = (-GameManager.manager.camX / 2 + blockScaleAdjustedX / 2);
+        yStart = (GameManager.manager.camY / 2 - blockScaleAdjustedY / 2) - (GameManager.manager.camY * GameManager.manager.freeTopArea);
+
+        //go through colour mappings and instantiate according to colour.
+        foreach (ColourToPrefab currentBlock in level.ctp)
+        {
+            if (currentBlock.colour.Equals(pixelColour))
+            {
+                block[x,y] = Instantiate(currentBlock.blockType);
+                block[x,y].gameObject.transform.SetParent(blockContainer.transform); // make it neater in the heirarchy
+
+                //Scale block correctly
+                block[x,y].GetComponent<Block>().transform.localScale = new Vector2(blockScaleAdjustedX, blockScaleAdjustedY);
+                //Place block
+                block[x,y].gameObject.transform.localPosition = new Vector2(xStart + (blockScaleAdjustedX * x), yStart - (blockScaleAdjustedY * y));
+                
+                //white is solid, red is bomb, light red is vertical, medium red is horizontal
+                if ((pixelColour != Color.white) && (pixelColour != Color.red)&&(pixelColour != new Color(1,0,0,0.2f))&&(pixelColour != new Color(1,0,0,0.4f)))
+                {
+                    //Initial Colour
+                    if (y == currentLevel.height - 1)
+                    {
+                        block[x,y].GetComponent<Block>().colour = Color.red;
+                    }
+                    else
+                    {
+                        block[x,y].GetComponent<Block>().colour = new Color32(0, (byte)(200 - currentBlock.hitsToKill / 2), 255, 255);
+                    }
+                    block[x,y].gameObject.GetComponent<SpriteRenderer>().color = block[x,y].GetComponent<Block>().colour;
+
+                    //set and display number of hits 
+                    block[x,y].GetComponent<Block>().hitsRemaining = currentBlock.hitsToKill;
+                    hitsRemainingText = block[x,y].gameObject.GetComponentInChildren<Canvas>().GetComponentInChildren<TextMeshProUGUI>(); // get the textmeshpro element of the letterText
+                    hitsRemainingText.text = block[x,y].GetComponent<Block>().hitsRemaining.ToString();
+
+                    //update total level points 
+                    GameManager.manager.totalLevelPoints += currentBlock.hitsToKill;
+                    //keep count of blocks used, so we know end of level when all blocks removed
+                    GameManager.manager.actualNumberOfBlocks++;
+                }
+            }
+
+        }
+
+    }
+
+    /*
 
     void GenerateBlock(int x, int y)
     {
@@ -140,7 +202,7 @@ public class LevelGenerator : MonoBehaviour {
 
     }
 
-
+*/
     void GenerateBonusBlock(int x, int y)
     {
         Color pixelColour = currentLevel.GetPixel(x, currentLevel.height - 1 - y);

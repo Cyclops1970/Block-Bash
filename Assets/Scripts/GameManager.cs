@@ -370,7 +370,7 @@ public class GameManager : MonoBehaviour {
         GameObject dbiTextObject = new GameObject();
         TextMeshProUGUI dbiText;
 
-        float elapsedTime = 0;
+        float elapsedTime = 0, currentTimeScale = Time.timeScale;
         Vector2 startingScale = new Vector2(size, size);
         Vector2 endingScale = new Vector2(0, 0);
 
@@ -384,10 +384,10 @@ public class GameManager : MonoBehaviour {
         dbiText.font = Resources.Load("BANGERS SDF", typeof(TMP_FontAsset)) as TMP_FontAsset;
         dbiText.fontMaterial = Resources.Load("BlockBash Font", typeof(Material)) as Material;
 
-        while (elapsedTime < displayTime)
+        while (elapsedTime < displayTime)//*currentTimeScale)
         {
             dbiText.transform.localScale = Vector2.Lerp(startingScale, endingScale, (elapsedTime / displayTime));
-            elapsedTime += Time.deltaTime;
+            elapsedTime += Time.deltaTime/currentTimeScale;
 
             yield return null;
         }

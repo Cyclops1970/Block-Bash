@@ -33,26 +33,37 @@ public class BallControl : MonoBehaviour
     float xPos, yPos;
     GameObject ballContainer;
 
+    public void CalculateNumberOfBalls()
+    {
+        //Set the number of balls according to current level;
+        GameManager.manager.maxNumberOfBalls = GameManager.manager.baseNumberOfBalls + (int)(Mathf.Round((GameManager.manager.currentLevel / 5)));
+        
+        //Double balls for bonus level
+        if (GameManager.manager.currentLevel % GameManager.manager.bonusLevel == 0)
+        {
+            GameManager.manager.maxNumberOfBalls *= 2;
+        }
+
+        GameManager.manager.currentNumberOfBalls = GameManager.manager.maxNumberOfBalls;
+    }
+
     public void InitializeBalls(Vector3 start)
     {
         Vector3 pos;
 
+        Time.timeScale = 1;
+
         camera = FindObjectOfType<Camera>();
 
-        speed = 8;
-        maxSpeed = 50; //38
-        timeBetweenBalls = 0.040f;
+        speed = 6;
+        timeBetweenBalls = 0.0750f;
         //setup time for speed update
         nextSpeedUpdate = Time.time + speedUpdateTime;
         speedUpdateTime = 0.5f;
-        speedIncrease = 1f;
+        speedIncrease = 0.1f;
 
         //set the number of balls
-        //Double balls for bonus level
-        if (GameManager.manager.currentLevel % GameManager.manager.bonusLevel == 0)
-            GameManager.manager.maxNumberOfBalls = 150;
-
-        GameManager.manager.currentNumberOfBalls = GameManager.manager.maxNumberOfBalls;
+        CalculateNumberOfBalls();
 
         //used to put balls into, so easier viewing in the heirarchy
         ballContainer = new GameObject();
@@ -105,15 +116,12 @@ public class BallControl : MonoBehaviour
                 ball.color = Color.red;
             }
         }
-
-
     }
 
 
     public IEnumerator MoveBalls(Vector3 start, Vector3 end)
     {
         Vector3 startPos, endPos;
-        float minYVel = 0.038f;
 
         camera = FindObjectOfType<Camera>();
 
@@ -139,7 +147,6 @@ public class BallControl : MonoBehaviour
             }
         }
         
-        
         //Speed checks
         while(GameManager.manager.ballsActive)
         {
@@ -147,65 +154,12 @@ public class BallControl : MonoBehaviour
             if (Time.time > nextSpeedUpdate)
             {
                 nextSpeedUpdate = Time.time + speedUpdateTime;
-                speed += speedIncrease;
+                //speed += speedIncrease;
 
-                //increase speed
-                if (speed <= maxSpeed)
-                {
-                    //help to prevent ball from moving through objects (does stop them though)
-                    yield return new WaitForFixedUpdate();
-
-                    for (int n = 0; n < GameManager.manager.maxNumberOfBalls; n++)
-                    {
-                        if (balls[n].ball != null)
-                        {
-                            Rigidbody2D rb = balls[n].ball.GetComponent<Rigidbody2D>();
-                            Vector3 vel = rb.velocity.normalized * speed;
-
-                            rb.velocity = vel;
-                        }
-                    }
-                }
+                Time.timeScale += speedIncrease;
             }
-
-            yield return null;
-
-             /*
-            //attempt to stop hoizontal movement
-            for (int n = 0; n < GameManager.manager.maxNumberOfBalls; n++)
-            {
-                if (balls[n].ball != null)
-                {
-                    Rigidbody2D rb = balls[n].ball.GetComponent<Rigidbody2D>();
-                    Vector2 vel = rb.velocity / speed;
-
-                    if ((vel.y < minYVel) && (vel.y > -minYVel))
-                    {
-                        print("YPos!!");
-
-                        if (vel.y > 0)
-                        {
-                            rb.AddForce(new Vector2(-1, vel.y+1)*1);
-
-                            //vel.y += minYVel;
-                        }
-                        else
-                        {
-                            //vel.y -= minYVel;
-                            rb.AddForce(new Vector2(1, vel.y-1) * 1);
-                        }
-
-                        //rb.velocity = vel;
-                    }
-
-                }
-                
-                
-            }
-            */
             yield return null;
         }
-        
     }
 
     public IEnumerator DestroyBalls()

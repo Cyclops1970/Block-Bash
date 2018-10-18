@@ -124,45 +124,43 @@ public class PlayLevel : MonoBehaviour
         }
         
     }
-    IEnumerator SwapPanels()
+
+    IEnumerator ShotPanelShow()
     {
         float deathTime = 0.15f;
         float elapsedTime = 0;
-        Vector2 startingScale = bottomPanel.transform.localScale;
-        Vector2 endingScale = new Vector2(0.001f, 0.001f);
+        Vector2 endingScale = bottomPanel.transform.localScale; // same size as bottom panel
+        Vector2 startingScale = new Vector2(0.0000f, 0.0000f);
 
-        //if shotpanel already fullsize
-        if ((Vector2)shotPanel.transform.localScale == startingScale)
+        shotPanel.SetActive(true);
+
+        while (elapsedTime < deathTime)
         {
-            yield return new WaitForSeconds(0.25f);
-
-            while (elapsedTime < deathTime)
-            {
-                shotPanel.transform.localScale = Vector2.Lerp(startingScale, endingScale, (elapsedTime / deathTime));
-                elapsedTime += Time.deltaTime;
-
-                yield return null;
-            }
-            //shotPanel.SetActive(!shotPanel.activeInHierarchy);
+            shotPanel.transform.localScale = Vector2.Lerp(startingScale, endingScale, (elapsedTime / deathTime));
+            elapsedTime += Time.deltaTime;
+            yield return null;
         }
-        else // is minimised and needs to be expanded
+        //do this cause it doesn't actually get to the proper size 
+        shotPanel.transform.localScale = endingScale;
+    }
+
+    IEnumerator ShotPanelHide()
+    {
+        float deathTime = 0.15f;
+        float elapsedTime = 0;
+        Vector2 startingScale = bottomPanel.transform.localScale; // same size as bottom panel
+        Vector2 endingScale = new Vector2(0.0000f, 0.0000f);
+
+        //yield return new WaitForSeconds(0.15f);
+
+        while (elapsedTime < deathTime)
         {
-            while (elapsedTime < deathTime)
-            {
-                shotPanel.transform.localScale = Vector2.Lerp(endingScale, startingScale, (elapsedTime / deathTime));
-                elapsedTime += Time.deltaTime;
+            shotPanel.transform.localScale = Vector2.Lerp(startingScale, endingScale, (elapsedTime / deathTime));
+            elapsedTime += Time.deltaTime;
 
-                yield return null;
-            }
-
-            //do this cause it doesn't actually get to the proper size 
-            shotPanel.transform.localScale = startingScale;
-            //shotPanel.SetActive(!shotPanel.activeInHierarchy);
+            yield return null;
         }
-    
-        //shotPanel.SetActive(!shotPanel.activeInHierarchy);
-        //bottomPanel.SetActive(!bottomPanel.activeInHierarchy);
-
+        shotPanel.SetActive(false);
     }
 
     void SetupBorders()
@@ -203,7 +201,9 @@ public class PlayLevel : MonoBehaviour
 
         GameManager.manager.ballsActive = false;
         ableToShoot = false;
-        //int currentPoints = 0;
+
+        //Get number of balls for this level
+        ballControl.CalculateNumberOfBalls();
 
         //set current shot to 0
         GameManager.manager.level[GameManager.manager.currentLevel].shotPoints = 0;
@@ -215,6 +215,8 @@ public class PlayLevel : MonoBehaviour
         levelNumberText.text = "Level " + GameManager.manager.currentLevel.ToString();
         //show player coins
         playerCoinsText.text = GameManager.manager.playerCoins.ToString();
+        //Show the number of balls to play this shot
+        numberOfBallsText.text = GameManager.manager.maxNumberOfBalls + " Balls This Shot";
 
         //used for the reward line
         rewardLine.fillAmount = 0;
@@ -231,7 +233,7 @@ public class PlayLevel : MonoBehaviour
         }
 
         //Set the number of balls according to current level;
-        GameManager.manager.maxNumberOfBalls = GameManager.manager.baseNumberOfBalls + (int)(Mathf.Round((GameManager.manager.currentLevel / 5)));
+        //GameManager.manager.maxNumberOfBalls = GameManager.manager.baseNumberOfBalls + (int)(Mathf.Round((GameManager.manager.currentLevel / 5)));
 
         //Initialise block colours (if not a bonus level) if bonus level, say so :)
         if (GameManager.manager.currentLevel % GameManager.manager.bonusLevel != 0)
@@ -264,32 +266,18 @@ public class PlayLevel : MonoBehaviour
                 CopyStuff();
             }
             */
-            //Check to see if balls are active, if so prevent shop buttons
-            /*
-            if(GameManager.manager.ballsActive==true)
-            {
-                shopButton.interactable = false;
-                balls2xButton.interactable = false;
-                blockReductionButton.interactable = false;
-                invincibleBallsButtton.interactable = false;
-                FloorBlockButton.interactable = false;
-            }
-            else
-            {
-                shopButton.interactable = true;
-                balls2xButton.interactable = true;
-                blockReductionButton.interactable = true;
-                invincibleBallsButtton.interactable = true;
-                FloorBlockButton.interactable = true;
-            }
-            */
             yield return null;
 
             //Double check all blocks are gone (sometimes there are blocks left in frantic levels)
             GameObject[] block = GameObject.FindGameObjectsWithTag("block");
             GameManager.manager.actualNumberOfBlocks = block.Length;
         }
-        
+
+        //reset time to default
+        Time.timeScale = 1;
+
+        StartCoroutine(ShotPanelHide());
+
         //Mark level as done and available in future
         if(GameManager.manager.actualNumberOfBlocks <= 0)
         {
@@ -297,7 +285,7 @@ public class PlayLevel : MonoBehaviour
             StartCoroutine(ForceBallsToFinish());
 
             //slight delay
-            for (int wait = 0; wait < 150; wait++)
+            for (int wait = 0; wait < 100; wait++)
             {
                 yield return null;
             }
@@ -398,6 +386,9 @@ public class PlayLevel : MonoBehaviour
 
     public void ForceBallsToFinishWrapper()
     {
+        //switch the bottompanel and shotpanel back
+        StartCoroutine(ShotPanelHide());
+
         StartCoroutine(ForceBallsToFinish());
     }
 
@@ -446,8 +437,6 @@ public class PlayLevel : MonoBehaviour
 
             ResetPowerUps();
 
-            //switch the bottompanel and shotpanel back
-            StartCoroutine(SwapPanels());
         }
     }
 
@@ -475,6 +464,9 @@ public class PlayLevel : MonoBehaviour
     {
         if ((GameManager.manager.currentNumberOfBalls <= 0) && (GameManager.manager.ballsActive == true))
         {
+            //switch the bottompanel and shotpanel back
+            StartCoroutine(ShotPanelHide());
+
             GameManager.manager.ballsActive = false;
             ableToShoot = false;
 
@@ -493,8 +485,7 @@ public class PlayLevel : MonoBehaviour
             ResetPowerUps();
 
             DestroySpecials();
-            //switch the bottompanel and shotpanel back
-            StartCoroutine(SwapPanels());
+
         }
     }
 
@@ -516,7 +507,7 @@ public class PlayLevel : MonoBehaviour
             //increase shot count
             shotsTaken++;
 
-            StartCoroutine(SwapPanels());
+            StartCoroutine(ShotPanelShow());
         }
     }
     void UpdateRewardLine()
@@ -664,6 +655,53 @@ public class PlayLevel : MonoBehaviour
         
     
     }
+
+
+    public void MoveBlocksDown() // called from BALLS FINSISHED and check for end of level due to blocks hitting bottom and forced balls finished
+    {
+        if (GameManager.manager.keepWaiting == false)
+        {
+            GameObject[] block = GameObject.FindGameObjectsWithTag("block");
+            GameObject[] solid = GameObject.FindGameObjectsWithTag("solidBlock");
+            GameObject[] bombs = GameObject.FindGameObjectsWithTag("bomb");
+            GameObject[] special = GameObject.FindGameObjectsWithTag("special");
+            List<GameObject> items = new List<GameObject>(block);
+            items.AddRange(new List<GameObject>(solid)); // get all the blocks, normal and super
+            items.AddRange(new List<GameObject>(bombs)); // and bombs
+            items.AddRange(new List<GameObject>(special));// and specials move the blocks down 
+
+            //bottom up as blocks are moving down
+            for(int y = levelGenerator.currentLevel.height-1; y>=0; y--)
+            {
+                for (int x = 0; x < levelGenerator.currentLevel.width; x++)
+                {
+                    //move block down on screen, but not the solid blocks
+                    if (((levelGenerator.block[x, y] != null) && (levelGenerator.block[x, y].gameObject.tag != "solidBlock") && (levelGenerator.block[x,y+1]==null)))
+                    {
+
+                        levelGenerator.block[x, y].gameObject.transform.localPosition =
+                            new Vector2(levelGenerator.block[x, y].gameObject.transform.localPosition.x, levelGenerator.block[x, y].gameObject.transform.localPosition.y - levelGenerator.blockScaleAdjustedY);
+                        //move block down in array
+                        levelGenerator.block[x, y + 1] = levelGenerator.block[x, y];
+                        levelGenerator.block[x, y] = null;
+
+                        //Check if bottom of screen reached.
+                        if(levelGenerator.block[x,y+1].gameObject.transform.localPosition.y <= (-GameManager.manager.camY / 2) + (GameManager.manager.camY * GameManager.manager.freeBottomArea) + (levelGenerator.blockScaleAdjustedY / 2))
+                        {
+                            //levelFailed = true;
+                            //failPanel.SetActive(true);
+                            StartCoroutine(ShowFailPanelWithDelay(0.5f));
+
+                            //used to prevent LAUNCHBALLS from working
+                            bottomReached = true;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /*
     public void MoveBlocksDown() // called from BALLS FINSISHED and check for end of level due to blocks hitting bottom and forced balls finished
     {
         if (GameManager.manager.keepWaiting == false)
@@ -713,6 +751,7 @@ public class PlayLevel : MonoBehaviour
             }
         }
     }
+    */
 
     IEnumerator ShowFailPanelWithDelay(float d)
     {
