@@ -55,8 +55,8 @@ public class BallControl : MonoBehaviour
 
         camera = FindObjectOfType<Camera>();
 
-        speed = 6;
-        timeBetweenBalls = 0.0750f;
+        speed = 7;
+        timeBetweenBalls = 0.070f;
         //setup time for speed update
         nextSpeedUpdate = Time.time + speedUpdateTime;
         speedUpdateTime = 0.5f;
@@ -109,12 +109,6 @@ public class BallControl : MonoBehaviour
             //set ball position
             balls[n].ball.transform.localPosition = balls[n].position;
 
-            //Set colour for invincible balls
-            if (invincibleBalls.invincibleBallsActive == true)
-            {
-                SpriteRenderer ball = balls[n].ball.GetComponent<SpriteRenderer>();
-                ball.color = Color.red;
-            }
         }
     }
 
@@ -144,21 +138,41 @@ public class BallControl : MonoBehaviour
                     rb.rotation = 0;
                     yield return new WaitForSeconds(timeBetweenBalls);
                 }
+
             }
         }
-        
-        //Speed checks
-        while(GameManager.manager.ballsActive)
-        {
-            //Speed up balls over time
-            if (Time.time > nextSpeedUpdate)
-            {
-                nextSpeedUpdate = Time.time + speedUpdateTime;
-                //speed += speedIncrease;
+    }
 
-                Time.timeScale += speedIncrease;
+    private void Update()
+    {
+        //Speed up balls over time
+        if (Time.time > nextSpeedUpdate)
+        {
+            nextSpeedUpdate = Time.time + speedUpdateTime;
+            //speed += speedIncrease;
+
+            Time.timeScale += speedIncrease;
+        }
+
+        // Get all the balls and adjust colour as needed
+        GameObject[] ball = GameObject.FindGameObjectsWithTag("ball");
+        foreach(GameObject b in ball)
+        {
+            if((b != null) && (invincibleBalls.invincibleBallsActive==true))
+            {
+                b.GetComponent<SpriteRenderer>().color = Color.red;
             }
-            yield return null;
+            else if(b!=null)
+            {
+                if(b.GetComponent<Rigidbody2D>().velocity.y >= 0)
+                {
+                    b.GetComponent<SpriteRenderer>().color = Color.green;
+                }
+                else
+                {
+                    b.GetComponent<SpriteRenderer>().color = Color.red;
+                }
+            }
         }
     }
 
@@ -171,7 +185,6 @@ public class BallControl : MonoBehaviour
             {
                 Destroy(balls[b].ball);
             }
-
         }
     }
 }
