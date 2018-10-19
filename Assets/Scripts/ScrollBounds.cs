@@ -18,10 +18,8 @@ public class ScrollBounds : MonoBehaviour
 
     private void Start()
     {
-        buttonSize = 370; //150
-        //132
-        //buttonSize = 125f;
-        //
+        buttonSize = 470; //150
+
         numberOfButtons = GameManager.manager.levelCount;
 
         //Set scroll back to where you left it.
