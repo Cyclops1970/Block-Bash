@@ -462,7 +462,8 @@ public class PlayLevel : MonoBehaviour
     }
     void BallsFinished()
     {
-        if ((GameManager.manager.currentNumberOfBalls <= 0) && (GameManager.manager.ballsActive == true))
+        //if (((GameManager.manager.currentNumberOfBalls <= 0) && (GameManager.manager.ballsActive == true)&&(GameManager.manager.keepWaiting==false)))
+        if (((GameManager.manager.currentNumberOfBalls <= 0) && (GameManager.manager.ballsActive == true)))
         {
             //switch the bottompanel and shotpanel back
             StartCoroutine(ShotPanelHide());
@@ -659,42 +660,39 @@ public class PlayLevel : MonoBehaviour
 
     public void MoveBlocksDown() // called from BALLS FINSISHED and check for end of level due to blocks hitting bottom and forced balls finished
     {
-        if (GameManager.manager.keepWaiting == false)
+        GameObject[] block = GameObject.FindGameObjectsWithTag("block");
+        GameObject[] solid = GameObject.FindGameObjectsWithTag("solidBlock");
+        GameObject[] bombs = GameObject.FindGameObjectsWithTag("bomb");
+        GameObject[] special = GameObject.FindGameObjectsWithTag("special");
+        List<GameObject> items = new List<GameObject>(block);
+        items.AddRange(new List<GameObject>(solid)); // get all the blocks, normal and super
+        items.AddRange(new List<GameObject>(bombs)); // and bombs
+        items.AddRange(new List<GameObject>(special));// and specials move the blocks down 
+
+        //bottom up as blocks are moving down
+        for (int y = levelGenerator.currentLevel.height - 1; y >= 0; y--)
         {
-            GameObject[] block = GameObject.FindGameObjectsWithTag("block");
-            GameObject[] solid = GameObject.FindGameObjectsWithTag("solidBlock");
-            GameObject[] bombs = GameObject.FindGameObjectsWithTag("bomb");
-            GameObject[] special = GameObject.FindGameObjectsWithTag("special");
-            List<GameObject> items = new List<GameObject>(block);
-            items.AddRange(new List<GameObject>(solid)); // get all the blocks, normal and super
-            items.AddRange(new List<GameObject>(bombs)); // and bombs
-            items.AddRange(new List<GameObject>(special));// and specials move the blocks down 
-
-            //bottom up as blocks are moving down
-            for(int y = levelGenerator.currentLevel.height-1; y>=0; y--)
+            for (int x = 0; x < levelGenerator.currentLevel.width; x++)
             {
-                for (int x = 0; x < levelGenerator.currentLevel.width; x++)
+                //move block down on screen, but not the solid blocks
+                if (((levelGenerator.block[x, y] != null) && (levelGenerator.block[x, y].gameObject.tag != "solidBlock") && (levelGenerator.block[x, y + 1] == null)))
                 {
-                    //move block down on screen, but not the solid blocks
-                    if (((levelGenerator.block[x, y] != null) && (levelGenerator.block[x, y].gameObject.tag != "solidBlock") && (levelGenerator.block[x,y+1]==null)))
+
+                    levelGenerator.block[x, y].gameObject.transform.localPosition =
+                        new Vector2(levelGenerator.block[x, y].gameObject.transform.localPosition.x, levelGenerator.block[x, y].gameObject.transform.localPosition.y - levelGenerator.blockScaleAdjustedY);
+                    //move block down in array
+                    levelGenerator.block[x, y + 1] = levelGenerator.block[x, y];
+                    levelGenerator.block[x, y] = null;
+
+                    //Check if bottom of screen reached.
+                    if (levelGenerator.block[x, y + 1].gameObject.transform.localPosition.y <= (-GameManager.manager.camY / 2) + (GameManager.manager.camY * GameManager.manager.freeBottomArea) + (levelGenerator.blockScaleAdjustedY / 2))
                     {
+                        //levelFailed = true;
+                        //failPanel.SetActive(true);
+                        StartCoroutine(ShowFailPanelWithDelay(0.5f));
 
-                        levelGenerator.block[x, y].gameObject.transform.localPosition =
-                            new Vector2(levelGenerator.block[x, y].gameObject.transform.localPosition.x, levelGenerator.block[x, y].gameObject.transform.localPosition.y - levelGenerator.blockScaleAdjustedY);
-                        //move block down in array
-                        levelGenerator.block[x, y + 1] = levelGenerator.block[x, y];
-                        levelGenerator.block[x, y] = null;
-
-                        //Check if bottom of screen reached.
-                        if(levelGenerator.block[x,y+1].gameObject.transform.localPosition.y <= (-GameManager.manager.camY / 2) + (GameManager.manager.camY * GameManager.manager.freeBottomArea) + (levelGenerator.blockScaleAdjustedY / 2))
-                        {
-                            //levelFailed = true;
-                            //failPanel.SetActive(true);
-                            StartCoroutine(ShowFailPanelWithDelay(0.5f));
-
-                            //used to prevent LAUNCHBALLS from working
-                            bottomReached = true;
-                        }
+                        //used to prevent LAUNCHBALLS from working
+                        bottomReached = true;
                     }
                 }
             }

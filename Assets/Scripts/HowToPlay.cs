@@ -10,6 +10,7 @@ public class HowToPlay : MonoBehaviour
     public GameObject[] panel;
     public TextMeshProUGUI pageNumberText;
 
+
     int pageNumber, totalNumberOfPages;
     
     private void Start()

@@ -29,6 +29,7 @@ public class Borders : MonoBehaviour {
         //this puts them just off screen
         left.transform.localPosition = new Vector2(-m.camX /2-0.5f, 0);
         left.transform.localScale = new Vector2(left.transform.localScale.x, m.camY);
+        //left.GetComponent<SpriteRenderer>().color = Color.white;
         right.transform.localPosition = new Vector2(m.camX /2+0.5f, 0);
         right.transform.localScale = new Vector2(right.transform.localScale.x, m.camY);
 

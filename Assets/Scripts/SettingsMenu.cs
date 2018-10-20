@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class SettingsMenu : MonoBehaviour {
 
     public GameObject settingsPanel;
+    public TextMeshProUGUI versionText;
 
     public void OpenSettingsMenu()
     {
@@ -18,6 +20,8 @@ public class SettingsMenu : MonoBehaviour {
             b.GetComponent<Button>().interactable = false;
             
         }
+
+        versionText.text = "Version: " + Application.version;
     }
 
     public void CloseSettingsMenu()

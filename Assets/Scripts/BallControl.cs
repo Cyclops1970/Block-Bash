@@ -56,10 +56,10 @@ public class BallControl : MonoBehaviour
         camera = FindObjectOfType<Camera>();
 
         speed = 7;
-        timeBetweenBalls = 0.070f;
+        timeBetweenBalls = 0.055f;
         //setup time for speed update
         nextSpeedUpdate = Time.time + speedUpdateTime;
-        speedUpdateTime = 0.5f;
+        speedUpdateTime = 0.75f;
         speedIncrease = 0.1f;
 
         //set the number of balls
@@ -166,11 +166,11 @@ public class BallControl : MonoBehaviour
             {
                 if(b.GetComponent<Rigidbody2D>().velocity.y >= 0)
                 {
-                    b.GetComponent<SpriteRenderer>().color = Color.green;
+                    b.GetComponent<SpriteRenderer>().color = Color.white;
                 }
                 else
                 {
-                    b.GetComponent<SpriteRenderer>().color = Color.red;
+                    b.GetComponent<SpriteRenderer>().color = Color.grey;
                 }
             }
         }

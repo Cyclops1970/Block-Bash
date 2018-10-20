@@ -17,19 +17,16 @@ public class BombBlock : MonoBehaviour {
 
     float deathDelay = 2.5f;
 
-
     private void OnDestroy()
     {
         //stop waiting for bomb activity
         GameManager.manager.keepWaiting = false;
 
-        //move the blocks down after the explosion, provided all balls have finished
- 
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
 	{
-        //GameManager.manager.keepWaiting = true;
+        GameManager.manager.keepWaiting = true;
 
         Collider2D col = gameObject.GetComponent<Collider2D>();
         
@@ -48,7 +45,7 @@ public class BombBlock : MonoBehaviour {
             //gameObject.GetComponent<Renderer>().enabled = false;
             Invoke("BombExplode", deathDelay);
             //Instantiate(explode, transform.localPosition, Quaternion.identity);
-            Destroy(gameObject, deathDelay);
+            //Destroy(gameObject, deathDelay);
 
         }
     }
@@ -56,6 +53,7 @@ public class BombBlock : MonoBehaviour {
     void BombExplode()
     {
         Instantiate(explode, transform.localPosition, Quaternion.identity);
+        gameObject.GetComponent<SpriteRenderer>().enabled = false;
     }
 
     
@@ -64,6 +62,8 @@ public class BombBlock : MonoBehaviour {
         int counter = 1;
         int reduction;
         int blocksToHitModulus = 2; // half the blocks
+        float minHitsDivider = 3;
+        float maxHitsDivider = 0.75f;
 
         GameObject[] block = GameObject.FindGameObjectsWithTag("block"); // Not including super blocks...should I?
         foreach (GameObject b in block)
@@ -71,8 +71,8 @@ public class BombBlock : MonoBehaviour {
             //should I do this block?
             if ((b != null) && (counter % blocksToHitModulus == 0))
             {
-                //remove 1/3 to full hits remaining
-                reduction = (int)Mathf.Round(Random.Range(b.GetComponentInParent<Block>().hitsRemaining / 3, b.GetComponentInParent<Block>().hitsRemaining * 1.25f));
+                //remove points depending on min and max hit dividers
+                reduction = (int)Mathf.Round(Random.Range(b.GetComponentInParent<Block>().hitsRemaining / minHitsDivider, b.GetComponentInParent<Block>().hitsRemaining / maxHitsDivider));
                 //update score
                 if (reduction > b.GetComponentInParent<Block>().hitsRemaining)
                 {
@@ -94,13 +94,13 @@ public class BombBlock : MonoBehaviour {
                     hitsRemainingText.text = b.GetComponentInParent<Block>().hitsRemaining.ToString();
 
                     //message showing number of hits needed reduced
-                    StartCoroutine(GameManager.manager.Message("-" + reduction, b.transform.position, 3, deathDelay, Color.red));
+                    StartCoroutine(GameManager.manager.Message("-" + reduction, b.transform.position, 5, 2, Color.white));
                 }
                 else
                 {
                     hitsRemainingText = b.GetComponentInChildren<TextMeshProUGUI>();
                     hitsRemainingText.text = "0";
-                    StartCoroutine(GameManager.manager.Message("X", b.transform.position, 3, deathDelay, Color.red));
+                    StartCoroutine(GameManager.manager.Message("X", b.transform.position, 5, 2, Color.white));
                     StartCoroutine(BlockDeath(b));
                 }
 
@@ -152,38 +152,6 @@ public class BombBlock : MonoBehaviour {
     //Block death
     public IEnumerator BlockDeath(GameObject blockHit)
     {
-        /*
-        float deathTime = 0.25f;
-        float elapsedTime = 0;
-        Vector2 startingScale = gameObject.transform.localScale * 2.5f;
-        Vector2 endingScale = new Vector2(0, 0);
-
-        AudioSource.PlayClipAtPoint(GameManager.manager.blockDieSound, new Vector3(0, 0, 0));
-
-        SpriteRenderer block = blockHit.GetComponent<SpriteRenderer>();
-
-        while (elapsedTime < deathTime)
-        {
-            if (blockHit != null)
-            {
-                blockHit.transform.localScale = Vector2.Lerp(startingScale, endingScale, (elapsedTime / deathTime));
-                elapsedTime += Time.deltaTime;
-                block.color = Color.red;
-                yield return null;
-            }
-        }
-
-        //reduce number of blocks
-        GameManager.manager.actualNumberOfBlocks--;
-
-        block.enabled = false;
-        if (blockHit != null)
-        {
-            Destroy(blockHit);
-        }
-        //Destroy(blockHit, deathDelay);
-        */
-        //GameManager.manager.actualNumberOfBlocks--;
         if (blockHit != null)
         {
             GameManager.manager.actualNumberOfBlocks--;
@@ -191,8 +159,6 @@ public class BombBlock : MonoBehaviour {
             Destroy(blockHit);
         }
         yield return null;
-        
     }
-    
 }
 
