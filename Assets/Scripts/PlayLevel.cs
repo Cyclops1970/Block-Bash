@@ -174,6 +174,19 @@ public class PlayLevel : MonoBehaviour
         Instantiate(left);
         Instantiate(right);
 
+        //scale width of screen and freeTopArea for height size
+        top.transform.localScale = new Vector2(GameManager.manager.camX, GameManager.manager.camY * GameManager.manager.freeTopArea);
+        top.transform.localPosition = new Vector2(0, GameManager.manager.camY / 2 - top.transform.localScale.y / 2);
+        //same for bottom
+        bottom.transform.localScale = new Vector2(GameManager.manager.camX, GameManager.manager.camY * GameManager.manager.freeBottomArea);
+        bottom.transform.localPosition = new Vector2(0, -GameManager.manager.camY / 2 + bottom.transform.localScale.y / 2);
+
+        //this puts them just off screen
+        left.transform.localPosition = new Vector2(-GameManager.manager.camX / 2 - 0.5f, 0);
+        left.transform.localScale = new Vector2(left.transform.localScale.x, GameManager.manager.camY);
+        right.transform.localPosition = new Vector2(GameManager.manager.camX / 2 + 0.5f, 0);
+        right.transform.localScale = new Vector2(right.transform.localScale.x, GameManager.manager.camY);
+
         //THIS NEEDS TO BE FIXED!
         /*
         //scale width of screen and freeTopArea for height size
@@ -656,8 +669,6 @@ public class PlayLevel : MonoBehaviour
         
     
     }
-
-
     public void MoveBlocksDown() // called from BALLS FINSISHED and check for end of level due to blocks hitting bottom and forced balls finished
     {
         GameObject[] block = GameObject.FindGameObjectsWithTag("block");
@@ -677,7 +688,6 @@ public class PlayLevel : MonoBehaviour
                 //move block down on screen, but not the solid blocks
                 if (((levelGenerator.block[x, y] != null) && (levelGenerator.block[x, y].gameObject.tag != "solidBlock") && (levelGenerator.block[x, y + 1] == null)))
                 {
-
                     levelGenerator.block[x, y].gameObject.transform.localPosition =
                         new Vector2(levelGenerator.block[x, y].gameObject.transform.localPosition.x, levelGenerator.block[x, y].gameObject.transform.localPosition.y - levelGenerator.blockScaleAdjustedY);
                     //move block down in array
@@ -766,6 +776,9 @@ public class PlayLevel : MonoBehaviour
 
         //Hide the fail panel
         failPanel.SetActive(false);
+
+        //reset time
+        Time.timeScale = 1;
 
         //Move the blocks back up
         GameObject[] block = GameObject.FindGameObjectsWithTag("block");

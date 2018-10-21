@@ -49,7 +49,6 @@ public class LevelGenerator : MonoBehaviour {
         InitializeLevel();
     }
 
-
     void InitializeLevel()
     {
         blockContainer = new GameObject();
@@ -88,15 +87,22 @@ public class LevelGenerator : MonoBehaviour {
 
     void GenerateNewBlock(int x, int y)
     {
-        Color pixelColour = currentLevel.GetPixel(x, currentLevel.height - 1 - y);
+        float cX = Camera.main.orthographicSize * 2;
+        float cY = (cX * Screen.height / Screen.width);
+
+        Color pixelColour = currentLevel.GetPixel(x, currentLevel.height - 1 - y); //bottom up.
 
         // get the correct scale to fit the number of blocks across and down the play area
-        blockScaleAdjustedX = ScaleGameObjectToScreenPercentageX(level.ctp[0].blockType, blockPercentageSizeX);
-        blockScaleAdjustedY = ScaleGameObjectToScreenPercentageY(level.ctp[0].blockType, blockPercentageSizeY); //blocknormal
+        //blockScaleAdjustedX = ScaleGameObjectToScreenPercentageX(level.ctp[0].blockType, blockPercentageSizeX);
+        //blockScaleAdjustedY = ScaleGameObjectToScreenPercentageY(level.ctp[0].blockType, blockPercentageSizeY); //blocknormal
+
+        blockScaleAdjustedX = ScaleGameObjectToScreenPercentageX(plainBlock, blockPercentageSizeX);
+        blockScaleAdjustedY = ScaleGameObjectToScreenPercentageY(plainBlock, blockPercentageSizeY); //blocknormal
 
         // Get starting pos X (left hand side of screen), y (top of screen)
         xStart = (-GameManager.manager.camX / 2 + blockScaleAdjustedX / 2);
         yStart = (GameManager.manager.camY / 2 - blockScaleAdjustedY / 2) - (GameManager.manager.camY * GameManager.manager.freeTopArea);
+        //yStart = (cY / 2 - blockScaleAdjustedY / 2) - (cY * GameManager.manager.freeTopArea);
 
         //go through colour mappings and instantiate according to colour.
         foreach (ColourToPrefab currentBlock in level.ctp)
@@ -203,7 +209,7 @@ public class LevelGenerator : MonoBehaviour {
     }
 
 */
-    void GenerateBonusBlock(int x, int y)
+        void GenerateBonusBlock(int x, int y)
     {
         Color pixelColour = currentLevel.GetPixel(x, currentLevel.height - 1 - y);
 

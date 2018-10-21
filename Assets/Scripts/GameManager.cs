@@ -150,8 +150,6 @@ public class GameManager : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
-
-
         //stop screen from timing out
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
 
@@ -159,7 +157,7 @@ public class GameManager : MonoBehaviour {
         camY = Camera.main.orthographicSize * 2; //Full sprHeight
         camX = (camY * Screen.width / Screen.height); // covers different aspect ratios
         
-        freeTopArea = 0.15f; // 15% - use as size of top and bottom borders -- was 0.15
+        freeTopArea = 0.15f; // 15% - use as size of top and bottom borders
         freeBottomArea = 0.135f;
 
         baseNumberOfBalls = 50;
@@ -176,9 +174,9 @@ public class GameManager : MonoBehaviour {
         //Powerups
         continueCost = 100;
         balls2xCost = 200;
+        blockReductionCost = 300;
         floorBlockCost = 400;
         invincibleBallsCost = 500;
-        blockReductionCost = 300;
        
         playerCoins = PlayerPrefs.GetInt("playerCoins");
 
@@ -394,6 +392,4 @@ public class GameManager : MonoBehaviour {
 
         Destroy(dbiTextObject);
     }
-
-
 }

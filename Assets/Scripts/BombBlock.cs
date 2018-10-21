@@ -62,8 +62,8 @@ public class BombBlock : MonoBehaviour {
         int counter = 1;
         int reduction;
         int blocksToHitModulus = 2; // half the blocks
-        float minHitsDivider = 3;
-        float maxHitsDivider = 0.75f;
+        float minHitsDivider = 2; //3
+        float maxHitsDivider = 0.75f; // 0.75
 
         GameObject[] block = GameObject.FindGameObjectsWithTag("block"); // Not including super blocks...should I?
         foreach (GameObject b in block)
@@ -94,13 +94,13 @@ public class BombBlock : MonoBehaviour {
                     hitsRemainingText.text = b.GetComponentInParent<Block>().hitsRemaining.ToString();
 
                     //message showing number of hits needed reduced
-                    StartCoroutine(GameManager.manager.Message("-" + reduction, b.transform.position, 5, 2, Color.white));
+                    StartCoroutine(GameManager.manager.Message("-" + reduction, b.transform.position, 4, 2, Color.white));
                 }
                 else
                 {
                     hitsRemainingText = b.GetComponentInChildren<TextMeshProUGUI>();
                     hitsRemainingText.text = "0";
-                    StartCoroutine(GameManager.manager.Message("X", b.transform.position, 5, 2, Color.white));
+                    StartCoroutine(GameManager.manager.Message("X", b.transform.position, 4, 2, Color.white));
                     StartCoroutine(BlockDeath(b));
                 }
 
@@ -156,7 +156,7 @@ public class BombBlock : MonoBehaviour {
         {
             GameManager.manager.actualNumberOfBlocks--;
             Instantiate(explode, blockHit.transform.localPosition, Quaternion.identity);
-            Destroy(blockHit);
+            Destroy(blockHit, 2);
         }
         yield return null;
     }
