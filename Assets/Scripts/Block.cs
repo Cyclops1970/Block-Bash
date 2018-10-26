@@ -10,7 +10,6 @@ public class Block : MonoBehaviour //: Component //: MonoBehaviour
     public int hitsRemaining;
     [HideInInspector]
     public Color32 colour;
-
 }
 
 

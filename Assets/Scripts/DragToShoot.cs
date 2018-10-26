@@ -25,6 +25,11 @@ public class DragToShoot : MonoBehaviour
 
     float zPos = -1f;
 
+    Vector3 direction;
+    Vector3 position;
+    Vector3 staticPosition;
+    Vector3 staticDirection;
+
     private void Start()
     {
         camera = FindObjectOfType<Camera>();
@@ -38,10 +43,9 @@ public class DragToShoot : MonoBehaviour
         lineRenderer.material = lineMaterial;
         //lineRenderer.material = new Material(Shader.Find("Unlit/Texture"));
     }
+
     private void OnMouseDown()
     {
-        
-
         if ((GameManager.manager.ballsActive == false) && (playLevel.bottomReached == false))
         {
             lineRenderer.positionCount = 2; // two points to draw line, start and end
@@ -59,11 +63,9 @@ public class DragToShoot : MonoBehaviour
                 linePoints[0].y = (-GameManager.manager.camY / 2) + (GameManager.manager.camY * GameManager.manager.freeBottomArea) + (ballSprite.transform.localScale.y / 5.5f);
             }
 
-            //linePoints[0].y = (-GameManager.manager.camY / 2) + (GameManager.manager.camY * GameManager.manager.freeBottomArea) + (ballSprite.transform.localScale.y / 5);
             lineStart = true;
 
             playLevel.startPos = Input.mousePosition;
-            
         }
     }
 
@@ -92,6 +94,7 @@ public class DragToShoot : MonoBehaviour
         //draw the rubber band line
         if (lineStart == true)
         {
+
             //set colour -- red for can't shoot, green for can shoot
             //ensure only shoot upwards
             if (camera.ScreenToWorldPoint(Input.mousePosition).y <= linePoints[0].y + minAngle)
@@ -109,7 +112,5 @@ public class DragToShoot : MonoBehaviour
             linePoints[1].z = zPos;
             lineRenderer.SetPositions(linePoints);
         }
-        
-    }
-    
+    }   
 }

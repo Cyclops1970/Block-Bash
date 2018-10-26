@@ -13,7 +13,8 @@ using TMPro;
 public class BlockControl : MonoBehaviour
 {
     static public BlockControl blockControl;
-    LevelGenerator levelGenerator;
+    public LevelGenerator levelGenerator;
+    public PlayLevel playLevel;
 
     //Text hitsRemainingText;
     TextMeshProUGUI hitsRemainingText;
@@ -21,16 +22,22 @@ public class BlockControl : MonoBehaviour
     Collider2D c;
     float lastHitTime, lastDeathTime;
 
+    private void Start()
+    {
+        levelGenerator = GameObject.FindGameObjectWithTag("playLevel").GetComponent<LevelGenerator>();
+        playLevel = GameObject.FindGameObjectWithTag("playLevel").GetComponent<PlayLevel>();
+    }
+
     //reduce hits remaining and if needed, reduce number of blocks and delete object
     private void OnCollisionEnter2D(Collision2D collision)
     {
-         //if not a bonusLevel play block hit sound
+        //if not a bonusLevel play block hit sound
         //if(GameManager.manager.currentLevel % GameManager.manager.bonusLevel != 0)
-            AudioSource.PlayClipAtPoint(GameManager.manager.blockHitSound, gameObject.transform.localPosition);
+        AudioSource.PlayClipAtPoint(GameManager.manager.blockHitSound, gameObject.transform.localPosition);
 
         //update current shot score (should be set to zero on ball launch in play level)
         GameManager.manager.level[GameManager.manager.currentLevel].shotPoints++;
-        
+
         //put in some kind of flash when it is hit
         StartCoroutine(Flash());
 
@@ -52,7 +59,7 @@ public class BlockControl : MonoBehaviour
         else //if (GameManager.manager.currentLevel % 10 != 0)    //show hits remaining on all levels except the 'bonus' levels --- every 10th level.
         {
             hitsRemainingText = gameObject.GetComponentInChildren<Canvas>().GetComponentInChildren<TextMeshProUGUI>(); // get the textmeshpro element of the letterText
-            if(gameObject.GetComponentInParent<Block>().hitsRemaining >=0)
+            if (gameObject.GetComponentInParent<Block>().hitsRemaining >= 0)
                 hitsRemainingText.text = gameObject.GetComponentInParent<Block>().hitsRemaining.ToString();
             else
                 hitsRemainingText.text = "0";
@@ -70,7 +77,7 @@ public class BlockControl : MonoBehaviour
 
         GameManager.manager.level[GameManager.manager.currentLevel].shotPoints += gameObject.GetComponentInParent<Block>().hitsRemaining;
         StartCoroutine(BlockDeath());
-        
+
     }
 
     //flash colour on hit
@@ -88,7 +95,7 @@ public class BlockControl : MonoBehaviour
     {
         float deathTime = 0.25f;
         float elapsedTime = 0;
-        Vector2 startingScale = gameObject.transform.localScale*1.5f;
+        Vector2 startingScale = gameObject.transform.localScale * 1.5f;
         Vector2 endingScale = new Vector2(0, 0);
 
         //GameManager.manager.blockDeathAudioSource.clip = GameManager.manager.blockDieSound;
@@ -96,7 +103,7 @@ public class BlockControl : MonoBehaviour
         AudioSource.PlayClipAtPoint(GameManager.manager.blockDieSound, new Vector3(0, 0, 0));
 
         SpriteRenderer block = gameObject.GetComponent<SpriteRenderer>();
-        
+
         while (elapsedTime < deathTime)
         {
             transform.localScale = Vector2.Lerp(startingScale, endingScale, (elapsedTime / deathTime));
@@ -112,6 +119,7 @@ public class BlockControl : MonoBehaviour
         //Destroy(gameObject, 5);
         Destroy(gameObject);
     }
+
 }
 	
 

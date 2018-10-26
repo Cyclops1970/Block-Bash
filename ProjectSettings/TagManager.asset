@@ -15,6 +15,9 @@ TagManager:
   - special
   - levelButton
   - ball
+  - playLevel
+  - message
+  - direction
   layers:
   - Default
   - TransparentFX

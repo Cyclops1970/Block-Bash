@@ -300,6 +300,7 @@ MonoBehaviour:
   bombSound: {fileID: 8300000, guid: e05551ed9de6dae42a34a17fa645b69d, type: 3}
   electrocutionSound: {fileID: 8300000, guid: 8a4f8102e760d864ba4d19d8386270dc, type: 3}
   levelFailSound: {fileID: 8300000, guid: d688835572419b34e8d5181484b650c6, type: 3}
+  undoShot: {fileID: 8300000, guid: 3325d014df6a19a428687ec738e15f89, type: 3}
   temp: 0
   camY: 0
   camX: 0
@@ -346,6 +347,8 @@ MonoBehaviour:
   bonusLevel: 10
   textmeshPro: {fileID: 0}
   blockBashFont: {fileID: 2100000, guid: ca02fbd3d40a9d94dac38e0b27f4d073, type: 2}
+  redo: 0
+  redoShotCost: 0
 --- !u!4 &1312206337
 Transform:
   m_ObjectHideFlags: 0

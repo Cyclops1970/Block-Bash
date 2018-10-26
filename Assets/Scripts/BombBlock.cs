@@ -5,6 +5,8 @@ using TMPro;
 
 public class BombBlock : MonoBehaviour {
 
+    public LevelGenerator levelGenerator;
+
     //public Electricity electricity
     public GameObject bombEmpty;
 
@@ -17,11 +19,23 @@ public class BombBlock : MonoBehaviour {
 
     float deathDelay = 2.5f;
 
+    private void Start()
+    {
+        levelGenerator = GameObject.FindGameObjectWithTag("playLevel").GetComponent<LevelGenerator>();
+        //playLevel = GameObject.FindGameObjectWithTag("playLevel").GetComponent<PlayLevel>();
+    }
+
     private void OnDestroy()
     {
         //stop waiting for bomb activity
         GameManager.manager.keepWaiting = false;
+        print("Bomb destroyed");
 
+        GameObject[] m = GameObject.FindGameObjectsWithTag("message");
+        foreach(GameObject message in m)
+        {
+            Destroy(message);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -45,7 +59,7 @@ public class BombBlock : MonoBehaviour {
             //gameObject.GetComponent<Renderer>().enabled = false;
             Invoke("BombExplode", deathDelay);
             //Instantiate(explode, transform.localPosition, Quaternion.identity);
-            //Destroy(gameObject, deathDelay);
+            Destroy(gameObject, deathDelay);
 
         }
     }
@@ -63,7 +77,7 @@ public class BombBlock : MonoBehaviour {
         int reduction;
         int blocksToHitModulus = 2; // half the blocks
         float minHitsDivider = 2; //3
-        float maxHitsDivider = 0.75f; // 0.75
+        float maxHitsDivider = 0.55f; // 0.75
 
         GameObject[] block = GameObject.FindGameObjectsWithTag("block"); // Not including super blocks...should I?
         foreach (GameObject b in block)
@@ -95,6 +109,7 @@ public class BombBlock : MonoBehaviour {
 
                     //message showing number of hits needed reduced
                     StartCoroutine(GameManager.manager.Message("-" + reduction, b.transform.position, 4, 2, Color.white));
+
                 }
                 else
                 {
@@ -102,6 +117,7 @@ public class BombBlock : MonoBehaviour {
                     hitsRemainingText.text = "0";
                     StartCoroutine(GameManager.manager.Message("X", b.transform.position, 4, 2, Color.white));
                     StartCoroutine(BlockDeath(b));
+
                 }
 
                 //Create new electricity line
@@ -148,7 +164,7 @@ public class BombBlock : MonoBehaviour {
             block.color = blockHit.GetComponentInParent<Block>().colour;
         }
     }
-    
+
     //Block death
     public IEnumerator BlockDeath(GameObject blockHit)
     {
@@ -159,6 +175,14 @@ public class BombBlock : MonoBehaviour {
             Destroy(blockHit, 2);
         }
         yield return null;
+    }
+
+    private void Update()
+    {
+        if(GameManager.manager.redo==true)
+        {
+
+        }
     }
 }
 

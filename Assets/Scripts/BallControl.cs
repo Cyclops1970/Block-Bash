@@ -10,6 +10,7 @@ public class BallControl : MonoBehaviour
     public LevelGenerator levelGenerator;
     public FloorBlock floorBlock;
     public InvincibleBalls invincibleBalls;
+    public Balls2x balls2x;
 
     Camera camera;
 
@@ -43,7 +44,10 @@ public class BallControl : MonoBehaviour
         {
             GameManager.manager.maxNumberOfBalls *= 2;
         }
-
+        if(balls2x.doubleBalls==true)
+        {
+            GameManager.manager.maxNumberOfBalls *= 2;
+        }
         GameManager.manager.currentNumberOfBalls = GameManager.manager.maxNumberOfBalls;
     }
 

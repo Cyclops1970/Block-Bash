@@ -102,47 +102,46 @@ public class LevelGenerator : MonoBehaviour {
         // Get starting pos X (left hand side of screen), y (top of screen)
         xStart = (-GameManager.manager.camX / 2 + blockScaleAdjustedX / 2);
         yStart = (GameManager.manager.camY / 2 - blockScaleAdjustedY / 2) - (GameManager.manager.camY * GameManager.manager.freeTopArea);
-        //yStart = (cY / 2 - blockScaleAdjustedY / 2) - (cY * GameManager.manager.freeTopArea);
-
+        
         //go through colour mappings and instantiate according to colour.
         foreach (ColourToPrefab currentBlock in level.ctp)
         {
             if (currentBlock.colour.Equals(pixelColour))
             {
-                block[x,y] = Instantiate(currentBlock.blockType);
-                block[x,y].gameObject.transform.SetParent(blockContainer.transform); // make it neater in the heirarchy
+                block[x, y] = Instantiate(currentBlock.blockType);
+                block[x, y].gameObject.transform.SetParent(blockContainer.transform); // make it neater in the heirarchy
 
                 //Scale block correctly
-                block[x,y].GetComponent<Block>().transform.localScale = new Vector2(blockScaleAdjustedX, blockScaleAdjustedY);
+                block[x, y].GetComponent<Block>().transform.localScale = new Vector2(blockScaleAdjustedX, blockScaleAdjustedY);
                 //Place block
-                block[x,y].gameObject.transform.localPosition = new Vector2(xStart + (blockScaleAdjustedX * x), yStart - (blockScaleAdjustedY * y));
-                
+                block[x, y].gameObject.transform.localPosition = new Vector2(xStart + (blockScaleAdjustedX * x), yStart - (blockScaleAdjustedY * y));
+
                 //white is solid, red is bomb, light red is vertical, medium red is horizontal
-                if ((pixelColour != Color.white) && (pixelColour != Color.red)&&(pixelColour != new Color(1,0,0,0.2f))&&(pixelColour != new Color(1,0,0,0.4f)))
+                if ((pixelColour != Color.white) && (pixelColour != Color.red) && (pixelColour != new Color(1, 0, 0, 0.2f)) && (pixelColour != new Color(1, 0, 0, 0.4f)))
                 {
                     //Initial Colour
                     if (y == currentLevel.height - 1)
                     {
-                        block[x,y].GetComponent<Block>().colour = Color.red;
+                        block[x, y].GetComponent<Block>().colour = Color.red;
                     }
                     else
                     {
-                        block[x,y].GetComponent<Block>().colour = new Color32(0, (byte)(200 - currentBlock.hitsToKill / 2), 255, 255);
+                        block[x, y].GetComponent<Block>().colour = new Color32(0, (byte)(200 - currentBlock.hitsToKill / 2), 255, 255);
                     }
-                    block[x,y].gameObject.GetComponent<SpriteRenderer>().color = block[x,y].GetComponent<Block>().colour;
+                    block[x, y].gameObject.GetComponent<SpriteRenderer>().color = block[x, y].GetComponent<Block>().colour;
 
                     //set and display number of hits 
-                    block[x,y].GetComponent<Block>().hitsRemaining = currentBlock.hitsToKill;
-                    hitsRemainingText = block[x,y].gameObject.GetComponentInChildren<Canvas>().GetComponentInChildren<TextMeshProUGUI>(); // get the textmeshpro element of the letterText
-                    hitsRemainingText.text = block[x,y].GetComponent<Block>().hitsRemaining.ToString();
+                    block[x, y].GetComponent<Block>().hitsRemaining = currentBlock.hitsToKill;
+                    hitsRemainingText = block[x, y].gameObject.GetComponentInChildren<Canvas>().GetComponentInChildren<TextMeshProUGUI>(); // get the textmeshpro element of the letterText
+                    hitsRemainingText.text = block[x, y].GetComponent<Block>().hitsRemaining.ToString();
 
                     //update total level points 
                     GameManager.manager.totalLevelPoints += currentBlock.hitsToKill;
                     //keep count of blocks used, so we know end of level when all blocks removed
                     GameManager.manager.actualNumberOfBlocks++;
                 }
+               // block[x, y].gameObject.transform.rotation = Random.rotation;  //////use for some kind of easter egg??!!!!!!!!!!!!lakjdhgf;auids;uiashd;ia;dsgfinasd;gikna;g
             }
-
         }
 
     }
@@ -209,7 +208,7 @@ public class LevelGenerator : MonoBehaviour {
     }
 
 */
-        void GenerateBonusBlock(int x, int y)
+    void GenerateBonusBlock(int x, int y)
     {
         Color pixelColour = currentLevel.GetPixel(x, currentLevel.height - 1 - y);
 

@@ -26,6 +26,7 @@ public class Balls2x : MonoBehaviour
                 doubleBalls = true;
 
                 GameManager.manager.maxNumberOfBalls *= 2;
+                GameManager.manager.currentNumberOfBalls = GameManager.manager.maxNumberOfBalls;
 
                 StartCoroutine(GameManager.manager.Message("Double Balls!" + "\r\n" + "(" + GameManager.manager.maxNumberOfBalls + ")", new Vector3(0,0,0), 8, 1.5f, Color.white));
 

@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour {
     public AudioClip bombSound;
     public AudioClip electrocutionSound;
     public AudioClip levelFailSound;
+    public AudioClip undoShot;
 
     [HideInInspector]
     public float temp;
@@ -132,6 +133,9 @@ public class GameManager : MonoBehaviour {
     [HideInInspector]
     public TextMeshPro textmeshPro;
     public Material blockBashFont;
+    [HideInInspector]
+    public bool redo;
+    public int redoShotCost;
 
     void Awake()
     {
@@ -177,7 +181,9 @@ public class GameManager : MonoBehaviour {
         blockReductionCost = 300;
         floorBlockCost = 400;
         invincibleBallsCost = 500;
-       
+
+        redoShotCost = 25;
+
         playerCoins = PlayerPrefs.GetInt("playerCoins");
 
         SetupLevels();
@@ -381,6 +387,8 @@ public class GameManager : MonoBehaviour {
         dbiText.transform.position = location;
         dbiText.font = Resources.Load("BANGERS SDF", typeof(TMP_FontAsset)) as TMP_FontAsset;
         dbiText.fontMaterial = Resources.Load("BlockBash Font", typeof(Material)) as Material;
+        //add tag so I can delete any left over messages when ever I like
+        dbiTextObject.tag = "message";
 
         while (elapsedTime < displayTime)//*currentTimeScale)
         {

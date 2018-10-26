@@ -12,11 +12,15 @@ public class PlayLevel : MonoBehaviour
     //[HideInInspector]
     static public PlayLevel playLevel;
 
+    //[HideInInspector]
+    //public BlockControl blockControl;
+
     [Header("")]
     //[Header("Game Manager")]
     //public GameManager m;
     public LevelGenerator levelGenerator; //use this type if levelGenerator won't be active when needed it here..nullref fix!!
     public HorizontalBlock horizontalBlock;
+    public PhoneShake phoneShake;
 
     public Balls2x balls2x;
     public Button balls2xButton;
@@ -82,11 +86,18 @@ public class PlayLevel : MonoBehaviour
     //used for reward line  
     static float levelPercentage;
     static float oldFillAmount;
+    public float rewardLineStartOfShot;
+    public int highScoreStartOfShot;
 
-    bool hs = false; // used to determine if new HS message should be played
+    [HideInInspector]
+    static public GameObject[,] currentBlockStatus;
+    [HideInInspector]
+    static public int[,] currentBlockHitsRemaining;
+
+    public bool hs = false; // used to determine if new HS message should be played
 
     Color32 textGreen = new Color32(11, 196, 0, 255);
-    
+
     // Use this for initialization
     void Start ()
     {
@@ -125,14 +136,15 @@ public class PlayLevel : MonoBehaviour
         
     }
 
-    IEnumerator ShotPanelShow()
+    public IEnumerator ShotPanelShow()
     {
+        //Color colour = shotPanel.GetComponent<Image>().color;
+        //colour.a = 1;
+
         float deathTime = 0.15f;
         float elapsedTime = 0;
         Vector2 endingScale = bottomPanel.transform.localScale; // same size as bottom panel
         Vector2 startingScale = new Vector2(0.0000f, 0.0000f);
-
-        shotPanel.SetActive(true);
 
         while (elapsedTime < deathTime)
         {
@@ -144,14 +156,12 @@ public class PlayLevel : MonoBehaviour
         shotPanel.transform.localScale = endingScale;
     }
 
-    IEnumerator ShotPanelHide()
+    public IEnumerator ShotPanelHide()
     {
         float deathTime = 0.15f;
         float elapsedTime = 0;
         Vector2 startingScale = bottomPanel.transform.localScale; // same size as bottom panel
         Vector2 endingScale = new Vector2(0.0000f, 0.0000f);
-
-        //yield return new WaitForSeconds(0.15f);
 
         while (elapsedTime < deathTime)
         {
@@ -160,7 +170,7 @@ public class PlayLevel : MonoBehaviour
 
             yield return null;
         }
-        shotPanel.SetActive(false);
+        shotPanel.transform.localScale = endingScale;
     }
 
     void SetupBorders()
@@ -206,6 +216,8 @@ public class PlayLevel : MonoBehaviour
 	
     public IEnumerator Play()
     {
+        phoneShake.shakeCount = 0;  // Reset phone shake count so they can reshake blocks.
+
         //Get current highscore (done so it isn't stored on replays of same level)
         GameManager.manager.level[GameManager.manager.currentLevel].highestPoints = PlayerPrefs.GetInt("level" + GameManager.manager.currentLevel + "highestPoints");
 
@@ -262,16 +274,17 @@ public class PlayLevel : MonoBehaviour
         while ((GameManager.manager.actualNumberOfBlocks > 0) && (!levelFailed))
         {
             //launch balls
-            LaunchBalls();
+            LaunchBalls(); // Store current state of play here for reversal if needed
             
-            // Check if all balls have finished on screen and move blocks down
-            BallsFinished(); //move blocks down
-
             //update the level text
             UpdateLevelText();
-            
+
             //update the reward line
             UpdateRewardLine();
+           
+            // Check if all balls have finished on screen and move blocks down
+            BallsFinished(); //move blocks down
+            
             /*
             if(Input.GetKeyDown(KeyCode.T))
             {
@@ -279,6 +292,7 @@ public class PlayLevel : MonoBehaviour
                 CopyStuff();
             }
             */
+
             yield return null;
 
             //Double check all blocks are gone (sometimes there are blocks left in frantic levels)
@@ -375,7 +389,7 @@ public class PlayLevel : MonoBehaviour
             {
                 colour = (byte)(150 - (Mathf.RoundToInt(b.GetComponent<Block>().hitsRemaining / 50) * 20)); //50 points, 20 colour change
 
-                b.GetComponent<Block>().colour = new Color32(0, (byte)(150 - b.GetComponent<Block>().hitsRemaining), 255, 255);
+                b.GetComponent<Block>().colour = new Color32(0, (byte)Mathf.Clamp((150 - b.GetComponent<Block>().hitsRemaining), 0,150), 255, 255);
                 //b.GetComponent<Block>().colour = new Color32(colour, colour, 255, 255);
                 
                 b.gameObject.GetComponent<SpriteRenderer>().color = b.GetComponent<Block>().colour;
@@ -392,7 +406,6 @@ public class PlayLevel : MonoBehaviour
                     b.gameObject.GetComponent<SpriteRenderer>().color = Color.red;
                     b.gameObject.GetComponentInParent<Block>().colour = Color.red;
                 }
-
             }
         }
     }
@@ -408,7 +421,8 @@ public class PlayLevel : MonoBehaviour
     IEnumerator ForceBallsToFinish()
     {
         ableToShoot = false;
-        
+        Time.timeScale = 1;
+
         //stop balls moving.
         if (GameManager.manager.ballsActive == true)
         {
@@ -475,38 +489,46 @@ public class PlayLevel : MonoBehaviour
     }
     void BallsFinished()
     {
-        //if (((GameManager.manager.currentNumberOfBalls <= 0) && (GameManager.manager.ballsActive == true)&&(GameManager.manager.keepWaiting==false)))
-        if (((GameManager.manager.currentNumberOfBalls <= 0) && (GameManager.manager.ballsActive == true)))
+        if((GameManager.manager.redo==false) && (GameManager.manager.keepWaiting==false))// might be waiting for redo to commence
         {
-            //switch the bottompanel and shotpanel back
-            StartCoroutine(ShotPanelHide());
-
-            GameManager.manager.ballsActive = false;
-            ableToShoot = false;
-
-            MoveBlocksDown();
-
-            //COLOUR FOR SPECIAL LEVELS TO NOT BE DONE
-            if (GameManager.manager.currentLevel % GameManager.manager.bonusLevel != 0)
+            //if (((GameManager.manager.currentNumberOfBalls <= 0) && (GameManager.manager.ballsActive == true)&&(GameManager.manager.keepWaiting==false)))
+            if (((GameManager.manager.currentNumberOfBalls <= 0) && (GameManager.manager.ballsActive == true)))
             {
-                BlockColour();
+                Time.timeScale = 1;
+
+                //switch the bottompanel and shotpanel back
+                StartCoroutine(ShotPanelHide());
+
+                GameManager.manager.ballsActive = false;
+                ableToShoot = false;
+
+                MoveBlocksDown();
+
+                //COLOUR FOR SPECIAL LEVELS TO NOT BE DONE
+                if (GameManager.manager.currentLevel % GameManager.manager.bonusLevel != 0)
+                {
+                    BlockColour();
+                }
+                else
+                {
+                    BlockColour(); //this wasn't here before when doing the colours icon type levels.
+                }
+
+                ResetPowerUps();
+
+                DestroySpecials();
             }
-            else
-            {
-                BlockColour(); //this wasn't here before when doing the colours icon type levels.
-            }
-
-            ResetPowerUps();
-
-            DestroySpecials();
-
         }
     }
 
-    void LaunchBalls()
+    void LaunchBalls() //start of shot
     {
         if ((ableToShoot == true) && (GameManager.manager.ballsActive == false) && (bottomReached==false))
         {
+            SaveBlocksForRedoShot();
+            rewardLineStartOfShot = rewardLine.fillAmount;
+            highScoreStartOfShot = GameManager.manager.level[GameManager.manager.currentLevel].highestPoints;
+
             //used to show HS is new HS 
             hs = false;
 
@@ -610,10 +632,14 @@ public class PlayLevel : MonoBehaviour
         //Show the number of balls to play this shot
         numberOfBallsText.text = GameManager.manager.maxNumberOfBalls + " Balls This Shot";
         //Show the number of balls left in play
-        if(GameManager.manager.currentNumberOfBalls > 1)
+        if (GameManager.manager.currentNumberOfBalls > 1)
+        {
             numberOfBallsInPlayText.text = GameManager.manager.currentNumberOfBalls + " Balls In Play...";
+        }
         else
+        {
             numberOfBallsInPlayText.text = GameManager.manager.currentNumberOfBalls + " Ball In Play...";
+        }
         //Show playerCoins
         playerCoinsText.text = GameManager.manager.playerCoins.ToString();
         
@@ -699,10 +725,13 @@ public class PlayLevel : MonoBehaviour
                     {
                         //levelFailed = true;
                         //failPanel.SetActive(true);
-                        StartCoroutine(ShowFailPanelWithDelay(0.5f));
-
-                        //used to prevent LAUNCHBALLS from working
-                        bottomReached = true;
+                        //Blocks aren't removed from the array with horizontal/vertical/bombs...ignore destroyed blocks still in array (bad coding haha)
+                        if (levelGenerator.block[x, y + 1].gameObject.GetComponent<Block>().hitsRemaining > 0) 
+                        {
+                            StartCoroutine(ShowFailPanelWithDelay(0.5f));
+                            //used to prevent LAUNCHBALLS from working
+                            bottomReached = true;
+                        }
                     }
                 }
             }
@@ -868,4 +897,41 @@ public class PlayLevel : MonoBehaviour
         }
         
     }
+
+    public void SaveBlocksForRedoShot()
+    {
+        GameManager.manager.redo = false;
+
+        //Store current state of play
+        currentBlockStatus = new GameObject[levelGenerator.currentLevel.width, levelGenerator.currentLevel.height + 1];
+        currentBlockHitsRemaining = new int[levelGenerator.currentLevel.width, levelGenerator.currentLevel.height + 1];
+
+        //Save the current hits of all blocks before this turn. Used in RedoShot to restore details.
+        for (int y = 0; y < levelGenerator.currentLevel.height; y++)
+        {
+            for (int x = 0; x < levelGenerator.currentLevel.width; x++)
+            {
+                if (levelGenerator.block[x, y] != null)
+                {
+                    //because blocks get destroyed
+                    currentBlockHitsRemaining[x, y] = levelGenerator.block[x, y].GetComponent<Block>().hitsRemaining;
+                }
+            }
+        }
+
+        for (int x = 0; x < levelGenerator.currentLevel.width; x++)
+        {
+            for (int y = 0; y < levelGenerator.currentLevel.height; y++)
+            {
+                if ((levelGenerator.block[x, y] != null)) // && (levelGenerator.block[x, y].gameObject.transform.localPosition == gameObject.transform.localPosition))
+                {
+                    // Cant just copy it as copies are done by reference, not value
+                    // So I instantiate the block and store it 
+                    PlayLevel.currentBlockStatus[x, y] = Instantiate(levelGenerator.block[x, y].gameObject);
+                    PlayLevel.currentBlockStatus[x, y].gameObject.SetActive(false);
+                }
+            }
+        }
+    }
+    
 }
