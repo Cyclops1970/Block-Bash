@@ -16,7 +16,7 @@ public class HowToPlay : MonoBehaviour
     private void Start()
     {
         pageNumber = 0;
-        totalNumberOfPages = 5;
+        totalNumberOfPages = 6;
 
         panel[pageNumber].SetActive(true);
 

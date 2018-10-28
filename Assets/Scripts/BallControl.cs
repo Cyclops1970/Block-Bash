@@ -64,7 +64,7 @@ public class BallControl : MonoBehaviour
         //setup time for speed update
         nextSpeedUpdate = Time.time + speedUpdateTime;
         speedUpdateTime = 0.75f;
-        speedIncrease = 0.1f;
+        speedIncrease = 0.05f;
 
         //set the number of balls
         CalculateNumberOfBalls();
@@ -178,6 +178,9 @@ public class BallControl : MonoBehaviour
                 }
             }
         }
+
+        // check for edge hit on joined blocks
+
     }
 
     public IEnumerator DestroyBalls()

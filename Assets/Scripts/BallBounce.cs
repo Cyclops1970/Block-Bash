@@ -4,12 +4,24 @@ using UnityEngine;
 
 public class BallBounce : MonoBehaviour
 {
-    /*
+    
     void OnCollisionEnter2D(Collision2D col)
     {
-        print("Bouncy bounce");
-        Rigidbody2D rb = gameObject.GetComponent<Rigidbody2D>();
+        //print("Bouncy bounce");
+        /*
+        if(gameObject.GetComponent<Rigidbody2D>().velocity.x < 0)
+        {
+            //print("right");
+            
+        }
+        else
+        {
+            //print("left");
 
+        }
+        */
+        /*
+        Rigidbody2D rb = gameObject.GetComponent<Rigidbody2D>();
         Vector3 temp = Vector3.Cross(col.contacts[0].normal, rb.velocity);
         Vector3 tangent = Vector3.Cross(col.contacts[0].normal, temp);
 
@@ -17,7 +29,8 @@ public class BallBounce : MonoBehaviour
         Vector3 normal_component = Vector3.Project(rb.velocity, col.contacts[0].normal);
 
         rb.velocity = tangent_component + normal_component;
+        */
     }
-    */
+    
 }
 

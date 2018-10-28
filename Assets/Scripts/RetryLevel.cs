@@ -8,5 +8,7 @@ public class RetryLevel : MonoBehaviour {
 	public void Retry()
     {
         SceneManager.LoadScene("PlayGame");
+
+        GameManager.manager.retries++;
     }
 }

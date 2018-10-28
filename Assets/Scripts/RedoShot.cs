@@ -18,7 +18,7 @@ public class RedoShot : MonoBehaviour
 
     private void Start()
     {
-        redoCostText.text = GameManager.manager.redoShotCost.ToString();
+        //redoCostText.text = GameManager.manager.redoShotCost.ToString();
     }
 
     private void Update()
@@ -53,6 +53,8 @@ public class RedoShot : MonoBehaviour
 
     public IEnumerator Redo()
     {
+        //Quaternion resetRotation;
+
         while (GameManager.manager.keepWaiting == true)
         {
             print("waiting....");
@@ -82,7 +84,6 @@ public class RedoShot : MonoBehaviour
         }
 
         //restore blocks to same state as start of shot
-        //Store current state of play
         for (int y = 0; y < levelGenerator.currentLevel.height; y++)
         {
             for (int x = 0; x < levelGenerator.currentLevel.width; x++)
@@ -111,10 +112,12 @@ public class RedoShot : MonoBehaviour
                     }
                     levelGenerator.block[x, y].gameObject.GetComponentInChildren<Collider2D>().enabled = true;
 
+                    //resetRotation = levelGenerator.block[x, y].gameObject.transform.rotation;
                     StartCoroutine(DisplayUndoneBlock(x, y));
-
                     //Scale block correctly
-                    //levelGenerator.block[x, y].GetComponent<Block>().transform.localScale = new Vector2(levelGenerator.blockScaleAdjustedX, levelGenerator.blockScaleAdjustedY);
+                    levelGenerator.block[x, y].GetComponent<Block>().transform.localScale = new Vector2(levelGenerator.blockScaleAdjustedX, levelGenerator.blockScaleAdjustedY);
+                    //Reset rotation to ensure looks proper
+                    //levelGenerator.block[x, y].GetComponent<Block>().transform.rotation = resetRotation;
                 }
             }
         }
@@ -180,7 +183,7 @@ public class RedoShot : MonoBehaviour
 
         while (elapsedTime < displayTime)//*currentTimeScale)
         {
-            levelGenerator.block[x, y].transform.rotation = Quaternion.Lerp(startQuat, endQuat, (elapsedTime / displayTime));
+            //levelGenerator.block[x, y].transform.rotation = Quaternion.Lerp(startQuat, endQuat, (elapsedTime / displayTime));
             levelGenerator.block[x, y].transform.localScale = Vector2.Lerp(startingScale, endingScale, (elapsedTime / displayTime));
             elapsedTime += Time.deltaTime;
 

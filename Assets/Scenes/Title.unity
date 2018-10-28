@@ -349,6 +349,7 @@ MonoBehaviour:
   blockBashFont: {fileID: 2100000, guid: ca02fbd3d40a9d94dac38e0b27f4d073, type: 2}
   redo: 0
   redoShotCost: 0
+  retries: 0
 --- !u!4 &1312206337
 Transform:
   m_ObjectHideFlags: 0

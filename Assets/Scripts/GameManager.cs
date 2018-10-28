@@ -135,7 +135,10 @@ public class GameManager : MonoBehaviour {
     public Material blockBashFont;
     [HideInInspector]
     public bool redo;
+    [HideInInspector]
     public int redoShotCost;
+    [HideInInspector]
+    public int retries = 0;
 
     void Awake()
     {

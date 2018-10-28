@@ -12,7 +12,8 @@ public class NextLevel: MonoBehaviour
         //Load the PlayGame Scene
         SceneManager.LoadScene("PlayGame");
 
-
+        //reset level retires 
+        GameManager.manager.retries = 0;
 
     }
 }

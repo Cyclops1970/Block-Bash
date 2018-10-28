@@ -21,6 +21,7 @@ public class PlayLevel : MonoBehaviour
     public LevelGenerator levelGenerator; //use this type if levelGenerator won't be active when needed it here..nullref fix!!
     public HorizontalBlock horizontalBlock;
     public PhoneShake phoneShake;
+    public NeedAPowerUp needAPowerUp;
 
     public Balls2x balls2x;
     public Button balls2xButton;
@@ -65,9 +66,10 @@ public class PlayLevel : MonoBehaviour
     public GameObject floorBlockCoins;
     public TextMeshProUGUI invincibleBallsText;
     public GameObject invincibleBallsCoins;
+    public TextMeshProUGUI speedText;
 
     public GameObject passPanel, failPanel, shotPanel, bottomPanel;
-
+    
     [Header("Reward Line")]
     public Image rewardLine;
     public Image neutralFace;
@@ -101,6 +103,8 @@ public class PlayLevel : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
+        
+
         levelFailed = false;
         bottomReached = false;
         GameManager.manager.newHighScore = false;
@@ -268,7 +272,12 @@ public class PlayLevel : MonoBehaviour
             StartCoroutine(GameManager.manager.Message("Bonus Level" + "\r\n" + "Double Balls!"+"\r\n"+"Double Coins!", new Vector2(0, 0), 8, 2.5f, Color.white));
             BlockColour(); // remove if doing the bonus levels with their own colour
         }
-            
+
+        // suggest a powerup if they have retried several times
+        if((GameManager.manager.retries % 5 == 0) && (GameManager.manager.retries != 0))
+        {
+            needAPowerUp.TimeForPowerUp();
+        }
 
         //Play until level end
         while ((GameManager.manager.actualNumberOfBlocks > 0) && (!levelFailed))
@@ -640,6 +649,9 @@ public class PlayLevel : MonoBehaviour
         {
             numberOfBallsInPlayText.text = GameManager.manager.currentNumberOfBalls + " Ball In Play...";
         }
+        //Show ballspeed
+        speedText.text = "Speed: "+Time.timeScale.ToString("F1")+"x";
+
         //Show playerCoins
         playerCoinsText.text = GameManager.manager.playerCoins.ToString();
         
@@ -933,5 +945,5 @@ public class PlayLevel : MonoBehaviour
             }
         }
     }
-    
+
 }
