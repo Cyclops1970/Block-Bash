@@ -291,7 +291,8 @@ public class GameManager : MonoBehaviour {
         {
             PlayerPrefs.SetInt(highestLevel, 1000);
             highestLevelPlayed = 1000;
-            playerCoins = 22000;
+            playerCoins = 20000;
+            PlayerPrefs.SetInt("playerCoins", playerCoins);
         }
     }
 

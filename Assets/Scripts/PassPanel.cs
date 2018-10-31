@@ -92,6 +92,9 @@ public class PassPanel : MonoBehaviour
             newLowestShots.SetActive(false);
             noNewLowestShots.SetActive(true);
         }
+
+        //Disable the bottom panel
+        bottomPanel.SetActive(false);
     }
 }
 

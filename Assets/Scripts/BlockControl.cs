@@ -78,6 +78,9 @@ public class BlockControl : MonoBehaviour
         GameManager.manager.level[GameManager.manager.currentLevel].shotPoints += gameObject.GetComponentInParent<Block>().hitsRemaining;
         StartCoroutine(BlockDeath());
 
+        Destroy(collision.gameObject);
+        GameManager.manager.currentNumberOfBalls--;
+
     }
 
     //flash colour on hit

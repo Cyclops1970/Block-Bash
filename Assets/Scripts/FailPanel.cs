@@ -9,11 +9,7 @@ public class FailPanel : MonoBehaviour {
     public Button continueButton;
     public TextMeshProUGUI costText;
     public TextMeshProUGUI blocksRemainingText;
-
-    // Use this for initialization
-    void Start()
-    {
-	}
+    public GameObject bottomPanel;
 
     private void OnEnable()
     {
@@ -34,7 +30,11 @@ public class FailPanel : MonoBehaviour {
         {
             continueButton.interactable = true;
         }
+
+        //hide bottom panel 
+        bottomPanel.SetActive(false);
     }
+
 
     private void OnDisable()
     {
