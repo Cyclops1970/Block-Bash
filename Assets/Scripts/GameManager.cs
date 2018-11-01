@@ -6,7 +6,7 @@ using TMPro;
 
 public class GameManager : MonoBehaviour {
 
-    bool debug = true;
+    bool debug = false;
 
     public static GameManager manager;
 
