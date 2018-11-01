@@ -55,7 +55,7 @@ public class BlockReduction : MonoBehaviour
                 StartCoroutine(GameManager.manager.Message("Hits Needed Reduced!", new Vector2(0, 0), 8, 1.5f, Color.white));
             }
         }
-        else
+        else if(blockReductionActive == false)
         {
             if (GameManager.manager.playerCoins >= GameManager.manager.blockReductionCost)
             {

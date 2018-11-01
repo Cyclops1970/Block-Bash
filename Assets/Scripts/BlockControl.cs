@@ -15,6 +15,7 @@ public class BlockControl : MonoBehaviour
     static public BlockControl blockControl;
     public LevelGenerator levelGenerator;
     public PlayLevel playLevel;
+    GameObject ballExplode;
 
     //Text hitsRemainingText;
     TextMeshProUGUI hitsRemainingText;
@@ -26,6 +27,8 @@ public class BlockControl : MonoBehaviour
     {
         levelGenerator = GameObject.FindGameObjectWithTag("playLevel").GetComponent<LevelGenerator>();
         playLevel = GameObject.FindGameObjectWithTag("playLevel").GetComponent<PlayLevel>();
+
+        ballExplode = playLevel.ballExplosion;
     }
 
     //reduce hits remaining and if needed, reduce number of blocks and delete object
@@ -78,6 +81,7 @@ public class BlockControl : MonoBehaviour
         GameManager.manager.level[GameManager.manager.currentLevel].shotPoints += gameObject.GetComponentInParent<Block>().hitsRemaining;
         StartCoroutine(BlockDeath());
 
+        Instantiate(ballExplode, collision.transform); // not working?
         Destroy(collision.gameObject);
         GameManager.manager.currentNumberOfBalls--;
 

@@ -49,7 +49,7 @@ public class FloorBlock : MonoBehaviour {
                 StartCoroutine(GameManager.manager.Message("Floor Blocks!", new Vector2(0, 0), 8, 1.5f, Color.white));
             }
         }
-        else
+        else if(floorBlocksActive == false)
         {
             if (GameManager.manager.playerCoins >= GameManager.manager.floorBlockCost)
             {

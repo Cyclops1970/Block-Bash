@@ -21,7 +21,7 @@ public class InvincibleBalls : MonoBehaviour
                 AudioSource.PlayClipAtPoint(GameManager.manager.purchaseSound, Camera.main.transform.position);
                 invincibleBallsActive = true;
 
-                StartCoroutine(GameManager.manager.Message("Power Balls!", new Vector2(0, 0), 8, 1.5f, Color.white));
+                StartCoroutine(GameManager.manager.Message("Power Balls Activated!", new Vector2(0, 0), 8, 1.5f, Color.white));
 
                 //reduce number of powerups left
                 GameManager.manager.numberOfInvincibleBalls--;
@@ -37,7 +37,7 @@ public class InvincibleBalls : MonoBehaviour
                 //maybe make the button inactive??
             }
         }
-        else
+        else if(invincibleBallsActive==false)
         {
             if (GameManager.manager.playerCoins >= GameManager.manager.invincibleBallsCost)
             {

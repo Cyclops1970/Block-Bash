@@ -10,6 +10,7 @@ public class FailPanel : MonoBehaviour {
     public TextMeshProUGUI costText;
     public TextMeshProUGUI blocksRemainingText;
     public GameObject bottomPanel;
+    public GameObject dimCoinsNeeded;
 
     private void OnEnable()
     {
@@ -25,10 +26,12 @@ public class FailPanel : MonoBehaviour {
         if (GameManager.manager.playerCoins < GameManager.manager.continueCost)
         {
             continueButton.interactable = false;
+            dimCoinsNeeded.SetActive(true);
         }
         else
         {
             continueButton.interactable = true;
+            dimCoinsNeeded.SetActive(false);
         }
 
         //hide bottom panel 

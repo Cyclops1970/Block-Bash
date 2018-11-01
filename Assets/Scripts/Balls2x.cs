@@ -18,7 +18,7 @@ public class Balls2x : MonoBehaviour
     {
         if (GameManager.manager.numberOfBalls2x > 0)
         {
-            if (doubleBalls == false)
+            if (doubleBalls == false) // if Not already active
             {
                 //sound
                 AudioSource.PlayClipAtPoint(GameManager.manager.purchaseSound, Camera.main.transform.position);
@@ -37,7 +37,7 @@ public class Balls2x : MonoBehaviour
                 //maybe make the button inactive??
             }
         }
-        else
+        else if(doubleBalls==false)
         {
             if(GameManager.manager.playerCoins >= GameManager.manager.balls2xCost)
             {

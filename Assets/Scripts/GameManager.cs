@@ -6,7 +6,7 @@ using TMPro;
 
 public class GameManager : MonoBehaviour {
 
-    bool debug = false;
+    bool debug = true;
 
     public static GameManager manager;
 
@@ -263,10 +263,10 @@ public class GameManager : MonoBehaviour {
         // First time played, give the player powerups
         if (PlayerPrefs.GetInt("firstTimePlayed") == 0)
         {
-            PlayerPrefs.SetInt(balls2x, 2);
-            PlayerPrefs.SetInt(blockReduction, 2);
-            PlayerPrefs.SetInt(floorBlock, 2);
-            PlayerPrefs.SetInt(invincibleBalls, 2);
+            PlayerPrefs.SetInt(balls2x, 1);
+            PlayerPrefs.SetInt(blockReduction, 1);
+            PlayerPrefs.SetInt(floorBlock, 1);
+            PlayerPrefs.SetInt(invincibleBalls, 1);
 
             PlayerPrefs.SetInt("firstTimePlayed", 1); // set so they don't get powerups each time they play
         }

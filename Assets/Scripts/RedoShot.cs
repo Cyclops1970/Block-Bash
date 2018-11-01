@@ -18,7 +18,7 @@ public class RedoShot : MonoBehaviour
 
     private void Start()
     {
-        //redoCostText.text = GameManager.manager.redoShotCost.ToString();
+        redoCostText.text = GameManager.manager.redoShotCost.ToString();
     }
 
     private void Update()
@@ -43,12 +43,11 @@ public class RedoShot : MonoBehaviour
     {
         Time.timeScale = 1; // reset time 
 
-        //GameManager.manager.playerCoins -= GameManager.manager.redoShotCost;
+        GameManager.manager.playerCoins -= GameManager.manager.redoShotCost;
         
         //set redo to true. used to stop bombs etc.
         GameManager.manager.redo = true;
         StartCoroutine(Redo());
-        //StartCoroutine(GameManager.manager.Message("Undo Shot!", Vector3.zero, 8, timer, Color.white));
     }
 
     public IEnumerator Redo()
@@ -156,10 +155,14 @@ public class RedoShot : MonoBehaviour
         {
             playLevel.hs = false;
             GameManager.manager.newHighScore = false;
-            GameManager.manager.level[GameManager.manager.currentLevel].highestPoints = playLevel.highScoreStartOfShot;
-            //show highest points
-            playLevel.highScoreText.text = ("Highest: " + GameManager.manager.level[GameManager.manager.currentLevel].highestPoints);
+            //GameManager.manager.level[GameManager.manager.currentLevel].highestPoints = playLevel.highScoreStartOfShot;
         }
+        GameManager.manager.level[GameManager.manager.currentLevel].highestPoints = playLevel.highScoreStartOfShot;
+        //show highest points
+        playLevel.highScoreText.text = ("Highest: " + GameManager.manager.level[GameManager.manager.currentLevel].highestPoints);
+        
+
+
         //set current shot to 0
         GameManager.manager.level[GameManager.manager.currentLevel].shotPoints = 0;
         playLevel.shotScoreText.text = "0";

@@ -96,15 +96,20 @@ public class PlayLevel : MonoBehaviour
     [HideInInspector]
     static public int[,] currentBlockHitsRemaining;
 
+    [Header("Shot Panel Icons")]
+    public GameObject doubleBallsIcon;
+    public GameObject blockReductionIcon;
+    public GameObject floorBlocksIcon;
+    public GameObject powerBallIcon;
+
     public bool hs = false; // used to determine if new HS message should be played
 
     Color32 textGreen = new Color32(11, 196, 0, 255);
+    Color readyTextColour = new Color(0.48f, .8f, .85f);
 
     // Use this for initialization
     void Start ()
     {
-        
-
         levelFailed = false;
         bottomReached = false;
         GameManager.manager.newHighScore = false;
@@ -142,14 +147,61 @@ public class PlayLevel : MonoBehaviour
 
     public IEnumerator ShotPanelShow()
     {
-        //Color colour = shotPanel.GetComponent<Image>().color;
-        //colour.a = 1;
-
         float deathTime = 0.15f;
         float elapsedTime = 0;
         Vector2 endingScale = bottomPanel.transform.localScale; // same size as bottom panel
         Vector2 startingScale = new Vector2(0.0000f, 0.0000f);
-
+        
+        if(balls2x.doubleBalls==true)
+        {
+            //doubleBallsIcon.SetActive(true);
+            doubleBallsIcon.GetComponent<Button>().interactable = true;
+            //doubleBallsIcon.GetComponentInChildren<TextMeshProUGUI>().enabled = true;
+        }
+        else
+        {
+            doubleBallsIcon.GetComponent<Button>().interactable = false;
+            //doubleBallsIcon.GetComponentInChildren<TextMeshProUGUI>().enabled = false;
+            //doubleBallsIcon.SetActive(false);
+        }
+        if(blockReduction.blockReductionActive==true)
+        {
+            //blockReductionIcon.SetActive(true);
+            blockReductionIcon.GetComponent<Button>().interactable = true;
+            //blockReductionIcon.GetComponentInChildren<TextMeshProUGUI>().enabled = true;
+        }
+        else
+        {
+            //blockReductionIcon.SetActive(false);
+            blockReductionIcon.GetComponent<Button>().interactable = false;
+            //blockReductionIcon.GetComponentInChildren<TextMeshProUGUI>().enabled = false;
+        }
+        if(floorBlock.floorBlocksActive==true)
+        {
+            floorBlocksIcon.GetComponent<Button>().interactable = true;
+            //floorBlocksIcon.GetComponentInChildren<TextMeshProUGUI>().enabled = true;
+            //floorBlocksIcon.SetActive(true);
+        }
+        else
+        {
+            //floorBlocksIcon.SetActive(false);
+            floorBlocksIcon.GetComponent<Button>().interactable = false;
+            //floorBlocksIcon.GetComponentInChildren<TextMeshProUGUI>().enabled = false;
+        }
+        if(invincibleBalls.invincibleBallsActive==true)
+        {
+            powerBallIcon.GetComponent<Button>().interactable = true;
+            //powerBallIcon.GetComponentInChildren<TextMeshProUGUI>().enabled = true;
+            //powerBallIcon.SetActive(true);
+        }
+        else
+        {
+            powerBallIcon.GetComponent<Button>().interactable = false;
+            //powerBallIcon.GetComponentInChildren<TextMeshProUGUI>().enabled = false;
+            //powerBallIcon.SetActive(false);
+        }
+        
+        //enlarge the panel
         while (elapsedTime < deathTime)
         {
             shotPanel.transform.localScale = Vector2.Lerp(startingScale, endingScale, (elapsedTime / deathTime));
@@ -269,7 +321,7 @@ public class PlayLevel : MonoBehaviour
             BlockColour();
         else
         {
-            StartCoroutine(GameManager.manager.Message("Bonus Level" + "\r\n" + "Double Balls!"+"\r\n"+"Double Coins!", new Vector2(0, 0), 8, 2.5f, Color.white));
+            StartCoroutine(GameManager.manager.Message("Bonus Level" + "\r\n" + "Double Balls!"+"\r\n"+"Double Reward!", new Vector2(0, 0), 8, 2.5f, Color.white));
             BlockColour(); // remove if doing the bonus levels with their own colour
         }
 
@@ -616,6 +668,8 @@ public class PlayLevel : MonoBehaviour
     }
     void UpdateLevelText()
     {
+        //GameManager.manager.tempHS = 0;
+
         //update points shown
         shotScoreText.text = ("Score: " + GameManager.manager.level[GameManager.manager.currentLevel].shotPoints);
         //update highest score if necessary
@@ -632,6 +686,10 @@ public class PlayLevel : MonoBehaviour
             if (GameManager.manager.firstRun != true) //Avoid highscore on first run when highest score is 0
             {
                 GameManager.manager.newHighScore = true;
+            }
+            else
+            {
+                //GameManager.manager.tempHS = GameManager.manager.level[GameManager.manager.currentLevel].shotPoints;
             }
         }
         highScoreText.text = ("High: " + GameManager.manager.level[GameManager.manager.currentLevel].highestPoints);
@@ -660,49 +718,77 @@ public class PlayLevel : MonoBehaviour
         if (GameManager.manager.numberOfBalls2x > 0)
         {
             balls2xCoins.SetActive(false);
-            balls2xText.text = GameManager.manager.numberOfBalls2x.ToString() + " x";
+            //balls2xText.text = GameManager.manager.numberOfBalls2x.ToString() + " x";
+            balls2xText.color = readyTextColour;
+            balls2xText.text = "Ready";
         }
-        else
+        else if(balls2x.doubleBalls != true)
         {
             balls2xCoins.GetComponentInChildren<TextMeshProUGUI>().text = GameManager.manager.balls2xCost.ToString();
             balls2xCoins.SetActive(true);
             balls2xText.text = "";
         }
+        if(balls2x.doubleBalls==true)
+        {
+            balls2xText.color = Color.green;
+            balls2xText.text = "Active";
+        }
         //Block Reduction
         if (GameManager.manager.numberOfBockReductions > 0)
         {
             blockReductionCoins.SetActive(false);
-            blockReductionText.text = GameManager.manager.numberOfBockReductions.ToString() + " x";
+            //blockReductionText.text = GameManager.manager.numberOfBockReductions.ToString() + " x";
+            blockReductionText.color = readyTextColour;
+            blockReductionText.text = "Ready";
         }
-        else
+        else if(blockReduction.blockReductionActive != true)
         {
             blockReductionCoins.GetComponentInChildren<TextMeshProUGUI>().text = GameManager.manager.blockReductionCost.ToString();
             blockReductionCoins.SetActive(true);
             blockReductionText.text = "";
         }
+        if(blockReduction.blockReductionActive==true)
+        {
+            blockReductionText.color = Color.green;
+            blockReductionText.text = "Active";
+        }
         //Floor Blocks
         if (GameManager.manager.numberOfFloorBlocks > 0)
         {
             floorBlockCoins.SetActive(false);
-            floorBlockText.text = GameManager.manager.numberOfFloorBlocks.ToString() + " x";
+            //floorBlockText.text = GameManager.manager.numberOfFloorBlocks.ToString() + " x";
+            floorBlockText.color = readyTextColour;
+            floorBlockText.text = "Ready";
         }
-        else
+        else if(floorBlock.floorBlocksActive != true)
         {
             floorBlockCoins.GetComponentInChildren<TextMeshProUGUI>().text = GameManager.manager.floorBlockCost.ToString();
             floorBlockCoins.SetActive(true);
             floorBlockText.text = "";
         }
+        if(floorBlock.floorBlocksActive==true)
+        {
+            floorBlockText.color = Color.green;
+            floorBlockText.text = "Active";
+        }
         //InvincibleBalls
         if (GameManager.manager.numberOfInvincibleBalls > 0)
         {
             invincibleBallsCoins.SetActive(false);
-            invincibleBallsText.text = GameManager.manager.numberOfInvincibleBalls.ToString() + " x";
+            //invincibleBallsText.text = GameManager.manager.numberOfInvincibleBalls.ToString() + " x";
+            invincibleBallsText.color = readyTextColour;
+            invincibleBallsText.text = "Ready";
         }
-        else
+        else if(invincibleBalls.invincibleBallsActive != true)
         {
             invincibleBallsCoins.GetComponentInChildren<TextMeshProUGUI>().text = GameManager.manager.invincibleBallsCost.ToString();
             invincibleBallsCoins.SetActive(true);
             invincibleBallsText.text = "";
+        }
+        if(invincibleBalls.invincibleBallsActive == true)
+        {
+            invincibleBallsText.color = Color.green;
+            invincibleBallsText.text = "Active";
         }
         
     

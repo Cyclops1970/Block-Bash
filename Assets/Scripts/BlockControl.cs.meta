@@ -3,7 +3,11 @@ guid: f1731388f0b8fca46af510880a64fa76
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - levelGenerator: {instanceID: 0}
+  - playLevel: {instanceID: 0}
+  - ballExplode: {fileID: 1363591907734474, guid: b68c6311a434797418027a786aada756,
+      type: 2}
   executionOrder: 500
   icon: {instanceID: 0}
   userData: 
