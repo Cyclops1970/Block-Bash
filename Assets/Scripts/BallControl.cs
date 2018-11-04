@@ -60,7 +60,7 @@ public class BallControl : MonoBehaviour
         camera = FindObjectOfType<Camera>();
 
         speed = 7;
-        timeBetweenBalls = 0.055f;
+        timeBetweenBalls = 0.025f; //0.055
         //setup time for speed update
         nextSpeedUpdate = Time.time + speedUpdateTime;
         speedUpdateTime = 0.75f;

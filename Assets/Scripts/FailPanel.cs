@@ -12,8 +12,15 @@ public class FailPanel : MonoBehaviour {
     public GameObject bottomPanel;
     public GameObject dimCoinsNeeded;
 
+    public PlayLevel playLevel;
+
     private void OnEnable()
     {
+        //hide bottom panel 
+        bottomPanel.SetActive(false);
+        StartCoroutine(playLevel.ShotPanelHide());
+        print("hidden in fail");
+
         //Show the number of blocks remaining
         blocksRemainingText.text = "You left " + GameManager.manager.actualNumberOfBlocks.ToString() + " blocks remaining!";
 
@@ -23,6 +30,7 @@ public class FailPanel : MonoBehaviour {
         //Set continue button to active or not depending on player coins
         GameManager.manager.playerCoins = PlayerPrefs.GetInt("playerCoins");
 
+        //Give option to continue or not, depending on available coins
         if (GameManager.manager.playerCoins < GameManager.manager.continueCost)
         {
             continueButton.interactable = false;
@@ -33,9 +41,6 @@ public class FailPanel : MonoBehaviour {
             continueButton.interactable = true;
             dimCoinsNeeded.SetActive(false);
         }
-
-        //hide bottom panel 
-        bottomPanel.SetActive(false);
     }
 
 

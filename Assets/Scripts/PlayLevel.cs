@@ -1,16 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.SceneManagement;
+//using UnityEngine.SceneManagement;
 using TMPro;
 using UnityEngine.UI;
-using UnityEditor;
-using System.Linq;
+//using UnityEditor;
+//using System.Linq;
 
 public class PlayLevel : MonoBehaviour
 {
     //[HideInInspector]
-    static public PlayLevel playLevel;
+    static public PlayLevel playLevel{ get; set; }
 
     //[HideInInspector]
     //public BlockControl blockControl;
@@ -107,6 +107,10 @@ public class PlayLevel : MonoBehaviour
     Color32 textGreen = new Color32(11, 196, 0, 255);
     Color readyTextColour = new Color(0.48f, .8f, .85f);
 
+    private void Awake()
+    {
+        playLevel = this;
+    }
     // Use this for initialization
     void Start ()
     {
@@ -129,20 +133,6 @@ public class PlayLevel : MonoBehaviour
         levelGenerator.GenerateLevel();
 
         StartCoroutine(Play());
-    }
-
-    void CopyStuff()
-    {
-        int element = 0;
-        
-        foreach(ColourToPrefab c in levelGenerator.colourMappings)
-        {
-            levelGenerator.level.ctp[element].colour = c.colour;
-            levelGenerator.level.ctp[element].blockType = c.blockType;
-            levelGenerator.level.ctp[element].hitsToKill = c.hitsToKill;
-            element++;
-        }
-        
     }
 
     public IEnumerator ShotPanelShow()
@@ -345,26 +335,27 @@ public class PlayLevel : MonoBehaviour
            
             // Check if all balls have finished on screen and move blocks down
             BallsFinished(); //move blocks down
-            
-            /*
-            if(Input.GetKeyDown(KeyCode.T))
+
+            //check if bottom reached and show fail panel....give chance to continue
+            StartCoroutine(HasBottomBeenReached()); 
+            //if bottom reached, wait until continue selected, or they retry or go home
+            while(bottomReached==true)
             {
-                print("Copying to scriptable object.");
-                CopyStuff();
+                yield return null;
             }
-            */
 
             yield return null;
 
             //Double check all blocks are gone (sometimes there are blocks left in frantic levels)
             GameObject[] block = GameObject.FindGameObjectsWithTag("block");
             GameManager.manager.actualNumberOfBlocks = block.Length;
+
         }
 
         //reset time to default
         Time.timeScale = 1;
 
-        StartCoroutine(ShotPanelHide());
+        //StartCoroutine(ShotPanelHide());
 
         //Mark level as done and available in future
         if(GameManager.manager.actualNumberOfBlocks <= 0)
@@ -372,11 +363,7 @@ public class PlayLevel : MonoBehaviour
             // Remove any errant balls
             StartCoroutine(ForceBallsToFinish());
 
-            //slight delay
-            for (int wait = 0; wait < 100; wait++)
-            {
-                yield return null;
-            }
+            yield return new WaitForSecondsRealtime(0.5f);
 
             //if level completed check if lowestshotstaken needs to be updated
             //update lowest shots taken
@@ -418,25 +405,54 @@ public class PlayLevel : MonoBehaviour
             
             //show the pass panel
             passPanel.SetActive(true);
-            
+
+            StartCoroutine(ShotPanelHide());
+
             //USE TO prevent shooting
             bottomReached = true;
         }
         else // level failed
         {
+            Time.timeScale = 1;
             // Remove any errant balls
-            StartCoroutine(ForceBallsToFinish());
+            //StartCoroutine(ForceBallsToFinish());
 
             //slight delay
+            /*
             for (int wait = 0; wait < 130; wait++)
             {
                 yield return null;
             }
-        
+            */
+            AudioSource.PlayClipAtPoint(GameManager.manager.levelFailSound, gameObject.transform.localPosition);
+
+            yield return new WaitForSecondsRealtime(0.5f);
             failPanel.SetActive(true);
+
+            StartCoroutine(ShotPanelHide());
         }
 
         GameManager.manager.ballsActive = false;
+    }
+
+    IEnumerator HasBottomBeenReached()
+    {
+        //Give them the chance to continue (if 
+        if (bottomReached == true)
+        {
+            Time.timeScale = 1;
+            
+            AudioSource.PlayClipAtPoint(GameManager.manager.levelFailSound, gameObject.transform.localPosition);
+
+            yield return new WaitForSecondsRealtime(0.3f);
+
+            failPanel.SetActive(true);
+
+            //StartCoroutine(ShotPanelHide());
+            //print("hidden in bottom");
+            
+        }
+
     }
 
     public void BlockColour()
@@ -474,7 +490,7 @@ public class PlayLevel : MonoBehaviour
     public void ForceBallsToFinishWrapper()
     {
         //switch the bottompanel and shotpanel back
-        StartCoroutine(ShotPanelHide());
+        //StartCoroutine(ShotPanelHide());
 
         StartCoroutine(ForceBallsToFinish());
     }
@@ -555,16 +571,19 @@ public class PlayLevel : MonoBehaviour
             //if (((GameManager.manager.currentNumberOfBalls <= 0) && (GameManager.manager.ballsActive == true)&&(GameManager.manager.keepWaiting==false)))
             if (((GameManager.manager.currentNumberOfBalls <= 0) && (GameManager.manager.ballsActive == true)))
             {
+                print("Balls are active, acording to balls finished");
                 Time.timeScale = 1;
-
-                //switch the bottompanel and shotpanel back
-                StartCoroutine(ShotPanelHide());
 
                 GameManager.manager.ballsActive = false;
                 ableToShoot = false;
 
                 MoveBlocksDown();
-
+                /*
+                if(!levelFailed)
+                {
+                    StartCoroutine(ShotPanelHide());
+                }
+                */
                 //COLOUR FOR SPECIAL LEVELS TO NOT BE DONE
                 if (GameManager.manager.currentLevel % GameManager.manager.bonusLevel != 0)
                 {
@@ -576,10 +595,56 @@ public class PlayLevel : MonoBehaviour
                 }
 
                 ResetPowerUps();
-
                 DestroySpecials();
             }
         }
+    }
+    public void MoveBlocksDown() // called from BALLS FINSISHED and check for end of level due to blocks hitting bottom and forced balls finished
+    {
+        GameObject[] block = GameObject.FindGameObjectsWithTag("block");
+        GameObject[] solid = GameObject.FindGameObjectsWithTag("solidBlock");
+        GameObject[] bombs = GameObject.FindGameObjectsWithTag("bomb");
+        GameObject[] special = GameObject.FindGameObjectsWithTag("special");
+        List<GameObject> items = new List<GameObject>(block);
+        items.AddRange(new List<GameObject>(solid)); // get all the blocks, normal and super
+        items.AddRange(new List<GameObject>(bombs)); // and bombs
+        items.AddRange(new List<GameObject>(special));// and specials move the blocks down 
+
+        //bottom up as blocks are moving down
+        for (int y = levelGenerator.currentLevel.height - 1; y >= 0; y--)
+        {
+            for (int x = 0; x < levelGenerator.currentLevel.width; x++)
+            {
+                //move block down on screen, but not the solid blocks
+                if (((levelGenerator.block[x, y] != null) && (levelGenerator.block[x, y].gameObject.tag != "solidBlock") && (levelGenerator.block[x, y + 1] == null)))
+                {
+                    levelGenerator.block[x, y].gameObject.transform.localPosition =
+                        new Vector2(levelGenerator.block[x, y].gameObject.transform.localPosition.x, levelGenerator.block[x, y].gameObject.transform.localPosition.y - levelGenerator.blockScaleAdjustedY);
+                    //move block down in array
+                    levelGenerator.block[x, y + 1] = levelGenerator.block[x, y];
+                    levelGenerator.block[x, y] = null;
+
+                    //Check if bottom of screen reached.
+                    if (levelGenerator.block[x, y + 1].gameObject.transform.localPosition.y <= (-GameManager.manager.camY / 2) + (GameManager.manager.camY * GameManager.manager.freeBottomArea) + (levelGenerator.blockScaleAdjustedY / 2))
+                    {
+                        //levelFailed = true;
+                        bottomReached = true;
+                        //failPanel.SetActive(true);
+                        //Blocks aren't removed from the array with horizontal/vertical/bombs...ignore destroyed blocks still in array (bad coding haha)
+                        /*
+                        if (levelGenerator.block[x, y + 1].gameObject.GetComponent<Block>().hitsRemaining > 0) 
+                        {
+                            StartCoroutine(ShowFailPanelWithDelay(0.5f));
+                            //used to prevent LAUNCHBALLS from working
+                            bottomReached = true;
+                            //StartCoroutine(ShotPanelHide());
+                        }
+                        */
+                    }
+                }
+            }
+        }
+        StartCoroutine(ShotPanelHide());
     }
 
     void LaunchBalls() //start of shot
@@ -793,100 +858,6 @@ public class PlayLevel : MonoBehaviour
         
     
     }
-    public void MoveBlocksDown() // called from BALLS FINSISHED and check for end of level due to blocks hitting bottom and forced balls finished
-    {
-        GameObject[] block = GameObject.FindGameObjectsWithTag("block");
-        GameObject[] solid = GameObject.FindGameObjectsWithTag("solidBlock");
-        GameObject[] bombs = GameObject.FindGameObjectsWithTag("bomb");
-        GameObject[] special = GameObject.FindGameObjectsWithTag("special");
-        List<GameObject> items = new List<GameObject>(block);
-        items.AddRange(new List<GameObject>(solid)); // get all the blocks, normal and super
-        items.AddRange(new List<GameObject>(bombs)); // and bombs
-        items.AddRange(new List<GameObject>(special));// and specials move the blocks down 
-
-        //bottom up as blocks are moving down
-        for (int y = levelGenerator.currentLevel.height - 1; y >= 0; y--)
-        {
-            for (int x = 0; x < levelGenerator.currentLevel.width; x++)
-            {
-                //move block down on screen, but not the solid blocks
-                if (((levelGenerator.block[x, y] != null) && (levelGenerator.block[x, y].gameObject.tag != "solidBlock") && (levelGenerator.block[x, y + 1] == null)))
-                {
-                    levelGenerator.block[x, y].gameObject.transform.localPosition =
-                        new Vector2(levelGenerator.block[x, y].gameObject.transform.localPosition.x, levelGenerator.block[x, y].gameObject.transform.localPosition.y - levelGenerator.blockScaleAdjustedY);
-                    //move block down in array
-                    levelGenerator.block[x, y + 1] = levelGenerator.block[x, y];
-                    levelGenerator.block[x, y] = null;
-
-                    //Check if bottom of screen reached.
-                    if (levelGenerator.block[x, y + 1].gameObject.transform.localPosition.y <= (-GameManager.manager.camY / 2) + (GameManager.manager.camY * GameManager.manager.freeBottomArea) + (levelGenerator.blockScaleAdjustedY / 2))
-                    {
-                        //levelFailed = true;
-                        //failPanel.SetActive(true);
-                        //Blocks aren't removed from the array with horizontal/vertical/bombs...ignore destroyed blocks still in array (bad coding haha)
-                        if (levelGenerator.block[x, y + 1].gameObject.GetComponent<Block>().hitsRemaining > 0) 
-                        {
-                            StartCoroutine(ShowFailPanelWithDelay(0.5f));
-                            //used to prevent LAUNCHBALLS from working
-                            bottomReached = true;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    /*
-    public void MoveBlocksDown() // called from BALLS FINSISHED and check for end of level due to blocks hitting bottom and forced balls finished
-    {
-        if (GameManager.manager.keepWaiting == false)
-        {
-            GameObject[] block = GameObject.FindGameObjectsWithTag("block");
-            GameObject[] solid = GameObject.FindGameObjectsWithTag("solidBlock");
-            GameObject[] bombs = GameObject.FindGameObjectsWithTag("bomb");
-            GameObject[] special = GameObject.FindGameObjectsWithTag("special");
-            List<GameObject> items = new List<GameObject>(block);
-            items.AddRange(new List<GameObject>(solid)); // get all the blocks, normal and super
-            items.AddRange(new List<GameObject>(bombs)); // and bombs
-            items.AddRange(new List<GameObject>(special));// and specials move the blocks down 
-
-            foreach (GameObject b in items)
-            {
-                //Move blocks down
-                if (b.tag != "solidBlock")
-                {
-                    //prevent blocks from moving down if against solid blocks
-                    for (int y = 1; y <= levelGenerator.currentLevel.height; y++)
-                    {
-
-                    }
-
-                    b.transform.localPosition = new Vector2(b.transform.localPosition.x, b.transform.localPosition.y - levelGenerator.blockScaleAdjustedY);
-                }
-
-                //if blocks have reached the bottom of the screen, show fail screen
-                if (b.transform.localPosition.y <= (-GameManager.manager.camY / 2) + (GameManager.manager.camY * GameManager.manager.freeBottomArea) + (levelGenerator.blockScaleAdjustedY / 2))
-                {
-                    //GameManager.manager.ballsActive = true; //used to prevent DRAGTOSHOOT allowing to play in background. Change it to false in CONTINUE method.
-                    if ((b.tag == "solidBlock")||(b.tag=="special")||(b.tag=="bomb"))
-                    {
-                        Instantiate(ballExplosion, b.transform.localPosition, Quaternion.identity);
-                        Destroy(b);
-                    }
-                    else
-                    {
-                        //levelFailed = true;
-                        //failPanel.SetActive(true);
-                        StartCoroutine(ShowFailPanelWithDelay(0.5f));
-
-                        //used to prevent LAUNCHBALLS from working
-                        bottomReached = true;
-                    }
-                }
-            }
-        }
-    }
-    */
 
     IEnumerator ShowFailPanelWithDelay(float d)
     {
@@ -894,13 +865,13 @@ public class PlayLevel : MonoBehaviour
         AudioSource.PlayClipAtPoint(GameManager.manager.levelFailSound, gameObject.transform.localPosition);
         yield return new WaitForSeconds(d);
         failPanel.SetActive(true);
+        StartCoroutine(ShotPanelHide());
     }
 
     public void Continue() // called from the continue button on a failed level
     { 
         int upAmount = 1;
         int levelsToDestroy = 2;
-
         //Hide the fail panel
         failPanel.SetActive(false);
 
@@ -917,6 +888,58 @@ public class PlayLevel : MonoBehaviour
         items.AddRange(new List<GameObject>(bomb));
         items.AddRange(new List<GameObject>(special));
 
+        //Check if bottom of screen reached.
+        //if (levelGenerator.block[x, y + 1].gameObject.transform.localPosition.y <= (-GameManager.manager.camY / 2) + (GameManager.manager.camY * GameManager.manager.freeBottomArea) + (levelGenerator.blockScaleAdjustedY / 2))
+
+
+        //Destroy bottom blocks
+        for (int y = levelGenerator.currentLevel.height; y >= 0; y--) //height - 1
+        {
+            for (int x = 0; x < levelGenerator.currentLevel.width; x++)
+            {
+                if (levelGenerator.block[x, y] != null)
+                {
+                    if ((levelGenerator.block[x, y].transform.localPosition.y <= (-GameManager.manager.camY / 2) + (GameManager.manager.camY * GameManager.manager.freeBottomArea) + ((levelGenerator.blockScaleAdjustedY * levelsToDestroy))))
+                    {
+                        Instantiate(ballExplosion, levelGenerator.block[x, y].transform.localPosition, Quaternion.identity);
+                        if (levelGenerator.block[x, y].tag == "block")
+                        {
+                            GameManager.manager.actualNumberOfBlocks--;
+                        }
+
+                        Destroy(levelGenerator.block[x, y]);
+                        levelGenerator.block[x, y] = null;
+                    }
+                }
+            }
+        }
+        
+        //move remaining blocks up
+        for (int y = 0; y < levelGenerator.currentLevel.height; y++) 
+        {
+            for (int x = 0; x < levelGenerator.currentLevel.width; x++)
+            {
+                if (levelGenerator.block[x, y+1] != null)
+                {
+                    for (int up = 0; up < upAmount; up++)
+                    {
+                        if (levelGenerator.block[x, y+1].tag != "solidBlock")
+                        {
+                            //Move blocks up
+                            levelGenerator.block[x, y+1].transform.localPosition = new Vector2(levelGenerator.block[x, y+1].transform.localPosition.x, levelGenerator.block[x, y+1].transform.localPosition.y + levelGenerator.blockScaleAdjustedY);
+                            levelGenerator.block[x, y] = levelGenerator.block[x, y + 1];
+                            levelGenerator.block[x, y + 1] = null;
+                            // some kind of delay here.
+                        }
+                    }
+                }
+            }
+        }
+
+        
+
+
+                /* OLD
         foreach (GameObject b in items)
         {
             //destroy bottom 2 layers
@@ -940,7 +963,7 @@ public class PlayLevel : MonoBehaviour
                 }
             }
         }
-
+        */
         //Re-adjust block colours
         BlockColour();
 
@@ -950,8 +973,8 @@ public class PlayLevel : MonoBehaviour
 
         //Set back to false to allow DRAGTOSHOOT to work
         bottomReached = false;
-        
-
+        bottomPanel.SetActive(true);
+        ShotPanelHide();
     }
  
     void ResetPowerUps()
@@ -978,8 +1001,6 @@ public class PlayLevel : MonoBehaviour
                 Instantiate(ballExplosion, b.transform.localPosition, Quaternion.identity);
                 Destroy(b);
             }
-           
-
         }
         //Reset Power Balls
         if(invincibleBalls.invincibleBallsActive == true)
