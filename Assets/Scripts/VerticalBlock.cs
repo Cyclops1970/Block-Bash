@@ -20,6 +20,7 @@ public class VerticalBlock : MonoBehaviour {
     public Material lightningMaterial;
     private Vector3[] points;
     private readonly int pointsCount = 5;
+    private int xPos, yPos;
 
     private void Start()
     {
@@ -30,10 +31,62 @@ public class VerticalBlock : MonoBehaviour {
         gameObject.AddComponent<LineRenderer>();
         lRend = GetComponent<LineRenderer>();
         points = new Vector3[pointsCount];
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        // find the array element
+        for (int y = 0; y < LevelGenerator.levelGenerator.currentLevel.height; y++)
+        {
+            for (int x = 0; x < LevelGenerator.levelGenerator.currentLevel.width; x++)
+            {
+                if (LevelGenerator.levelGenerator.block[x, y] != null)
+                {
+                    if ((LevelGenerator.levelGenerator.block[x, y].transform.localPosition == gameObject.transform.localPosition))
+                    {
+                        xPos = x;
+                        yPos = y;
+                    }
+                }
+            }
+        }
+        //sound
+        AudioSource.PlayClipAtPoint(GameManager.manager.electrocutionSound, gameObject.transform.localPosition, 100);
+
+        for (int y = 0; y < LevelGenerator.levelGenerator.currentLevel.height; y++)
+        {
+            if (LevelGenerator.levelGenerator.block[xPos, y] != null)
+            {
+                if (LevelGenerator.levelGenerator.block[xPos, y].tag != "special")
+                {
+                    StartCoroutine(FlashBlock(LevelGenerator.levelGenerator.block[xPos, y].gameObject));
+                }
+
+                LevelGenerator.levelGenerator.block[xPos, y].GetComponent<Block>().hitsRemaining--;
+                GameManager.manager.level[GameManager.manager.currentLevel].shotPoints++;
+
+                //Adjust hitsRemainingText
+                if (LevelGenerator.levelGenerator.block[xPos, y].GetComponentInParent<Block>().hitsRemaining > 0)
+                {
+                    hitsRemainingText = LevelGenerator.levelGenerator.block[xPos, y].GetComponentInChildren<TextMeshProUGUI>();
+                    hitsRemainingText.text = LevelGenerator.levelGenerator.block[xPos, y].GetComponentInParent<Block>().hitsRemaining.ToString();
+                }
+                else
+                {
+                    if (LevelGenerator.levelGenerator.block[xPos, y].tag == "block")
+                    {
+                        LevelGenerator.levelGenerator.block[xPos, y].GetComponent<Collider2D>().enabled = false;
+                        hitsRemainingText = LevelGenerator.levelGenerator.block[xPos, y].GetComponentInChildren<TextMeshProUGUI>();
+                        hitsRemainingText.text = "0";
+                        StartCoroutine(BlockDeath(LevelGenerator.levelGenerator.block[xPos, y].gameObject, y));
+                    }
+                }
+            }
+        }
+
+
+        /*
         GameObject[] block = GameObject.FindGameObjectsWithTag("block"); // Not including super blocks...should I?
         foreach (GameObject b in block)
         {
@@ -64,6 +117,7 @@ public class VerticalBlock : MonoBehaviour {
                 }
             }
         }
+        */
 
         Line();
     }
@@ -79,7 +133,7 @@ public class VerticalBlock : MonoBehaviour {
 
     }
 
-    public IEnumerator BlockDeath(GameObject blockHit)
+    public IEnumerator BlockDeath(GameObject blockHit, int y)
     {
         //GameManager.manager.actualNumberOfBlocks--;
         if (blockHit != null)
@@ -87,6 +141,7 @@ public class VerticalBlock : MonoBehaviour {
             GameManager.manager.actualNumberOfBlocks--;
             Instantiate(explode, blockHit.transform.localPosition, Quaternion.identity);
             Destroy(blockHit);
+            LevelGenerator.levelGenerator.block[xPos, y] = null;
         }
         yield return null;
     }
@@ -144,7 +199,7 @@ public class VerticalBlock : MonoBehaviour {
             {
                 if (blockHit != null)
                 {
-                    block.color = Color.red;
+                    block.color = Color.white; //red
                     yield return new WaitForSeconds(0.05f);
 
                     if (blockHit != null)

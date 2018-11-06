@@ -30,6 +30,7 @@ public class GameManager : MonoBehaviour {
     public AudioClip electrocutionSound;
     public AudioClip levelFailSound;
     public AudioClip undoShot;
+    public AudioClip coin;
 
     [HideInInspector]
     public float temp;

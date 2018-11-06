@@ -6,7 +6,7 @@ using TMPro;
 
 public class LevelGenerator : MonoBehaviour {
     //[HideInInspector]
-    public static LevelGenerator levelGenerator;
+    public static LevelGenerator levelGenerator { get; set; }
 
     public ColourToPrefab[] colourMappings;
     public LevelMaker level; //scriptable object -- array of colourmappings.
@@ -36,6 +36,11 @@ public class LevelGenerator : MonoBehaviour {
     public float blockScaleAdjustedY;
 
     GameObject blockContainer;
+
+    private void Awake()
+    {
+        levelGenerator = this;
+    }
 
     public void GenerateLevel()
     {

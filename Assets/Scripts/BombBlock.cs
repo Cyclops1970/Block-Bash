@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class BombBlock : MonoBehaviour {
+public class BombBlock : MonoBehaviour
+{
 
     public LevelGenerator levelGenerator;
 
@@ -70,7 +71,6 @@ public class BombBlock : MonoBehaviour {
         gameObject.GetComponent<SpriteRenderer>().enabled = false;
     }
 
-    
     IEnumerator Bomb()
     {
         int counter = 1;
@@ -96,20 +96,16 @@ public class BombBlock : MonoBehaviour {
                 {
                     GameManager.manager.level[GameManager.manager.currentLevel].shotPoints += reduction;
                 }
-                
                 //reduce block hits remaining
-                b.GetComponentInParent<Block>().hitsRemaining -= reduction; 
-
+                b.GetComponentInParent<Block>().hitsRemaining -= reduction;
                 //Adjust hitsRemainingText
                 if (b.GetComponentInParent<Block>().hitsRemaining > 0)
                 {
                     //StartCoroutine(FlashBlock(b)); //flash the blocks
                     hitsRemainingText = b.GetComponentInChildren<TextMeshProUGUI>();
                     hitsRemainingText.text = b.GetComponentInParent<Block>().hitsRemaining.ToString();
-
                     //message showing number of hits needed reduced
                     StartCoroutine(GameManager.manager.Message("-" + reduction, b.transform.position, 4, 2, Color.white));
-
                 }
                 else
                 {
@@ -117,15 +113,12 @@ public class BombBlock : MonoBehaviour {
                     hitsRemainingText.text = "0";
                     StartCoroutine(GameManager.manager.Message("X", b.transform.position, 4, 2, Color.white));
                     StartCoroutine(BlockDeath(b));
-
                 }
-
                 //Create new electricity line
                 GameObject currentBomb = Instantiate(bombEmpty, transform.localPosition, Quaternion.identity);
                 Electricity electricity = currentBomb.GetComponentInChildren<Electricity>();
                 electricity.lines(b.transform.localPosition);
                 Destroy(currentBomb, deathDelay);
-
             }
             counter++;
 		}

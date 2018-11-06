@@ -301,6 +301,7 @@ MonoBehaviour:
   electrocutionSound: {fileID: 8300000, guid: 8a4f8102e760d864ba4d19d8386270dc, type: 3}
   levelFailSound: {fileID: 8300000, guid: d688835572419b34e8d5181484b650c6, type: 3}
   undoShot: {fileID: 8300000, guid: 3325d014df6a19a428687ec738e15f89, type: 3}
+  coin: {fileID: 8300000, guid: 5f0cfde647bebda49aad3da27759930f, type: 3}
   temp: 0
   camY: 0
   camX: 0

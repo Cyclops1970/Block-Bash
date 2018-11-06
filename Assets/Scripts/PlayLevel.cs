@@ -363,7 +363,7 @@ public class PlayLevel : MonoBehaviour
             // Remove any errant balls
             StartCoroutine(ForceBallsToFinish());
 
-            yield return new WaitForSecondsRealtime(0.5f);
+            yield return new WaitForSecondsRealtime(0.3f);
 
             //if level completed check if lowestshotstaken needs to be updated
             //update lowest shots taken
@@ -402,11 +402,13 @@ public class PlayLevel : MonoBehaviour
 
             //update complete level details
             GameManager.manager.LevelComplete();
-            
-            //show the pass panel
-            passPanel.SetActive(true);
 
             StartCoroutine(ShotPanelHide());
+
+            //Disable the bottom panel
+            bottomPanel.SetActive(false);
+            //show the pass panel
+            passPanel.SetActive(true);
 
             //USE TO prevent shooting
             bottomReached = true;
@@ -443,14 +445,14 @@ public class PlayLevel : MonoBehaviour
             Time.timeScale = 1;
             
             AudioSource.PlayClipAtPoint(GameManager.manager.levelFailSound, gameObject.transform.localPosition);
-
+            
             yield return new WaitForSecondsRealtime(0.3f);
 
             failPanel.SetActive(true);
 
             //StartCoroutine(ShotPanelHide());
-            //print("hidden in bottom");
             
+
         }
 
     }
@@ -546,8 +548,33 @@ public class PlayLevel : MonoBehaviour
 
     void DestroySpecials()
     {
+        for(int x = 0; x < levelGenerator.currentLevel.width; x++)
+        {
+            for(int y = 0; y < levelGenerator.currentLevel.height; y++)
+            {
+                if (levelGenerator.block[x, y] != null)
+                {
+                    if ((levelGenerator.block[x, y].GetComponent<HorizontalBlock>() != null) && (levelGenerator.block[x, y].GetComponent<HorizontalBlock>().used == true))
+                    {
+                        Instantiate(ballExplosion, levelGenerator.block[x, y].transform.localPosition, Quaternion.identity);
+                        Destroy(levelGenerator.block[x, y].gameObject);
+                        levelGenerator.block[x, y] = null;
+                    }
+                    else if((levelGenerator.block[x, y].GetComponent<VerticalBlock>() != null) && (levelGenerator.block[x, y].GetComponent<VerticalBlock>().used == true))
+                    {
+                        Instantiate(ballExplosion, levelGenerator.block[x, y].transform.localPosition, Quaternion.identity);
+                        Destroy(levelGenerator.block[x, y].gameObject);
+                        levelGenerator.block[x, y] = null;
+                    }
+                }
+            }
+        }
+
+        /*
         //Check that horizontal or vertical blocks been used, and destroy them if so.
         GameObject[] block = GameObject.FindGameObjectsWithTag("special"); // Not including super blocks...should I?
+        
+        //foreach(GameObject b in LevelGenerator.levelGenerator.block)
         foreach (GameObject b in block)
         {
             if ((b.GetComponent<HorizontalBlock>() != null) && (b.GetComponent<HorizontalBlock>().used == true))
@@ -561,17 +588,21 @@ public class PlayLevel : MonoBehaviour
                 Instantiate(ballExplosion, b.transform.localPosition, Quaternion.identity);
                 Destroy(b);
             }
-
         }
+        */
     }
     void BallsFinished()
     {
         if((GameManager.manager.redo==false) && (GameManager.manager.keepWaiting==false))// might be waiting for redo to commence
         {
+
+
             //if (((GameManager.manager.currentNumberOfBalls <= 0) && (GameManager.manager.ballsActive == true)&&(GameManager.manager.keepWaiting==false)))
             if (((GameManager.manager.currentNumberOfBalls <= 0) && (GameManager.manager.ballsActive == true)))
             {
-                print("Balls are active, acording to balls finished");
+                DestroySpecials(); //were at the bottom
+                ResetPowerUps();
+
                 Time.timeScale = 1;
 
                 GameManager.manager.ballsActive = false;
@@ -594,8 +625,7 @@ public class PlayLevel : MonoBehaviour
                     BlockColour(); //this wasn't here before when doing the colours icon type levels.
                 }
 
-                ResetPowerUps();
-                DestroySpecials();
+
             }
         }
     }
@@ -627,6 +657,7 @@ public class PlayLevel : MonoBehaviour
                     //Check if bottom of screen reached.
                     if (levelGenerator.block[x, y + 1].gameObject.transform.localPosition.y <= (-GameManager.manager.camY / 2) + (GameManager.manager.camY * GameManager.manager.freeBottomArea) + (levelGenerator.blockScaleAdjustedY / 2))
                     {
+                        //print("tag of block on bottom = " + levelGenerator.block[x, y + 1].tag);
                         //levelFailed = true;
                         bottomReached = true;
                         //failPanel.SetActive(true);
@@ -857,15 +888,6 @@ public class PlayLevel : MonoBehaviour
         }
         
     
-    }
-
-    IEnumerator ShowFailPanelWithDelay(float d)
-    {
-        //play fail sound
-        AudioSource.PlayClipAtPoint(GameManager.manager.levelFailSound, gameObject.transform.localPosition);
-        yield return new WaitForSeconds(d);
-        failPanel.SetActive(true);
-        StartCoroutine(ShotPanelHide());
     }
 
     public void Continue() // called from the continue button on a failed level

@@ -19,7 +19,6 @@ public class FailPanel : MonoBehaviour {
         //hide bottom panel 
         bottomPanel.SetActive(false);
         StartCoroutine(playLevel.ShotPanelHide());
-        print("hidden in fail");
 
         //Show the number of blocks remaining
         blocksRemainingText.text = "You left " + GameManager.manager.actualNumberOfBlocks.ToString() + " blocks remaining!";

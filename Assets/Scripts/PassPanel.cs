@@ -8,8 +8,8 @@ public class PassPanel : MonoBehaviour
 {
     public PlayLevel playLevel;
 
-    public GameObject neutralFace, smileFace, happyFace;
-    public GameObject newHighScore, newLowestShots;
+    public GameObject neutralFace, smileFace, happyFace, faces;
+    public GameObject newHighScore, newLowestShots, levelComplete;
 
     public TextMeshProUGUI levelCoinText;
     public TextMeshProUGUI newHighScoreCoinText;
@@ -22,16 +22,19 @@ public class PassPanel : MonoBehaviour
 
     private void OnEnable()
     {
-        happyFace.GetComponent<Image>().color = grey;
-        smileFace.GetComponent<Image>().color = grey;
-        neutralFace.GetComponent<Image>().color = grey;
+        Time.timeScale = 1;
+
+        happyFace.GetComponent<Image>().color = Color.clear;
+        smileFace.GetComponent<Image>().color = Color.clear;
+        neutralFace.GetComponent<Image>().color = Color.clear; //grey
 
         //Text for Level Completed coins
         if (GameManager.manager.currentLevelStars == 3)
         {
+            StartCoroutine(FaceAnim());
             happyFace.GetComponent<Image>().color = green;
-            smileFace.GetComponent<Image>().color = green;
-            neutralFace.GetComponent<Image>().color = green;
+            //smileFace.GetComponent<Image>().color = green;
+            //neutralFace.GetComponent<Image>().color = green;
 
             if (GameManager.manager.currentLevel % GameManager.manager.bonusLevel == 0)
                 levelCoinText.text = (GameManager.manager.starCoins3 * 2).ToString();
@@ -40,8 +43,9 @@ public class PassPanel : MonoBehaviour
         }
         else if (GameManager.manager.currentLevelStars == 2)
         {
+            StartCoroutine(FaceAnim());
             smileFace.GetComponent<Image>().color = green;
-            neutralFace.GetComponent<Image>().color = green;
+            //neutralFace.GetComponent<Image>().color = green;
 
             if (GameManager.manager.currentLevel % GameManager.manager.bonusLevel == 0)
                 levelCoinText.text = (GameManager.manager.starCoins2 * 2).ToString();
@@ -58,12 +62,13 @@ public class PassPanel : MonoBehaviour
                 levelCoinText.text = GameManager.manager.starCoins1.ToString();
 
         }
-
+        StartCoroutine(ScoreAnim(levelComplete,0));
         //Text for new high score
         if(GameManager.manager.newHighScore == true)
         {
             newHighScore.SetActive(true);
             noNewHighScore.SetActive(false);
+            StartCoroutine(ScoreAnim(newHighScore,0.35f));
 
             if (GameManager.manager.currentLevel % GameManager.manager.bonusLevel == 0)
                 newHighScoreCoinText.text = (GameManager.manager.newHighScoreCoins * 2).ToString();
@@ -81,6 +86,7 @@ public class PassPanel : MonoBehaviour
         {
             newLowestShots.SetActive(true);
             noNewLowestShots.SetActive(false);
+            StartCoroutine(ScoreAnim(newLowestShots, 0.7f));
 
             if (GameManager.manager.currentLevel % GameManager.manager.bonusLevel == 0)
                 newLowestShotsCoinText.text = (GameManager.manager.newLowestShotsCoins * 2).ToString();
@@ -95,6 +101,72 @@ public class PassPanel : MonoBehaviour
 
         //Disable the bottom panel
         bottomPanel.SetActive(false);
+    }
+
+    IEnumerator ScoreAnim(GameObject thing, float wait)
+    {
+        float elapsedTime = 0, currentTimeScale = Time.timeScale, displayTime = .751f;
+        Vector2 startingScale = new Vector2(9,19);
+        Vector2 endingScale = new Vector2(1, 1);// thing.transform.localScale;
+
+        yield return new WaitForSeconds(wait);
+
+        while (elapsedTime < displayTime)//*currentTimeScale)
+        {
+            thing.transform.localScale = Vector2.Lerp(startingScale, endingScale, (elapsedTime / displayTime));
+            elapsedTime += Time.deltaTime / currentTimeScale;
+
+            yield return null;
+        }
+        thing.transform.localScale = endingScale;
+
+        yield return null;
+    }
+
+    IEnumerator FaceAnim()
+    {
+        float lerpTime = 0.75f;
+        float elapsedTime = 0, rotTime = 0;
+        Vector2 startingScale = faces.transform.localScale * 1f;
+        Vector2 endingScale = startingScale * 1.5f;
+        Vector2 tempScale;
+        Quaternion startRot, endRot, tempRot, currentRotation;
+
+        startRot = Quaternion.Euler(new Vector3(0, 0, 10));
+        endRot = Quaternion.Euler(new Vector3(0, 0, -10));
+
+        while (this.enabled==true)
+        {
+            while (elapsedTime < lerpTime)
+            {
+                if (GameManager.manager.currentLevelStars == 3)
+                {
+                    faces.transform.localScale = Vector2.Lerp(startingScale, endingScale, (elapsedTime / lerpTime));
+                    elapsedTime += Time.deltaTime;
+                }
+
+                faces.transform.localRotation = Quaternion.Lerp(startRot, endRot, (rotTime*3 / lerpTime));
+                rotTime += Time.deltaTime;
+                if (rotTime*3 > lerpTime)
+                {
+                    rotTime = 0;
+                    tempRot = startRot;
+                    startRot = endRot;
+                    endRot = tempRot;
+                }
+                yield return null;
+            }
+            //reset and go the other way
+            elapsedTime = 0;
+            tempScale = startingScale;
+            startingScale = endingScale;
+            endingScale = tempScale;
+
+            Time.timeScale = 1;
+
+            yield return null;
+        }
+        yield return null;
     }
 }
 
