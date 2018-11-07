@@ -9,7 +9,7 @@ public class FailPanel : MonoBehaviour {
     public Button continueButton;
     public TextMeshProUGUI costText;
     public TextMeshProUGUI blocksRemainingText;
-    public GameObject bottomPanel;
+    public GameObject bottomPanel, shotPanel;
     public GameObject dimCoinsNeeded;
 
     public PlayLevel playLevel;
@@ -18,7 +18,9 @@ public class FailPanel : MonoBehaviour {
     {
         //hide bottom panel 
         bottomPanel.SetActive(false);
-        StartCoroutine(playLevel.ShotPanelHide());
+        shotPanel.SetActive(false);
+
+        //StartCoroutine(playLevel.ShotPanelHide());
 
         //Show the number of blocks remaining
         blocksRemainingText.text = "You left " + GameManager.manager.actualNumberOfBlocks.ToString() + " blocks remaining!";

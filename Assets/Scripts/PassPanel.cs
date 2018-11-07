@@ -15,7 +15,7 @@ public class PassPanel : MonoBehaviour
     public TextMeshProUGUI newHighScoreCoinText;
     public TextMeshProUGUI newLowestShotsCoinText;
     public GameObject noNewHighScore, noNewLowestShots;
-    public GameObject bottomPanel;
+    public GameObject bottomPanel, shotPanel;
 
     Color32 grey = new Color32(90, 90, 90, 255);
     Color32 green = new Color32(0, 255, 0, 255);
@@ -23,6 +23,8 @@ public class PassPanel : MonoBehaviour
     private void OnEnable()
     {
         Time.timeScale = 1;
+
+        StartCoroutine(PanelEntry());
 
         happyFace.GetComponent<Image>().color = Color.clear;
         smileFace.GetComponent<Image>().color = Color.clear;
@@ -62,13 +64,13 @@ public class PassPanel : MonoBehaviour
                 levelCoinText.text = GameManager.manager.starCoins1.ToString();
 
         }
-        StartCoroutine(ScoreAnim(levelComplete,0));
+        //StartCoroutine(ScoreAnim(levelComplete,0));
         //Text for new high score
         if(GameManager.manager.newHighScore == true)
         {
             newHighScore.SetActive(true);
             noNewHighScore.SetActive(false);
-            StartCoroutine(ScoreAnim(newHighScore,0.35f));
+            //StartCoroutine(ScoreAnim(newHighScore,0.25f));
 
             if (GameManager.manager.currentLevel % GameManager.manager.bonusLevel == 0)
                 newHighScoreCoinText.text = (GameManager.manager.newHighScoreCoins * 2).ToString();
@@ -86,7 +88,7 @@ public class PassPanel : MonoBehaviour
         {
             newLowestShots.SetActive(true);
             noNewLowestShots.SetActive(false);
-            StartCoroutine(ScoreAnim(newLowestShots, 0.7f));
+            //StartCoroutine(ScoreAnim(newLowestShots, 0.5f));
 
             if (GameManager.manager.currentLevel % GameManager.manager.bonusLevel == 0)
                 newLowestShotsCoinText.text = (GameManager.manager.newLowestShotsCoins * 2).ToString();
@@ -101,6 +103,7 @@ public class PassPanel : MonoBehaviour
 
         //Disable the bottom panel
         bottomPanel.SetActive(false);
+        shotPanel.SetActive(false);
     }
 
     IEnumerator ScoreAnim(GameObject thing, float wait)
@@ -166,6 +169,17 @@ public class PassPanel : MonoBehaviour
 
             yield return null;
         }
+        yield return null;
+    }
+
+    IEnumerator PanelEntry()
+    {
+        RectTransform panel;
+        float panelHeight;
+
+        panel = GetComponent<RectTransform>();
+        panelHeight = panel.rect.height;
+
         yield return null;
     }
 }
