@@ -234,13 +234,13 @@ public class GameManager : MonoBehaviour {
         {
             PlayerPrefs.SetInt(highestLevel, 1000);
             highestLevelPlayed = 1000;
-            playerCoins = 1000;
+            playerCoins = 0;
             PlayerPrefs.SetInt("playerCoins", playerCoins);
             //powerups
-            PlayerPrefs.SetInt(balls2x, 1);
-            PlayerPrefs.SetInt(blockReduction, 1);
-            PlayerPrefs.SetInt(invincibleBalls, 1);
-            PlayerPrefs.SetInt(floorBlock, 1);
+            PlayerPrefs.SetInt(balls2x, 5);
+            PlayerPrefs.SetInt(blockReduction, 5);
+            PlayerPrefs.SetInt(invincibleBalls, 5);
+            PlayerPrefs.SetInt(floorBlock, 5);
         }
         else
         { 
@@ -292,7 +292,7 @@ public class GameManager : MonoBehaviour {
         {
             PlayerPrefs.SetInt(highestLevel, 1000);
             highestLevelPlayed = 1000;
-            playerCoins = 20000;
+            playerCoins = 22000;
             PlayerPrefs.SetInt("playerCoins", playerCoins);
         }
     }

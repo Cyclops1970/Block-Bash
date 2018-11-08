@@ -11,6 +11,7 @@ public class FailPanel : MonoBehaviour {
     public TextMeshProUGUI blocksRemainingText;
     public GameObject bottomPanel, shotPanel;
     public GameObject dimCoinsNeeded;
+    public GameObject shopPanel;
 
     public PlayLevel playLevel;
 
@@ -19,6 +20,7 @@ public class FailPanel : MonoBehaviour {
         //hide bottom panel 
         bottomPanel.SetActive(false);
         shotPanel.SetActive(false);
+        shopPanel.SetActive(false);
 
         //StartCoroutine(playLevel.ShotPanelHide());
 

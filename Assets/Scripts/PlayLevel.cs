@@ -334,7 +334,7 @@ public class PlayLevel : MonoBehaviour
             UpdateRewardLine();
 
             //Colour
-            BlockColour();
+            //BlockColour();
 
             // Check if all balls have finished on screen and move blocks down
             BallsFinished(); //move blocks down

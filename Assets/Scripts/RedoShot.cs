@@ -23,7 +23,6 @@ public class RedoShot : MonoBehaviour
 
     private void Update()
     {
-
         if (GameManager.manager.playerCoins >= GameManager.manager.redoShotCost)
         {
 
@@ -44,6 +43,7 @@ public class RedoShot : MonoBehaviour
         Time.timeScale = 1; // reset time 
 
         GameManager.manager.playerCoins -= GameManager.manager.redoShotCost;
+        PlayerPrefs.SetInt("playerCoints", GameManager.manager.playerCoins);
         
         //set redo to true. used to stop bombs etc.
         GameManager.manager.redo = true;
@@ -176,13 +176,13 @@ public class RedoShot : MonoBehaviour
         float displayTime = timer;
         Vector2 startingScale = new Vector2(5,5);
         Vector2 endingScale;
-        Vector3 startRot = new Vector3(0, 0, 180);
-        Vector3 endRot = new Vector3(0, 0, 0);
-        Quaternion startQuat, endQuat;
+        //Vector3 startRot = new Vector3(0, 0, 180);
+        //Vector3 endRot = new Vector3(0, 0, 0);
+        //Quaternion startQuat, endQuat;
 
         endingScale = new Vector2(levelGenerator.blockScaleAdjustedX, levelGenerator.blockScaleAdjustedY);
-        startQuat = Quaternion.Euler(startRot);
-        endQuat = Quaternion.Euler(endRot);
+        //startQuat = Quaternion.Euler(startRot);
+        //endQuat = Quaternion.Euler(endRot);
 
         while (elapsedTime < displayTime)//*currentTimeScale)
         {
@@ -192,23 +192,8 @@ public class RedoShot : MonoBehaviour
 
             yield return null;
         }
+
+        //Final step to ensure all blocks are correctly scaled again...lerp sometimes leaves out last step??
+        levelGenerator.block[x, y].transform.localScale = endingScale;
     }
 }
-/*
- * float speed = 0.1f;
-Vector3 start;
-Vector3 end;
-Quaternion startQuat;
-Quaternion endQuat;
-
-void Start()
-{    
-    startQuat = Quaternion.Euler(start); only useful for up to 180
-    endQuat = Quaternion.Euler(end);
-}
-
-void Update()
-{
-    transform.rotation = Quaternion.Lerp(startQuat, endQuat, Time.time * speed);
-}
-*/

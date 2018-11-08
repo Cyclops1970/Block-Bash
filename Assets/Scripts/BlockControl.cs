@@ -92,11 +92,58 @@ public class BlockControl : MonoBehaviour
     {
         SpriteRenderer block = gameObject.GetComponent<SpriteRenderer>();
         block.color = Color.white;
-        yield return new WaitForSeconds(0.025f);
+        yield return new WaitForSeconds(0.015f);
         // Have to use this as if you store the colour of the block, if might already be white from being hit previously
         block.color = gameObject.GetComponentInParent<Block>().colour;
+
+        BlockColour();
     }
 
+    void BlockColour()
+    {
+        byte colour;
+        Color32 oldColour;
+        Color32 orange = new Color32(255, 150, 0, 255);
+        Color32 red = Color.red;
+
+        if (gameObject != null)
+        {
+            // Get current block colour
+            oldColour = gameObject.GetComponent<Block>().colour;
+
+            
+            //Don't update if orange or red
+            if((!oldColour.Equals(orange)) && (!oldColour.Equals(red)))
+            {
+                colour = (byte)(150 - (Mathf.RoundToInt(gameObject.GetComponent<Block>().hitsRemaining / 50) * 20)); //50 points, 20 colour change
+
+                gameObject.GetComponent<Block>().colour = new Color32(0, (byte)Mathf.Clamp((150 - gameObject.GetComponent<Block>().hitsRemaining), 0, 150), 255, 255);
+                gameObject.GetComponent<SpriteRenderer>().color = gameObject.GetComponent<Block>().colour;
+            }
+            
+            /*
+            colour = (byte)(150 - (Mathf.RoundToInt(gameObject.GetComponent<Block>().hitsRemaining / 50) * 20)); //50 points, 20 colour change
+
+            gameObject.GetComponent<Block>().colour = new Color32(0, (byte)Mathf.Clamp((150 - gameObject.GetComponent<Block>().hitsRemaining), 0, 150), 255, 255);
+            gameObject.GetComponent<SpriteRenderer>().color = gameObject.GetComponent<Block>().colour;
+            
+
+            
+            //ORANGE Warning when blocks are 2 level from the end
+            if (gameObject.transform.localPosition.y <= (-GameManager.manager.camY / 2) + (GameManager.manager.camY * GameManager.manager.freeBottomArea) + (levelGenerator.blockScaleAdjustedY * 3))
+            {
+                gameObject.gameObject.GetComponent<SpriteRenderer>().color = new Color32(255, 150, 0, 255);
+                gameObject.gameObject.GetComponentInParent<Block>().colour = new Color32(255, 150, 0, 255);
+            }
+            //RED Warning when blocks are 1 level from the end
+            if (gameObject.transform.localPosition.y <= (-GameManager.manager.camY / 2) + (GameManager.manager.camY * GameManager.manager.freeBottomArea) + (levelGenerator.blockScaleAdjustedY * 1.5))
+            {
+                gameObject.gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+                gameObject.gameObject.GetComponentInParent<Block>().colour = Color.red;
+            }
+            */
+        }
+    }
     //Block death
     public IEnumerator BlockDeath()
     {

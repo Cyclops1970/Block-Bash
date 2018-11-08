@@ -18462,6 +18462,7 @@ MonoBehaviour:
   bottomPanel: {fileID: 818688773}
   shotPanel: {fileID: 1516878451}
   dimCoinsNeeded: {fileID: 1284612692}
+  shopPanel: {fileID: 1927340293}
   playLevel: {fileID: 1585434328}
 --- !u!95 &1908144749
 Animator:

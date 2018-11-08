@@ -18,7 +18,7 @@ public class BombBlock : MonoBehaviour
 
     public GameObject explode;
 
-    float deathDelay = 2.5f;
+    float deathDelay = 2f;
 
     private void Start()
     {
@@ -71,6 +71,29 @@ public class BombBlock : MonoBehaviour
         gameObject.GetComponent<SpriteRenderer>().enabled = false;
     }
 
+    void BlockColour(GameObject gameObject)
+    {
+        byte colour;
+        Color32 oldColour;
+        Color32 orange = new Color32(255, 150, 0, 255);
+        Color32 red = Color.red;
+
+        if (gameObject != null)
+        {
+            // Get current block colour
+            oldColour = gameObject.GetComponent<Block>().colour;
+
+            //Don't update if orange or red
+            if ((!oldColour.Equals(orange)) && (!oldColour.Equals(red)) && (gameObject.tag != "special") && (gameObject.tag != "solidBlock") && (gameObject.tag != "bomb"))
+            {
+                colour = (byte)(150 - (Mathf.RoundToInt(gameObject.GetComponent<Block>().hitsRemaining / 50) * 20)); //50 points, 20 colour change
+
+                gameObject.GetComponent<Block>().colour = new Color32(0, (byte)Mathf.Clamp((150 - gameObject.GetComponent<Block>().hitsRemaining), 0, 150), 255, 255);
+                gameObject.GetComponent<SpriteRenderer>().color = gameObject.GetComponent<Block>().colour;
+            }
+        }
+    }
+
     IEnumerator Bomb()
     {
         int counter = 1;
@@ -106,6 +129,9 @@ public class BombBlock : MonoBehaviour
                     hitsRemainingText.text = b.GetComponentInParent<Block>().hitsRemaining.ToString();
                     //message showing number of hits needed reduced
                     StartCoroutine(GameManager.manager.Message("-" + reduction, b.transform.position, 4, 2, Color.white));
+
+                    if (b != null)
+                        BlockColour(b);
                 }
                 else
                 {
@@ -170,6 +196,7 @@ public class BombBlock : MonoBehaviour
         yield return null;
     }
 
+    /*
     private void Update()
     {
         if(GameManager.manager.redo==true)
@@ -177,5 +204,6 @@ public class BombBlock : MonoBehaviour
 
         }
     }
+    */
 }
 

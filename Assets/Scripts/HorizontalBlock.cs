@@ -83,6 +83,10 @@ public class HorizontalBlock : MonoBehaviour
                         StartCoroutine(BlockDeath(LevelGenerator.levelGenerator.block[x, yPos].gameObject, x));
                     }
                 }
+
+                if(LevelGenerator.levelGenerator.block[x,yPos]!=null)
+                    BlockColour(LevelGenerator.levelGenerator.block[x, yPos].gameObject);
+
             }
         }
 
@@ -120,6 +124,29 @@ public class HorizontalBlock : MonoBehaviour
         */
 
         Line();
+    }
+
+    void BlockColour(GameObject gameObject)
+    {
+        byte colour;
+        Color32 oldColour;
+        Color32 orange = new Color32(255, 150, 0, 255);
+        Color32 red = Color.red;
+
+        if (gameObject != null)
+        {
+            // Get current block colour
+            oldColour = gameObject.GetComponent<Block>().colour;
+
+            //Don't update if orange or red
+            if ((!oldColour.Equals(orange)) && (!oldColour.Equals(red)) && (gameObject.tag!="special") && (gameObject.tag!="solidBlock") && (gameObject.tag!="bomb"))
+            {
+                colour = (byte)(150 - (Mathf.RoundToInt(gameObject.GetComponent<Block>().hitsRemaining / 50) * 20)); //50 points, 20 colour change
+
+                gameObject.GetComponent<Block>().colour = new Color32(0, (byte)Mathf.Clamp((150 - gameObject.GetComponent<Block>().hitsRemaining), 0, 150), 255, 255);
+                gameObject.GetComponent<SpriteRenderer>().color = gameObject.GetComponent<Block>().colour;
+            }
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
