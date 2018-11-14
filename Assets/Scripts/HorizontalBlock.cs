@@ -60,7 +60,7 @@ public class HorizontalBlock : MonoBehaviour
         {
             if (LevelGenerator.levelGenerator.block[x, yPos] != null)
             {
-                if (LevelGenerator.levelGenerator.block[x, yPos].tag != "special")
+                if ((LevelGenerator.levelGenerator.block[x, yPos].tag != "special")&&(LevelGenerator.levelGenerator.block[x, yPos].tag != "bomb") && (LevelGenerator.levelGenerator.block[x, yPos].tag != "solidBlock"))
                 {
                     StartCoroutine(FlashBlock(LevelGenerator.levelGenerator.block[x, yPos].gameObject));
                 }

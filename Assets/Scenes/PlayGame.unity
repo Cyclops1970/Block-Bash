@@ -3352,7 +3352,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: 100,000
+  m_text: 50,000
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3432,7 +3432,7 @@ MonoBehaviour:
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 0
+  m_isInputParsingRequired: 1
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_subTextObjects:
@@ -5867,6 +5867,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34319acb82e7dc846814ec262971b70c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  twoDollarsCoins: 1500
+  fiveDollarsCoins: 3750
+  tenDollarsCoins: 8000
+  twentyFiveDollarsCoins: 20000
+  fiftyDollarsCoins: 50000
 --- !u!1 &638528156
 GameObject:
   m_ObjectHideFlags: 0
@@ -6275,7 +6280,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: 35,000
+  m_text: 20,000
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -6355,7 +6360,7 @@ MonoBehaviour:
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 0
+  m_isInputParsingRequired: 1
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_subTextObjects:
@@ -8373,7 +8378,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: 2,000
+  m_text: 1,500
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -8453,7 +8458,7 @@ MonoBehaviour:
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 0
+  m_isInputParsingRequired: 1
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_subTextObjects:
@@ -10836,7 +10841,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: 15,000
+  m_text: 8,000
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -10916,7 +10921,7 @@ MonoBehaviour:
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 0
+  m_isInputParsingRequired: 1
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_subTextObjects:
@@ -18549,6 +18554,7 @@ MonoBehaviour:
   blockControl: {fileID: 1914392979}
   shopPanel: {fileID: 1927340293}
   blockReductionActive: 0
+  explosion: {fileID: 0}
 --- !u!114 &1914392981
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18848,8 +18854,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f06050a084b5af24aa75cab5450eeabe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shopPacks: {fileID: 0}
   gameBottomPanel: {fileID: 818688773}
   dragPanel: {fileID: 328421648}
+  twoDollarCoins: {fileID: 748172592}
+  fiveDollarCoins: {fileID: 1984545822}
+  tenDollarCoins: {fileID: 1049661930}
+  twentyFiveDollarCoins: {fileID: 652639546}
+  fiftyDollarCoins: {fileID: 425414491}
 --- !u!1 &1946755540
 GameObject:
   m_ObjectHideFlags: 0
@@ -19408,7 +19420,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: 7,000
+  m_text: 3,750
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -19488,7 +19500,7 @@ MonoBehaviour:
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 0
+  m_isInputParsingRequired: 1
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_subTextObjects:
@@ -19981,6 +19993,7 @@ MonoBehaviour:
   blockControl: {fileID: 2042382901}
   shopPanel: {fileID: 1927340293}
   blockReductionActive: 0
+  explosion: {fileID: 139366, guid: b185c1a9cf067374586d095111b15bd1, type: 2}
 --- !u!114 &2042382898
 MonoBehaviour:
   m_ObjectHideFlags: 0

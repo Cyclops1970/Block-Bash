@@ -19,7 +19,7 @@ public class FailPanel : MonoBehaviour {
     {
         //hide bottom panel 
         bottomPanel.SetActive(false);
-        shotPanel.SetActive(false);
+        //shotPanel.SetActive(false);
         shopPanel.SetActive(false);
 
         //StartCoroutine(playLevel.ShotPanelHide());
@@ -31,7 +31,7 @@ public class FailPanel : MonoBehaviour {
         costText.text = GameManager.manager.continueCost.ToString();
 
         //Set continue button to active or not depending on player coins
-        GameManager.manager.playerCoins = PlayerPrefs.GetInt("playerCoins");
+        //GameManager.manager.playerCoins = PlayerPrefs.GetInt("playerCoins");
 
         //Give option to continue or not, depending on available coins
         if (GameManager.manager.playerCoins < GameManager.manager.continueCost)

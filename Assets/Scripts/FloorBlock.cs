@@ -58,6 +58,7 @@ public class FloorBlock : MonoBehaviour {
 
                 //take the cost of the powerup from player coins and update number of powerups available
                 GameManager.manager.playerCoins -= GameManager.manager.floorBlockCost;
+                PlayerPrefs.SetInt("playerCoins", GameManager.manager.playerCoins);
                 GameManager.manager.numberOfFloorBlocks++;
                 StartCoroutine(GameManager.manager.Message("Purchased" + "\r\n" + "Floor Blocks", new Vector2(0, 0), 8, 1.5f, Color.white));
             }

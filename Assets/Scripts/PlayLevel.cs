@@ -141,7 +141,7 @@ public class PlayLevel : MonoBehaviour
         float elapsedTime = 0;
         Vector2 endingScale = bottomPanel.transform.localScale; // same size as bottom panel
         Vector2 startingScale = new Vector2(0.0000f, 0.0000f);
-        
+
         if(balls2x.doubleBalls==true)
         {
             //doubleBallsIcon.SetActive(true);
@@ -333,9 +333,6 @@ public class PlayLevel : MonoBehaviour
             //update the reward line
             UpdateRewardLine();
 
-            //Colour
-            //BlockColour();
-
             // Check if all balls have finished on screen and move blocks down
             BallsFinished(); //move blocks down
 
@@ -366,7 +363,7 @@ public class PlayLevel : MonoBehaviour
             // Remove any errant balls
             StartCoroutine(ForceBallsToFinish());
 
-            yield return new WaitForSecondsRealtime(0.3f);
+            yield return new WaitForSecondsRealtime(0.5f);
 
             //if level completed check if lowestshotstaken needs to be updated
             //update lowest shots taken
@@ -412,6 +409,7 @@ public class PlayLevel : MonoBehaviour
             bottomPanel.SetActive(false);
             //show the pass panel
             passPanel.SetActive(true);
+            AudioSource.PlayClipAtPoint(GameManager.manager.levelPassSound, gameObject.transform.localPosition);
 
             //USE TO prevent shooting
             bottomReached = true;
@@ -446,15 +444,15 @@ public class PlayLevel : MonoBehaviour
         if (bottomReached == true)
         {
             Time.timeScale = 1;
-            
-            AudioSource.PlayClipAtPoint(GameManager.manager.levelFailSound, gameObject.transform.localPosition);
-            
-            yield return new WaitForSecondsRealtime(0.3f);
+
+            AudioSource.PlayClipAtPoint(GameManager.manager.bottomReachedSound, gameObject.transform.localPosition);
+
+            yield return new WaitForSecondsRealtime(0.5f);
 
             failPanel.SetActive(true);
-
+            AudioSource.PlayClipAtPoint(GameManager.manager.levelFailSound, gameObject.transform.localPosition);
             //StartCoroutine(ShotPanelHide());
-            
+
 
         }
 
@@ -463,6 +461,7 @@ public class PlayLevel : MonoBehaviour
     public void BlockColour()
     {
         byte colour;
+        Color32 orange = new Color32(255, 150, 0, 255);
 
         GameObject[] block = GameObject.FindGameObjectsWithTag("block");
         foreach (GameObject b in block)
@@ -479,8 +478,8 @@ public class PlayLevel : MonoBehaviour
                 //ORANGE Warning when blocks are 2 level from the end
                 if (b.transform.localPosition.y <= (-GameManager.manager.camY / 2) + (GameManager.manager.camY * GameManager.manager.freeBottomArea) + (levelGenerator.blockScaleAdjustedY * 3))
                 {
-                    b.gameObject.GetComponent<SpriteRenderer>().color = new Color32(255,150,0,255);
-                    b.gameObject.GetComponentInParent<Block>().colour = new Color32(255, 150, 0, 255);
+                    b.gameObject.GetComponent<SpriteRenderer>().color = orange;
+                    b.gameObject.GetComponentInParent<Block>().colour = orange;
                 }
                 //RED Warning when blocks are 1 level from the end
                 if (b.transform.localPosition.y <= (-GameManager.manager.camY / 2) + (GameManager.manager.camY * GameManager.manager.freeBottomArea) + (levelGenerator.blockScaleAdjustedY * 1.5))
@@ -897,6 +896,7 @@ public class PlayLevel : MonoBehaviour
     { 
         int upAmount = 1;
         int levelsToDestroy = 2;
+
         //Hide the fail panel
         failPanel.SetActive(false);
 
@@ -904,6 +904,7 @@ public class PlayLevel : MonoBehaviour
         Time.timeScale = 1;
 
         //Move the blocks back up
+        /*
         GameObject[] block = GameObject.FindGameObjectsWithTag("block");
         GameObject[] solid = GameObject.FindGameObjectsWithTag("solidBlock");
         GameObject[] bomb = GameObject.FindGameObjectsWithTag("bomb");
@@ -916,6 +917,7 @@ public class PlayLevel : MonoBehaviour
         //Check if bottom of screen reached.
         //if (levelGenerator.block[x, y + 1].gameObject.transform.localPosition.y <= (-GameManager.manager.camY / 2) + (GameManager.manager.camY * GameManager.manager.freeBottomArea) + (levelGenerator.blockScaleAdjustedY / 2))
 
+        */
 
         //Destroy bottom blocks
         for (int y = levelGenerator.currentLevel.height; y >= 0; y--) //height - 1
@@ -961,34 +963,6 @@ public class PlayLevel : MonoBehaviour
             }
         }
 
-        
-
-
-                /* OLD
-        foreach (GameObject b in items)
-        {
-            //destroy bottom 2 layers
-            if ((b.transform.localPosition.y <= (-GameManager.manager.camY / 2) + (GameManager.manager.camY * GameManager.manager.freeBottomArea) + ((levelGenerator.blockScaleAdjustedY * levelsToDestroy))))
-            {
-                Instantiate(ballExplosion, b.transform.localPosition, Quaternion.identity);
-                if(b.tag=="block")
-                {
-                    GameManager.manager.actualNumberOfBlocks--;
-                }
-                
-                Destroy(b);
-            }
-            else // move blocks up if they haven't been exploded
-            {
-                for (int up = 0; up < upAmount; up++)
-                {
-                    //Move blocks up
-                    b.transform.localPosition = new Vector2(b.transform.localPosition.x, b.transform.localPosition.y + levelGenerator.blockScaleAdjustedY);
-                    // some kind of delay here.
-                }
-            }
-        }
-        */
         //Re-adjust block colours
         BlockColour();
 

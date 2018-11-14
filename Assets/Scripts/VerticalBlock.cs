@@ -58,7 +58,7 @@ public class VerticalBlock : MonoBehaviour {
         {
             if (LevelGenerator.levelGenerator.block[xPos, y] != null)
             {
-                if (LevelGenerator.levelGenerator.block[xPos, y].tag != "special")
+                if ((LevelGenerator.levelGenerator.block[xPos, y].tag != "special")&& (LevelGenerator.levelGenerator.block[xPos, y].tag != "bomb") && (LevelGenerator.levelGenerator.block[xPos, y].tag != "solidBlock"))
                 {
                     StartCoroutine(FlashBlock(LevelGenerator.levelGenerator.block[xPos, y].gameObject));
                 }

@@ -29,6 +29,8 @@ public class GameManager : MonoBehaviour {
     public AudioClip bombSound;
     public AudioClip electrocutionSound;
     public AudioClip levelFailSound;
+    public AudioClip levelPassSound;
+    public AudioClip bottomReachedSound;
     public AudioClip undoShot;
     public AudioClip coin;
 
@@ -292,7 +294,7 @@ public class GameManager : MonoBehaviour {
         {
             PlayerPrefs.SetInt(highestLevel, 1000);
             highestLevelPlayed = 1000;
-            playerCoins = 22000;
+            playerCoins = 0;
             PlayerPrefs.SetInt("playerCoins", playerCoins);
         }
     }

@@ -9,6 +9,7 @@ public class BlockReduction : MonoBehaviour
     public BlockControl blockControl;
     public GameObject shopPanel;
     public bool blockReductionActive;
+    public GameObject explosion;
 
     TextMeshProUGUI hitsRemainingText;
 
@@ -45,12 +46,16 @@ public class BlockReduction : MonoBehaviour
                         hitsRemainingText.text = b.gameObject.GetComponentInParent<Block>().hitsRemaining.ToString();
 
                         //message showing number of hits needed reduced
-                        StartCoroutine(GameManager.manager.Message("-" + reduction, b.transform.position, 3, 1.5f, Color.red));
-
+                        //StartCoroutine(GameManager.manager.Message("-" + reduction, b.transform.position, 4, 1.5f, Color.white));
+                        Instantiate(explosion, b.transform.localPosition, Quaternion.identity);
+                        
                         //update total level points 
                         GameManager.manager.totalLevelPoints += b.GetComponentInParent<Block>().hitsRemaining;
+
+                        AudioSource.PlayClipAtPoint(GameManager.manager.blockReductionSound, Camera.main.transform.position);
                     }
                 }
+                
 
                 StartCoroutine(GameManager.manager.Message("Hits Needed Reduced!", new Vector2(0, 0), 8, 1.5f, Color.white));
             }
@@ -64,16 +69,22 @@ public class BlockReduction : MonoBehaviour
 
                 //take the cost of the powerup from player coins and update number of powerups available
                 GameManager.manager.playerCoins -= GameManager.manager.blockReductionCost;
+                PlayerPrefs.SetInt("playerCoins", GameManager.manager.playerCoins);
                 GameManager.manager.numberOfBockReductions++;
                 StartCoroutine(GameManager.manager.Message("Purchased" + "\r\n" + "Block Reduction", new Vector2(0, 0), 8, 1.5f, Color.white));
             }
             else
             {
                 //Open the shop so they can buy stuff
-                shopPanel.active = true;
+                shopPanel.SetActive(true);
             }
         }
         
+    }
+
+    IEnumerator Reduction()
+    {
+        yield return null;
     }
 
 }
