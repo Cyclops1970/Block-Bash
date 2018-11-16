@@ -6,7 +6,7 @@ using TMPro;
 
 public class GameManager : MonoBehaviour {
 
-    bool debug = false;
+    bool debug = true;
 
     public static GameManager manager;
 
@@ -160,6 +160,16 @@ public class GameManager : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
+        //Sounds setup?
+        if (PlayerPrefs.GetInt("sounds") == 0)
+        {
+            AudioListener.pause = false;
+        }
+        else
+        {
+            AudioListener.pause = true;
+        }
+
         //stop screen from timing out
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
 

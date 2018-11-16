@@ -892,10 +892,16 @@ public class PlayLevel : MonoBehaviour
     
     }
 
-    public void Continue() // called from the continue button on a failed level
+    public void ContinueWrapper()
+    {
+        StartCoroutine(Continue());
+    }
+
+    public IEnumerator Continue() // called from the continue button on a failed level
     { 
         int upAmount = 1;
         int levelsToDestroy = 2;
+        bool hasBlocks = false;
 
         //Hide the fail panel
         failPanel.SetActive(false);
@@ -903,21 +909,8 @@ public class PlayLevel : MonoBehaviour
         //reset time
         Time.timeScale = 1;
 
-        //Move the blocks back up
-        /*
-        GameObject[] block = GameObject.FindGameObjectsWithTag("block");
-        GameObject[] solid = GameObject.FindGameObjectsWithTag("solidBlock");
-        GameObject[] bomb = GameObject.FindGameObjectsWithTag("bomb");
-        GameObject[] special = GameObject.FindGameObjectsWithTag("special");
-        List<GameObject> items = new List<GameObject>(block);
-        items.AddRange(new List<GameObject>(solid)); // get all blocks, including super;
-        items.AddRange(new List<GameObject>(bomb));
-        items.AddRange(new List<GameObject>(special));
-
-        //Check if bottom of screen reached.
-        //if (levelGenerator.block[x, y + 1].gameObject.transform.localPosition.y <= (-GameManager.manager.camY / 2) + (GameManager.manager.camY * GameManager.manager.freeBottomArea) + (levelGenerator.blockScaleAdjustedY / 2))
-
-        */
+        //message
+        StartCoroutine(GameManager.manager.Message("Continue!\r\nDestroy " + levelsToDestroy + " bottom rows \r\n and move everything up " + upAmount + " row!", Vector2.zero, 5, 3, Color.white));
 
         //Destroy bottom blocks
         for (int y = levelGenerator.currentLevel.height; y >= 0; y--) //height - 1
@@ -935,7 +928,9 @@ public class PlayLevel : MonoBehaviour
                         }
 
                         Destroy(levelGenerator.block[x, y]);
+                        AudioSource.PlayClipAtPoint(GameManager.manager.blockDieSound, new Vector3(0, 0, 0));
                         levelGenerator.block[x, y] = null;
+                        yield return new WaitForSeconds(0.1f);
                     }
                 }
             }
@@ -946,14 +941,53 @@ public class PlayLevel : MonoBehaviour
         {
             for (int x = 0; x < levelGenerator.currentLevel.width; x++)
             {
-                if (levelGenerator.block[x, y+1] != null)
+                if ((levelGenerator.block[x, y+1] != null))//&&((levelGenerator.block[x,y]!=null)&&(levelGenerator.block[x,y].tag!="solidBlock")))
+                {
+                    hasBlocks = true; // used to know that we should play sound
+
+                    for (int up = 0; up < upAmount; up++)
+                    {
+                        if ((levelGenerator.block[x, y+1].tag != "solidBlock"))// && ((levelGenerator.block[x, y] != null) && (levelGenerator.block[x, y].tag != "solidBlock")))
+                        {
+                            //if there is a solid block above, break out of this iteration
+                            if ((levelGenerator.block[x, y] != null) && (levelGenerator.block[x, y].tag == "solidBlock"))
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                //Move blocks up
+                                levelGenerator.block[x, y + 1].transform.localPosition = new Vector2(levelGenerator.block[x, y + 1].transform.localPosition.x, levelGenerator.block[x, y + 1].transform.localPosition.y + levelGenerator.blockScaleAdjustedY);
+                                levelGenerator.block[x, y] = levelGenerator.block[x, y + 1];
+                                levelGenerator.block[x, y + 1] = null;
+                            }
+                        }
+                    }
+                }
+            }
+            if(hasBlocks==true)
+            {
+                hasBlocks = false;
+
+                AudioSource.PlayClipAtPoint(GameManager.manager.solidHitSound, new Vector3(0, 0, 0));
+                
+                yield return new WaitForSeconds(0.25f);
+            }
+        }
+        /*
+        //move remaining blocks up
+        for (int y = 0; y < levelGenerator.currentLevel.height; y++)
+        {
+            for (int x = 0; x < levelGenerator.currentLevel.width; x++)
+            {
+                if (levelGenerator.block[x, y + 1] != null)
                 {
                     for (int up = 0; up < upAmount; up++)
                     {
-                        if (levelGenerator.block[x, y+1].tag != "solidBlock")
+                        if (levelGenerator.block[x, y + 1].tag != "solidBlock")
                         {
                             //Move blocks up
-                            levelGenerator.block[x, y+1].transform.localPosition = new Vector2(levelGenerator.block[x, y+1].transform.localPosition.x, levelGenerator.block[x, y+1].transform.localPosition.y + levelGenerator.blockScaleAdjustedY);
+                            levelGenerator.block[x, y + 1].transform.localPosition = new Vector2(levelGenerator.block[x, y + 1].transform.localPosition.x, levelGenerator.block[x, y + 1].transform.localPosition.y + levelGenerator.blockScaleAdjustedY);
                             levelGenerator.block[x, y] = levelGenerator.block[x, y + 1];
                             levelGenerator.block[x, y + 1] = null;
                             // some kind of delay here.
@@ -961,7 +995,8 @@ public class PlayLevel : MonoBehaviour
                     }
                 }
             }
-        }
+        }*/
+        yield return null;
 
         //Re-adjust block colours
         BlockColour();
