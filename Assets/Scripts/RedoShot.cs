@@ -54,7 +54,7 @@ public class RedoShot : MonoBehaviour
     {
         //Quaternion resetRotation;
 
-        while (GameManager.manager.keepWaiting == true)
+        while (GameManager.manager.keepWaiting == true) //
         {
             print("waiting....");
             yield return null;
@@ -121,6 +121,9 @@ public class RedoShot : MonoBehaviour
             }
         }
 
+        //reset colours
+        playLevel.BlockColour();
+
         //Reward line, highscores etc.
         playLevel.rewardLine.fillAmount = playLevel.rewardLineStartOfShot;
         //update smiley faces
@@ -161,8 +164,6 @@ public class RedoShot : MonoBehaviour
         //show highest points
         playLevel.highScoreText.text = ("Highest: " + GameManager.manager.level[GameManager.manager.currentLevel].highestPoints);
         
-
-
         //set current shot to 0
         GameManager.manager.level[GameManager.manager.currentLevel].shotPoints = 0;
         playLevel.shotScoreText.text = "0";

@@ -6,7 +6,7 @@ using TMPro;
 
 public class GameManager : MonoBehaviour {
 
-    bool debug = true;
+    bool debug = false;
 
     public static GameManager manager;
 
@@ -30,9 +30,13 @@ public class GameManager : MonoBehaviour {
     public AudioClip electrocutionSound;
     public AudioClip levelFailSound;
     public AudioClip levelPassSound;
+    public AudioClip levelPassSoundHappy;
+    public AudioClip levelPassSoundLaughing;
     public AudioClip bottomReachedSound;
     public AudioClip undoShot;
     public AudioClip coin;
+    public AudioClip levelStartSound;
+
 
     [HideInInspector]
     public float temp;

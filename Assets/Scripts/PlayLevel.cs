@@ -409,7 +409,7 @@ public class PlayLevel : MonoBehaviour
             bottomPanel.SetActive(false);
             //show the pass panel
             passPanel.SetActive(true);
-            AudioSource.PlayClipAtPoint(GameManager.manager.levelPassSound, gameObject.transform.localPosition);
+            //AudioSource.PlayClipAtPoint(GameManager.manager.levelPassSound, gameObject.transform.localPosition);
 
             //USE TO prevent shooting
             bottomReached = true;
@@ -974,28 +974,7 @@ public class PlayLevel : MonoBehaviour
                 yield return new WaitForSeconds(0.25f);
             }
         }
-        /*
-        //move remaining blocks up
-        for (int y = 0; y < levelGenerator.currentLevel.height; y++)
-        {
-            for (int x = 0; x < levelGenerator.currentLevel.width; x++)
-            {
-                if (levelGenerator.block[x, y + 1] != null)
-                {
-                    for (int up = 0; up < upAmount; up++)
-                    {
-                        if (levelGenerator.block[x, y + 1].tag != "solidBlock")
-                        {
-                            //Move blocks up
-                            levelGenerator.block[x, y + 1].transform.localPosition = new Vector2(levelGenerator.block[x, y + 1].transform.localPosition.x, levelGenerator.block[x, y + 1].transform.localPosition.y + levelGenerator.blockScaleAdjustedY);
-                            levelGenerator.block[x, y] = levelGenerator.block[x, y + 1];
-                            levelGenerator.block[x, y + 1] = null;
-                            // some kind of delay here.
-                        }
-                    }
-                }
-            }
-        }*/
+
         yield return null;
 
         //Re-adjust block colours

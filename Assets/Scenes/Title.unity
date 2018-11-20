@@ -300,10 +300,14 @@ MonoBehaviour:
   bombSound: {fileID: 8300000, guid: e05551ed9de6dae42a34a17fa645b69d, type: 3}
   electrocutionSound: {fileID: 8300000, guid: 8a4f8102e760d864ba4d19d8386270dc, type: 3}
   levelFailSound: {fileID: 8300000, guid: 95efb640d3c3be742b22173cea981df5, type: 3}
-  levelPassSound: {fileID: 8300000, guid: 78b515121141e0648af5d78f526b5258, type: 3}
+  levelPassSound: {fileID: 8300000, guid: 8bb024af507998242a079b534fe1d90d, type: 3}
+  levelPassSoundHappy: {fileID: 8300000, guid: 4ecf25bfb0455d0499f82251d50b2b8f, type: 3}
+  levelPassSoundLaughing: {fileID: 8300000, guid: 78b515121141e0648af5d78f526b5258,
+    type: 3}
   bottomReachedSound: {fileID: 8300000, guid: 461f80aa403d0ed4fad92bfb7a106a32, type: 3}
   undoShot: {fileID: 8300000, guid: 3325d014df6a19a428687ec738e15f89, type: 3}
   coin: {fileID: 8300000, guid: 5f0cfde647bebda49aad3da27759930f, type: 3}
+  levelStartSound: {fileID: 8300000, guid: b5599fc9158f2f84da74b98172434d90, type: 3}
   temp: 0
   camY: 0
   camX: 0

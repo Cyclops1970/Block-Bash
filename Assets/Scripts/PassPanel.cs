@@ -24,7 +24,7 @@ public class PassPanel : MonoBehaviour
     {
         Time.timeScale = 1;
 
-        StartCoroutine(PanelEntry());
+        //StartCoroutine(PanelEntry());
 
         happyFace.GetComponent<Image>().color = Color.clear;
         smileFace.GetComponent<Image>().color = Color.clear;
@@ -33,15 +33,23 @@ public class PassPanel : MonoBehaviour
         //Text for Level Completed coins
         if (GameManager.manager.currentLevelStars == 3)
         {
+            AudioSource.PlayClipAtPoint(GameManager.manager.levelPassSoundLaughing, Vector3.zero);
+
             StartCoroutine(FaceAnim());
             happyFace.GetComponent<Image>().color = green;
             //smileFace.GetComponent<Image>().color = green;
             //neutralFace.GetComponent<Image>().color = green;
 
             if (GameManager.manager.currentLevel % GameManager.manager.bonusLevel == 0)
+            {
                 levelCoinText.text = (GameManager.manager.starCoins3 * 2).ToString();
+            }
             else
+            {
                 levelCoinText.text = GameManager.manager.starCoins3.ToString();
+            }
+                
+            
         }
         else if (GameManager.manager.currentLevelStars == 2)
         {
@@ -50,19 +58,30 @@ public class PassPanel : MonoBehaviour
             //neutralFace.GetComponent<Image>().color = green;
 
             if (GameManager.manager.currentLevel % GameManager.manager.bonusLevel == 0)
+            {
                 levelCoinText.text = (GameManager.manager.starCoins2 * 2).ToString();
+            }
             else
+            {
                 levelCoinText.text = GameManager.manager.starCoins2.ToString();
+            }
+
+            AudioSource.PlayClipAtPoint(GameManager.manager.levelPassSoundHappy, Vector3.zero);
         }
         else
         {
             neutralFace.GetComponent<Image>().color = green;
 
             if (GameManager.manager.currentLevel % GameManager.manager.bonusLevel == 0)
+            {
                 levelCoinText.text = (GameManager.manager.starCoins1 * 2).ToString();
+            }
             else
+            {
                 levelCoinText.text = GameManager.manager.starCoins1.ToString();
+            }
 
+            AudioSource.PlayClipAtPoint(GameManager.manager.levelPassSound, Vector3.zero);
         }
         //StartCoroutine(ScoreAnim(levelComplete,0));
         //Text for new high score
@@ -106,6 +125,7 @@ public class PassPanel : MonoBehaviour
         shotPanel.SetActive(false);
     }
 
+    /*
     IEnumerator ScoreAnim(GameObject thing, float wait)
     {
         float elapsedTime = 0, currentTimeScale = Time.timeScale, displayTime = .751f;
@@ -125,6 +145,7 @@ public class PassPanel : MonoBehaviour
 
         yield return null;
     }
+    */
 
     IEnumerator FaceAnim()
     {
@@ -171,7 +192,7 @@ public class PassPanel : MonoBehaviour
         }
         yield return null;
     }
-
+    /*
     IEnumerator PanelEntry()
     {
         RectTransform panel;
@@ -182,6 +203,7 @@ public class PassPanel : MonoBehaviour
 
         yield return null;
     }
+    */
 }
 
 

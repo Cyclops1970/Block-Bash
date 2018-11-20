@@ -82,12 +82,12 @@ public class LevelGenerator : MonoBehaviour {
                 else
                 {
                     //GenerateBonusBlock(x, y);
-                    //GenerateBlock(x, y);
                     GenerateNewBlock(x, y);
                 }
-                
             }
         }
+        StartCoroutine(ScaleBlocks());
+        AudioSource.PlayClipAtPoint(GameManager.manager.levelStartSound, gameObject.transform.localPosition);
     }
 
     void GenerateNewBlock(int x, int y)
@@ -96,10 +96,6 @@ public class LevelGenerator : MonoBehaviour {
         float cY = (cX * Screen.height / Screen.width);
 
         Color pixelColour = currentLevel.GetPixel(x, currentLevel.height - 1 - y); //bottom up.
-
-        // get the correct scale to fit the number of blocks across and down the play area
-        //blockScaleAdjustedX = ScaleGameObjectToScreenPercentageX(level.ctp[0].blockType, blockPercentageSizeX);
-        //blockScaleAdjustedY = ScaleGameObjectToScreenPercentageY(level.ctp[0].blockType, blockPercentageSizeY); //blocknormal
 
         blockScaleAdjustedX = ScaleGameObjectToScreenPercentageX(plainBlock, blockPercentageSizeX);
         blockScaleAdjustedY = ScaleGameObjectToScreenPercentageY(plainBlock, blockPercentageSizeY); //blocknormal
@@ -151,6 +147,43 @@ public class LevelGenerator : MonoBehaviour {
 
     }
 
+    IEnumerator ScaleBlocks()
+    {
+        float elapsedTime = 0;
+        float scaleTime = 1;
+        Vector2 startingScale = new Vector2(0, 0);
+        Vector2 endingScale = new Vector2(blockScaleAdjustedX, blockScaleAdjustedY);
+
+
+        while (elapsedTime < scaleTime)
+        {
+            for (int y = 0; y < currentLevel.height; y++)
+            {
+                for (int x = 0; x < currentLevel.width; x++)
+                {
+                    if(block[x,y]!=null)
+                    {
+                        block[x, y].gameObject.transform.localScale = Vector2.Lerp(startingScale, endingScale, (elapsedTime / scaleTime));
+                    }
+                }
+            }
+            elapsedTime += Time.deltaTime;
+            //yield return new WaitForSecondsRealtime(0.01f);
+            yield return null;
+        }
+
+        //scale all blocks to full size as lerp sometimes fails
+        for (int y = 0; y < currentLevel.height; y++)
+        {
+            for (int x = 0; x < currentLevel.width; x++)
+            {
+                if(block[x,y]!=null)
+                {
+                    block[x, y].gameObject.transform.localScale = endingScale;
+                }
+            }
+        }
+    }
     /*
 
     void GenerateBlock(int x, int y)
@@ -285,18 +318,5 @@ public class LevelGenerator : MonoBehaviour {
         scale = (g.transform.localScale.y / gameObjectHeight) * newSize;
         
         return (scale);
-    }
-
-
-    public void BlockColour()
-    {
-        for (int b = 0; b < maxNumberOfBlocks; b++)
-        {
-            if (blocks[b] != null)
-            {
-                blocks[b].GetComponent<Block>().colour = new Color32(0, (byte)(250 - blocks[b].GetComponent<Block>().hitsRemaining / 2), 255, 255);
-                blocks[b].gameObject.GetComponent<SpriteRenderer>().color = blocks[b].GetComponent<Block>().colour;
-            }
-        }
     }
 }
