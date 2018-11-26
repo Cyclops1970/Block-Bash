@@ -81,9 +81,9 @@ public class BlockControl : MonoBehaviour
         GameManager.manager.level[GameManager.manager.currentLevel].shotPoints += gameObject.GetComponentInParent<Block>().hitsRemaining;
         StartCoroutine(BlockDeath());
 
-        Instantiate(ballExplode, collision.transform); // not working?
-        Destroy(collision.gameObject);
-        GameManager.manager.currentNumberOfBalls--;
+        //Instantiate(ballExplode, collision.transform); // not working?
+        //Destroy(collision.gameObject);
+        //GameManager.manager.currentNumberOfBalls--;
 
     }
 
