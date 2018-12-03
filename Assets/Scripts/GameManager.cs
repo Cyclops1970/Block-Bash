@@ -4,9 +4,16 @@ using UnityEngine;
 using System.IO;
 using TMPro;
 
+
 public class GameManager : MonoBehaviour {
 
     bool debug = false;
+
+    //These two are to count levels played before an ad is displayed
+    [HideInInspector]
+    public int levelsPlayed; //updated when next level selected
+    [HideInInspector]
+    public int levelsPicked; //updated when level picked from home screen
 
     public static GameManager manager;
 
@@ -164,6 +171,10 @@ public class GameManager : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
+        //used to count levels played to determine when ad should be played
+        levelsPlayed = 0;
+        levelsPicked = 0; 
+
         //Sounds setup?
         if (PlayerPrefs.GetInt("sounds") == 0)
         {
@@ -310,6 +321,7 @@ public class GameManager : MonoBehaviour {
             highestLevelPlayed = 1000;
             playerCoins = 0;
             PlayerPrefs.SetInt("playerCoins", playerCoins);
+            PlayerPrefs.DeleteKey("ads");
         }
     }
 

@@ -29,6 +29,7 @@ public class ShopMartStore : MonoBehaviour, IStoreListener
     public static string tenDollars = "10dollars";
     public static string twentyFiveDollars = "25dollars";
     public static string fiftyDollars = "50dollars";
+    public static string noAds = "no_ads";
 
     // Apple App Store-specific product identifier for the subscription product.
     //private static string kProductNameAppleSubscription = "com.unity3d.subscription.new";
@@ -62,8 +63,7 @@ public class ShopMartStore : MonoBehaviour, IStoreListener
         builder.AddProduct(tenDollars, ProductType.Consumable);
         builder.AddProduct(twentyFiveDollars, ProductType.Consumable);
         builder.AddProduct(fiftyDollars, ProductType.Consumable);
-
-
+        builder.AddProduct(noAds, ProductType.NonConsumable);
 
         // Kick off the remainder of the set-up with an asynchrounous call, passing the configuration 
         // and this class' instance. Expect a response either in OnInitialized or OnInitializeFailed.
@@ -85,6 +85,10 @@ public class ShopMartStore : MonoBehaviour, IStoreListener
         BuyProductID(kProductIDConsumable);
     }
     */
+    public void BuyNoAds()
+    {
+        BuyProductID(noAds);
+    }
     public void BuyTwoDollars()
     {
         BuyProductID(twoDollars);
@@ -105,8 +109,6 @@ public class ShopMartStore : MonoBehaviour, IStoreListener
     {
         BuyProductID(fiftyDollars);
     }
-
-
     void BuyProductID(string productId)
     {
         // If Purchasing has been initialized ...
@@ -140,47 +142,7 @@ public class ShopMartStore : MonoBehaviour, IStoreListener
         }
     }
 
-
-    // Restore purchases previously made by this customer. Some platforms automatically restore purchases, like Google. 
-    // Apple currently requires explicit purchase restoration for IAP, conditionally displaying a password prompt.
-    public void RestorePurchases()
-    {
-        // If Purchasing has not yet been set up ...
-        if (!IsInitialized())
-        {
-            // ... report the situation and stop restoring. Consider either waiting longer, or retrying initialization.
-            Debug.Log("RestorePurchases FAIL. Not initialized.");
-            return;
-        }
-
-        // If we are running on an Apple device ... 
-        if (Application.platform == RuntimePlatform.IPhonePlayer ||
-            Application.platform == RuntimePlatform.OSXPlayer)
-        {
-            // ... begin restoring purchases
-            Debug.Log("RestorePurchases started ...");
-
-            // Fetch the Apple store-specific subsystem.
-            var apple = m_StoreExtensionProvider.GetExtension<IAppleExtensions>();
-            // Begin the asynchronous process of restoring purchases. Expect a confirmation response in 
-            // the Action<bool> below, and ProcessPurchase if there are previously purchased products to restore.
-            apple.RestoreTransactions((result) =>
-            {
-                // The first phase of restoration. If no more responses are received on ProcessPurchase then 
-                // no purchases are available to be restored.
-                Debug.Log("RestorePurchases continuing: " + result + ". If no further messages, no purchases available to restore.");
-            });
-        }
-        // Otherwise ...
-        else
-        {
-            // We are not running on an Apple device. No work is necessary to restore purchases.
-            Debug.Log("RestorePurchases FAIL. Not supported on this platform. Current = " + Application.platform);
-        }
-    }
-
-
-    //  
+   //  
     // --- IStoreListener
     //
 
@@ -205,10 +167,10 @@ public class ShopMartStore : MonoBehaviour, IStoreListener
 
     public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs args)
     {
-        // A consumable product has been purchased by this user.
-        if (String.Equals(args.purchasedProduct.definition.id, twoDollars, StringComparison.Ordinal))
+        // A product has been purchased by this user.
+        if (String.Equals(args.purchasedProduct.definition.id, noAds, StringComparison.Ordinal))
         {
-            ShopPacks.shopPacks.TwoDollars();
+            ShopPacks.shopPacks.RemoveAds();
         }
         else if (String.Equals(args.purchasedProduct.definition.id, fiveDollars, StringComparison.Ordinal))
         {

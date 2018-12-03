@@ -11,11 +11,17 @@ public class ShopPacks : MonoBehaviour {
     public int tenDollarsCoins = 8000;
     public int twentyFiveDollarsCoins = 20000;
     public int fiftyDollarsCoins = 50000;
-
     
     private void Awake()
     {
         shopPacks = this;
+    }
+
+    public void RemoveAds()
+    {
+        StartCoroutine(GameManager.manager.Message("Ads Removed!", Vector2.zero, 10, 4, Color.white));
+        PlayerPrefs.SetInt("ads",1);//1 means ads should be removed
+        ShopButton.shopButton.CloseShop();
     }
 
     public void TwoDollars()

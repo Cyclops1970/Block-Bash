@@ -5,11 +5,6 @@ using UnityEngine.UI;
 using TMPro;
 
 
-/*
- * MAYBE TRY TO PUT THE COLLIDER FUNCTION STUFF ON THE BALLS INSTEAD. SEE IF THAT STOPS THE RANDOM BOUNCES
- */
-
-
 public class BlockControl : MonoBehaviour
 {
     static public BlockControl blockControl;

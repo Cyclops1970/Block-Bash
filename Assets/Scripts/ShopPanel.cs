@@ -30,7 +30,6 @@ public class ShopPanel : MonoBehaviour {
     }
     private void OnEnable()
     {
-        
         //Delete any messages on screen
         GameObject[] messages = GameObject.FindGameObjectsWithTag("message");
         foreach (GameObject m in messages)
