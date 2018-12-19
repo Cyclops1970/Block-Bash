@@ -425,9 +425,11 @@ public class GameManager : MonoBehaviour {
 
         while (elapsedTime < displayTime)//*currentTimeScale)
         {
-            dbiText.transform.localScale = Vector2.Lerp(startingScale, endingScale, (elapsedTime / displayTime));
-            elapsedTime += Time.deltaTime/currentTimeScale;
-
+            if (dbiText != null)
+            {
+                dbiText.transform.localScale = Vector2.Lerp(startingScale, endingScale, (elapsedTime / displayTime));
+                elapsedTime += Time.deltaTime / currentTimeScale;
+            }
             yield return null;
         }
 

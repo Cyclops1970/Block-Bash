@@ -145,8 +145,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -70.899994, y: -3.2999992}
-  m_SizeDelta: {x: 208.1, y: 40.73}
+  m_AnchoredPosition: {x: -64.14, y: -3.2999992}
+  m_SizeDelta: {x: 221.62, y: 40.73}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &30496969
 MonoBehaviour:
@@ -9590,7 +9590,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: 'Score: 5268'
+  m_text: 'Score: 22222'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
   m_sharedMaterial: {fileID: 2164040, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
@@ -9655,10 +9655,10 @@ MonoBehaviour:
   m_firstVisibleCharacter: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 140.5211, w: 0}
+  m_margin: {x: 0, y: 0, z: 126.99777, w: 0}
   m_textInfo:
     textComponent: {fileID: 927108176}
-    characterCount: 11
+    characterCount: 12
     spriteCount: 0
     spaceCount: 1
     wordCount: 2
@@ -14433,7 +14433,7 @@ MonoBehaviour:
   m_firstVisibleCharacter: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -0.6321067, y: 0, z: 143.10588, w: 0}
+  m_margin: {x: -0.6321067, y: 0, z: 132.2872, w: 0}
   m_textInfo:
     textComponent: {fileID: 1462758869}
     characterCount: 11
@@ -14881,8 +14881,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -70.9, y: -0.43333435}
-  m_SizeDelta: {x: 208.1, y: 40.73}
+  m_AnchoredPosition: {x: -63.690002, y: -0.43333435}
+  m_SizeDelta: {x: 222.52, y: 40.73}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1490205562
 MonoBehaviour:

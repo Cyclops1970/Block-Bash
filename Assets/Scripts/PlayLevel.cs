@@ -597,8 +597,6 @@ public class PlayLevel : MonoBehaviour
     {
         if((GameManager.manager.redo==false) && (GameManager.manager.keepWaiting==false))// might be waiting for redo to commence
         {
-
-
             //if (((GameManager.manager.currentNumberOfBalls <= 0) && (GameManager.manager.ballsActive == true)&&(GameManager.manager.keepWaiting==false)))
             if (((GameManager.manager.currentNumberOfBalls <= 0) && (GameManager.manager.ballsActive == true)))
             {
@@ -708,9 +706,9 @@ public class PlayLevel : MonoBehaviour
     void UpdateRewardLine()
     {
         float currentShotPercentage = 0;
-        float highBreakEven = 55;
-        float mediumBreakEven = 38;
-        float lowBreakEven = 25;
+        float highBreakEven = 60;   //55
+        float mediumBreakEven = 50;  //38
+        float lowBreakEven = 35;    //25
 
         levelPercentage = 0;
 

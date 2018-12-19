@@ -283,6 +283,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8a07350fef64354398fdd6e622ab3e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelsPlayed: 0
+  levelsPicked: 0
   scrollPosition: {x: 0, y: 0}
   blockHitAudioSource: {fileID: 1312206338}
   blockDeathAudioSource: {fileID: 1312206339}
