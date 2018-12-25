@@ -76,6 +76,8 @@ public class BallControl : MonoBehaviour
         //Setup start pos at bottom of play area and the x pos based on where the drag started
         pos = camera.ScreenToWorldPoint(start);
         xPos = pos.x;
+        //yPos = pos.y;
+        
         //adjust ball start height if floor blocks in play
         if (floorBlock.floorBlocksActive == true)
         {
@@ -85,7 +87,7 @@ public class BallControl : MonoBehaviour
         {
             yPos = (-GameManager.manager.camY / 2) + (GameManager.manager.camY * GameManager.manager.freeBottomArea) + (ballSprite.transform.localScale.y / 5.5f);
         }
-
+        
         //initialise balls
         balls = new Ball[GameManager.manager.maxNumberOfBalls];
         for (int n = 0; n < GameManager.manager.maxNumberOfBalls; n++)
@@ -127,8 +129,15 @@ public class BallControl : MonoBehaviour
         {
             startPos = camera.ScreenToWorldPoint(start);
             endPos = camera.ScreenToWorldPoint(end);
-            
-            startPos.y = (-GameManager.manager.camY / 2) + (GameManager.manager.camY * GameManager.manager.freeBottomArea) + (ballSprite.transform.localScale.y / 5);
+
+            if (floorBlock.floorBlocksActive)
+            {
+                startPos.y = (-GameManager.manager.camY / 2) + (GameManager.manager.camY * GameManager.manager.freeBottomArea) + (ballSprite.transform.localScale.y / 5) + levelGenerator.blockScaleAdjustedY;
+            }
+            else
+            {
+                startPos.y = (-GameManager.manager.camY / 2) + (GameManager.manager.camY * GameManager.manager.freeBottomArea) + (ballSprite.transform.localScale.y / 5);
+            }
 
             Vector3 vel = (endPos - startPos).normalized * speed; //(end - start).normalized * speed;
 

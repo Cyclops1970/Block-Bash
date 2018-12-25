@@ -57,15 +57,18 @@ public class DragToShoot : MonoBehaviour
             if (floorBlock.floorBlocksActive == true)
             {
                 linePoints[0].y = (-GameManager.manager.camY / 2) + (GameManager.manager.camY * GameManager.manager.freeBottomArea) + (ballSprite.transform.localScale.y / 5.5f) + levelGenerator.blockScaleAdjustedY;
+                playLevel.startPos = Input.mousePosition;
+                playLevel.startPos.y = linePoints[0].y;
             }
             else
             {
                 linePoints[0].y = (-GameManager.manager.camY / 2) + (GameManager.manager.camY * GameManager.manager.freeBottomArea) + (ballSprite.transform.localScale.y / 5.5f);
+                playLevel.startPos = Input.mousePosition;
             }
 
             lineStart = true;
 
-            playLevel.startPos = Input.mousePosition;
+            //playLevel.startPos = Input.mousePosition;
         }
     }
 
@@ -81,7 +84,7 @@ public class DragToShoot : MonoBehaviour
                 playLevel.ableToShoot = true;
             }
 
-            lineStart = false;
+            lineStart = false; 
             //hide line on mouse release
             lineRenderer.positionCount = 0;
 
