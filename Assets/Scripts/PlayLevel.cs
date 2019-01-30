@@ -311,7 +311,8 @@ public class PlayLevel : MonoBehaviour
             BlockColour();
         else
         {
-            StartCoroutine(GameManager.manager.Message("Bonus Level" + "\r\n" + "Double Balls!"+"\r\n"+"Double Reward!", new Vector2(0, 0), 8, 2.5f, Color.white));
+            //StartCoroutine(GameManager.manager.Message("Bonus Level" + "\r\n" + "Double Balls!"+"\r\n"+"Double Reward!", new Vector2(0, 0), 8, 2.5f, Color.white));
+            StartCoroutine(GameManager.manager.Message("Double Balls!" + "\r\n" + "Double Reward!", new Vector2(0, 0), 8, 2.5f, Color.white));
             BlockColour(); // remove if doing the bonus levels with their own colour
         }
 

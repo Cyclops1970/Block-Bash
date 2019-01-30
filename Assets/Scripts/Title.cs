@@ -21,8 +21,8 @@ public class Title : MonoBehaviour
     {
         yield return new WaitForSeconds(4);
         SceneManager.LoadScene("Home");
-
     }
+
 
     void DisplayTitle()
     {

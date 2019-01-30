@@ -35,4 +35,10 @@ public class SettingsMenu : MonoBehaviour {
             b.GetComponent<Button>().interactable = true;
         }
     }
+
+    public void RemoveAdsBackDoor()
+    {
+        PlayerPrefs.SetInt("ads", 1);
+        //print("no ads");
+    }
 }

@@ -48,6 +48,7 @@ public class InvincibleBalls : MonoBehaviour
                 GameManager.manager.playerCoins -= GameManager.manager.invincibleBallsCost;
                 PlayerPrefs.SetInt("playerCoins", GameManager.manager.playerCoins);
                 GameManager.manager.numberOfInvincibleBalls++;
+                PlayerPrefs.SetInt(GameManager.manager.invincibleBalls, 1);
                 StartCoroutine(GameManager.manager.Message("Purchased" + "\r\n" + "Power Balls!", new Vector2(0, 0), 8, 1.5f, Color.white));
             }
             else

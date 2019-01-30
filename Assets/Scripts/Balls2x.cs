@@ -48,6 +48,7 @@ public class Balls2x : MonoBehaviour
                 GameManager.manager.playerCoins -= GameManager.manager.balls2xCost;
                 PlayerPrefs.SetInt("playerCoins", GameManager.manager.playerCoins);
                 GameManager.manager.numberOfBalls2x++;
+                PlayerPrefs.SetInt(GameManager.manager.balls2x, 1); //addded to keep track of ball powerups
                 StartCoroutine(GameManager.manager.Message("Purchased"+"\r\n"+"Double Balls", new Vector2(0, 0), 8, 1.5f, Color.white));
             }
             else

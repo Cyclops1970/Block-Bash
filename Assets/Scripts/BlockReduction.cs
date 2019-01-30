@@ -71,6 +71,7 @@ public class BlockReduction : MonoBehaviour
                 GameManager.manager.playerCoins -= GameManager.manager.blockReductionCost;
                 PlayerPrefs.SetInt("playerCoins", GameManager.manager.playerCoins);
                 GameManager.manager.numberOfBockReductions++;
+                PlayerPrefs.SetInt(GameManager.manager.blockReduction, 1);
                 StartCoroutine(GameManager.manager.Message("Purchased" + "\r\n" + "Block Reduction", new Vector2(0, 0), 8, 1.5f, Color.white));
             }
             else

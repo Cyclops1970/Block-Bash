@@ -60,6 +60,7 @@ public class FloorBlock : MonoBehaviour {
                 GameManager.manager.playerCoins -= GameManager.manager.floorBlockCost;
                 PlayerPrefs.SetInt("playerCoins", GameManager.manager.playerCoins);
                 GameManager.manager.numberOfFloorBlocks++;
+                PlayerPrefs.SetInt(GameManager.manager.floorBlock, 1);
                 StartCoroutine(GameManager.manager.Message("Purchased" + "\r\n" + "Floor Blocks", new Vector2(0, 0), 8, 1.5f, Color.white));
             }
             else
