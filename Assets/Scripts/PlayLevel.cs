@@ -469,9 +469,9 @@ public class PlayLevel : MonoBehaviour
         {
             if (b != null) 
             {
-                colour = (byte)(150 - (Mathf.RoundToInt(b.GetComponent<Block>().hitsRemaining / 50) * 20)); //50 points, 20 colour change
+                //colour = (byte)(150 - (Mathf.RoundToInt(b.GetComponent<Block>().hitsRemaining / 50) * 20)); //50 points, 20 colour change
 
-                b.GetComponent<Block>().colour = new Color32(0, (byte)Mathf.Clamp((150 - b.GetComponent<Block>().hitsRemaining), 0,150), 255, 255);
+                b.GetComponent<Block>().colour = new Color32(0, (byte)Mathf.Clamp((200 - b.GetComponent<Block>().hitsRemaining), 0,200), 255, 255);  // clamp 150
                 //b.GetComponent<Block>().colour = new Color32(colour, colour, 255, 255);
                 
                 b.gameObject.GetComponent<SpriteRenderer>().color = b.GetComponent<Block>().colour;
